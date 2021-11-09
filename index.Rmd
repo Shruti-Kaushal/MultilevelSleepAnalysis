@@ -1,6 +1,6 @@
 --- 
-title: "YOUR TITLE HERE"
-author: "YOUR NAMES HERE"
+title: "MultilevelSleepAnalysis"
+author: "Shruti Kaushal & Clarissa Tai"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 ---
