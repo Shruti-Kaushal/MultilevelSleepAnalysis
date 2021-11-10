@@ -1,2 +1,47 @@
 # Data sources
+1. Multilevel Monitoring of Activity and Sleep in Healthy People: https://physionet.org/content/mmash/1.0.0/
+2. CAP Sleep Database: https://physionet.org/content/capslpdb/1.0.0/
 
+
+```{r}
+fdpath = "~/Documents/GitHub/MultilevelSleepAnalysis/data/raw/multilevel-monitoring-of-activity-and-sleep-in-healthy-people-1.0.0/DataPaper/" 
+files <- list.files(path = fdpath) # 22 user folders
+actigraph = list()
+activity = list()
+questionnaire = list()
+RR = list()
+saliva = list()
+sleep = list()
+user_info = list()
+for (i in 1:length(files)) {
+  f <- list.files(path = paste0(fdpath,files[i])) # data for each user
+  for (fname in f){
+    if ('Actigraph.csv' == fname){
+      actigraph[files[i]] = read.csv(paste0(fdpath,files[i],'/',fname), header = T, sep = ",")
+    }else if('Activity.csv' == fname){
+      activity[files[i]] = read.csv(paste0(fdpath,files[i],'/',fname), header = T, sep = ",")
+    }else if('questionnaire.csv' == fname){
+      questionnaire[files[i]] = read.csv(paste0(fdpath,files[i],'/',fname), header = T, sep = ",")
+    }else if('RR.csv' == fname){
+      RR[files[i]] = read.csv(paste0(fdpath,files[i],'/',fname), header = T, sep = ",")
+    }else if('saliva.csv' == fname){
+      saliva[files[i]] = read.csv(paste0(fdpath,files[i],'/',fname), header = T, sep = ",")
+    }else if('sleep.csv' == fname){
+      sleep[files[i]] = read.csv(paste0(fdpath,files[i],'/',fname), header = T, sep = ",")
+    }else if('user_info.csv' == fname){
+      user_info[files[i]] = read.csv(paste0(fdpath,files[i],'/',fname), header = T, sep = ",")
+    }else{
+      next
+    }
+  }
+}
+
+# each folder contains
+# $Actigraph.csv
+# $Activity.csv
+# $questionnaire.csv
+# $RR.csv
+# $saliva.csv
+# $sleep.csv
+# $user_info.csv
+```
