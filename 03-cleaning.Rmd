@@ -6,36 +6,43 @@ load("./data/RData/data_MMASH.RData")
 library(chron)
 # create function to transform string object to time object for further calculation
 string2time <- function(x, format = "%H:%M"){
-  return(strptime(x, format = format)) # times(sub(".*\\s+", "",  
+  return(as.POSIXct(x, format = format)) # times(sub(".*\\s+", "",  
 }
 ```
 
 ## Actigraph
+the only thing we need to do here is to transform the `day` column into datetime type in R
+
+### Definition and explanation of each column
 Actigraph.csv - accelerometer and inclinometer data recorded throughout the day:
-Axis1: Raw Acceleration data of the X-axis expressed in Newton-meter.
-Axis2: Raw Acceleration data of the Y-axis expressed in Newton-meter.
-Axis3: Raw Acceleration data of the Z-axis expressed in Newton-meter.
-Steps: number of steps per second.
-HR: beats per minutes (bpm).
-Inclinometer Off: values equal to 1 refer to no activation of the inclinometer. The values are reported per second.
-Inclinometer Standing: values equal to 1 refer to the standing position of the user, while 0 refers to other user positions. Values are reported per second.
-Inclinometer Sitting: values equal to 1 refer to the sitting position of the user, while 0 refers to other user positions. Values are reported per second.
-Inclinometer Lying: values equal to 1 refer to the lying position of the user, while 0 refers to other user positions. Values are reported per second.
-Vector Magnitude: vector movement derived from raw acceleration data expressed in Newton-meter.
-day: 1 and 2 refer to the first and second day of data recording, respectively.
-time: day time when the heartbeat happened (hours:minutes:seconds)
++ Axis1: Raw Acceleration data of the X-axis expressed in Newton-meter.
++ Axis2: Raw Acceleration data of the Y-axis expressed in Newton-meter.
++ Axis3: Raw Acceleration data of the Z-axis expressed in Newton-meter.
++ Steps: number of steps per second.
++ HR: beats per minutes (bpm).
++ Inclinometer Off: values equal to 1 refer to no activation of the inclinometer. The values are reported per second.
++ Inclinometer Standing: values equal to 1 refer to the standing position of the user, while 0 refers to other user positions. Values are reported per second.
++ Inclinometer Sitting: values equal to 1 refer to the sitting position of the user, while 0 refers to other user positions. Values are reported per second.
++ Inclinometer Lying: values equal to 1 refer to the lying position of the user, while 0 refers to other user positions. Values are reported per second.
++ Vector Magnitude: vector movement derived from raw acceleration data expressed in Newton-meter.
++ day: 1 and 2 refer to the first and second day of data recording, respectively.
++ time: day time when the heartbeat happened (hours:minutes:seconds)
 
 ```{r}
-
-
+library(lubridate)
+actigraph$time = string2time(actigraph$time, format = "%H:%M:%S") + lubridate::days(actigraph$day)
 ```
 
 ## Activity
 calculate duration for each activity
+
+### Definition and explanation of each column
+'Start' and 'end' columns refer to the time of the day (hours:minutes) when the event happened, while 'day' columns refers to the day when it happened (1 and 2 refer to the first and second day of data recording, respectively).
 ```{r}
-
-activity$Start = string2time(activity$Start)
-activity$End = string2time(activity$End)
+activity$Start = string2time(activity$Start)+ lubridate::days(activity$Day)
+# we need to substitute "00:00" to "24:00" to prevent calculating on the wrong day
+activity$End = sub("00:00", "24:00", activity$End)
+activity$End = string2time(activity$End)+ lubridate::days(activity$Day)
+# duration in seconds
 activity$Duration = difftime(activity$End,activity$Start)
-
 ```
