@@ -6,14 +6,15 @@
 
 There are 22 folders in the MMASH dataset, and each contains 7 files with the information of the user.
 
-Each user folder contains
-+ `Actigraph.csv`
-+ `Activity.csv`
-+ `questionnaire.csv`
-+ `RR.csv`
-+ `saliva.csv`
-+ `sleep.csv`
-+ `user_info.csv`
+Each user folder contains:
+
+1. `Actigraph.csv`
+2. `Activity.csv`
+3. `questionnaire.csv`
+4. `RR.csv`
+5. `saliva.csv`
+6. `sleep.csv`
+7. `user_info.csv`
 
 ![image shows the folder structure](./img/Structure of MMASH dataset.png)
 
@@ -60,8 +61,11 @@ for (i in 1:length(files)) {
     }else if('sleep.csv' == fname){
       temp = read.csv(paste0(fdpath,files[i],'/',fname), header = T, sep = ",")
       # user_11 is missing sleep.csv information
-      tryCatch(expr = {temp['user'] = files[i]})
-      sleep = rbind(sleep, temp)
+      tryCatch(expr = {
+        temp['user'] = files[i]
+        sleep = rbind(sleep, temp)
+        }, error = function(e){
+          print(paste0(files[i], " is missing sleep.csv information, having error", e))})
     }else if('user_info.csv' == fname){
       temp = read.csv(paste0(fdpath,files[i],'/',fname), header = T, sep = ",")
       temp['user'] = files[i]

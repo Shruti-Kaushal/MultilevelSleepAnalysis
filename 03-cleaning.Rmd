@@ -14,19 +14,21 @@ string2time <- function(x, format = "%H:%M"){
 the only thing we need to do here is to transform the `day` column into datetime type in R
 
 ### Definition and explanation of each column
+
 Actigraph.csv - accelerometer and inclinometer data recorded throughout the day:
-+ Axis1: Raw Acceleration data of the X-axis expressed in Newton-meter.
-+ Axis2: Raw Acceleration data of the Y-axis expressed in Newton-meter.
-+ Axis3: Raw Acceleration data of the Z-axis expressed in Newton-meter.
-+ Steps: number of steps per second.
-+ HR: beats per minutes (bpm).
-+ Inclinometer Off: values equal to 1 refer to no activation of the inclinometer. The values are reported per second.
-+ Inclinometer Standing: values equal to 1 refer to the standing position of the user, while 0 refers to other user positions. Values are reported per second.
-+ Inclinometer Sitting: values equal to 1 refer to the sitting position of the user, while 0 refers to other user positions. Values are reported per second.
-+ Inclinometer Lying: values equal to 1 refer to the lying position of the user, while 0 refers to other user positions. Values are reported per second.
-+ Vector Magnitude: vector movement derived from raw acceleration data expressed in Newton-meter.
-+ day: 1 and 2 refer to the first and second day of data recording, respectively.
-+ time: day time when the heartbeat happened (hours:minutes:seconds)
+
+1. Axis1: Raw Acceleration data of the X-axis expressed in Newton-meter.
+2. Axis2: Raw Acceleration data of the Y-axis expressed in Newton-meter.
+3. Axis3: Raw Acceleration data of the Z-axis expressed in Newton-meter.
+4. Steps: number of steps per second.
+5. HR: beats per minutes (bpm).
+6. Inclinometer Off: values equal to 1 refer to no activation of the inclinometer. The values are reported per second.
+7. Inclinometer Standing: values equal to 1 refer to the standing position of the user, while 0 refers to other user positions. Values are reported per second.
+8. Inclinometer Sitting: values equal to 1 refer to the sitting position of the user, while 0 refers to other user positions. Values are reported per second.
+9. Inclinometer Lying: values equal to 1 refer to the lying position of the user, while 0 refers to other user positions. Values are reported per second.
+10. Vector Magnitude: vector movement derived from raw acceleration data expressed in Newton-meter.
+11. day: 1 and 2 refer to the first and second day of data recording, respectively.
+12. time: day time when the heartbeat happened (hours:minutes:seconds)
 
 ```{r}
 library(lubridate)
@@ -45,4 +47,49 @@ activity$End = sub("00:00", "24:00", activity$End)
 activity$End = string2time(activity$End)+ lubridate::days(activity$Day)
 # duration in seconds
 activity$Duration = difftime(activity$End,activity$Start)
+```
+
+
+## Questionnaire
+
+### Definition and explanation of each column
+
+questionnaire.csv - scores for all the questionnaires:
+
+1. MEQ: Morningness-Eveningness Questionnaire value. The chronotype score is ranging from 16 to 86: scores of 41 and below indicate Evening types, scores of 59 and above indicate Morning types, scores between 42-58 indicate intermediate types [1].
+
+2. STAI1: State Anxiety value obtained from State-Trait Anxiety Inventory. The results are range from 20 to 80. Scores less than 31 may indicate low or no anxiety, scores between 31 and 49 an average level of anxiety or borderline levels, and scores higher than 50 a high level of anxiety or positive test results [2].
+
+3. STAI2: Trait Anxiety value obtained from the State-Trait Anxiety Inventory. The results are range from 20 to 80. Scores less than 31 may indicate low or no anxiety, scores between 31 and 49 an average level of anxiety or borderline levels, and scores higher than 50 a high level of anxiety or positive test results [2].
+
+4. PSQI: Pittsburgh Sleep Quality Questionnaire Index. It gives a score rating from 0 to 21, with values lower than 6 indicating good sleep quality [3].
+
+5. BIS/BAS: Behavioural avoidance/inhibition index [4]. BIS/BAS scales are a typical measure of reinforcement sensitivity theory that establish biological roots in personality characteristics, derived from neuropsychological differences. The BIS/BAS scales comprise a self‐report measure of avoidance and approach tendencies that contains four sub-factors (A high score in one of the subscale describes the degree of that temperamental characteristic for the individual, according to the original sample):
+Bis facet reflects subject sensitivity toward aversive events that promote avoidance behaviours.
+Drive describes individual persistence and motivational intensity.
+Reward corresponds to Reward Responsiveness that indicates a propensity to show a higher degree of positive emotion for goal attainment.
+Fun corresponds to Fun-Seeking that is related to impulsivity and immediate reward due to sensory stimuli or risky situations.
+
+6. Daily_stress: Daily Stress Inventory value (DSI) is a 58 items self-reported measures which allows a person to indicate the events they experienced in the last 24 hours. After indicating which event occurred, they indicate the stressfulness of the invent on a Likert scale from 1 (occurred but was not stressful) to 7 (Cause me to panic). It gives a score between 0 and 406. The higher is this values, the higher is the frequency and degree of the events and the perceived daily stress [5].
+PANAS: Positive and Negative Affect Schedule. It gives a score rating between 5 and 50 for both positive and negative emotions [6]. The higher is the PANAS value, the higher is the perceived emotion. Columns name with 10, 14, 22 and 9+1 refer to the time of the day when the questionnaire is filled in. 9+1 indicates the 9 AM of the second recording day.
+
+```{r}
+
+```
+
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
 ```

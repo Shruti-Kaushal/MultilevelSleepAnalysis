@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 2 Data sources | YOUR TITLE HERE</title>
-  <meta name="description" content="Chapter 2 Data sources | YOUR TITLE HERE" />
-  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+  <title>Chapter 2 Data sources | MultilevelSleepAnalysis</title>
+  <meta name="description" content="Chapter 2 Data sources | MultilevelSleepAnalysis" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 2 Data sources | YOUR TITLE HERE" />
+  <meta property="og:title" content="Chapter 2 Data sources | MultilevelSleepAnalysis" />
   <meta property="og:type" content="book" />
   
   
@@ -16,15 +16,15 @@
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 2 Data sources | YOUR TITLE HERE" />
+  <meta name="twitter:title" content="Chapter 2 Data sources | MultilevelSleepAnalysis" />
   
   
   
 
-<meta name="author" content="YOUR NAMES HERE" />
+<meta name="author" content="Shruti Kaushal &amp; Clarissa Tai" />
 
 
-<meta name="date" content="2020-11-09" />
+<meta name="date" content="2021-12-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -33,8 +33,9 @@
   
 <link rel="prev" href="index.html"/>
 <link rel="next" href="data-transformation.html"/>
-<script src="libs/header-attrs-2.3/header-attrs.js"></script>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<script src="libs/header-attrs-2.9/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -50,8 +51,9 @@
 
 
 
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
 
-<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 
 
 
@@ -68,12 +70,31 @@
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">SHORT TITLE HERE</a></li>
+<li><a href="./">MultilevelSleep</a></li>
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
-<li class="chapter" data-level="2" data-path="data-sources.html"><a href="data-sources.html"><i class="fa fa-check"></i><b>2</b> Data sources</a></li>
-<li class="chapter" data-level="3" data-path="data-transformation.html"><a href="data-transformation.html"><i class="fa fa-check"></i><b>3</b> Data transformation</a></li>
+<li class="chapter" data-level="2" data-path="data-sources.html"><a href="data-sources.html"><i class="fa fa-check"></i><b>2</b> Data sources</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="data-sources.html"><a href="data-sources.html#mmash"><i class="fa fa-check"></i><b>2.1</b> MMASH</a></li>
+<li class="chapter" data-level="2.2" data-path="data-sources.html"><a href="data-sources.html#cap"><i class="fa fa-check"></i><b>2.2</b> CAP</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="data-transformation.html"><a href="data-transformation.html"><i class="fa fa-check"></i><b>3</b> Data transformation</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="data-transformation.html"><a href="data-transformation.html#define-function"><i class="fa fa-check"></i><b>3.1</b> define function</a></li>
+<li class="chapter" data-level="3.2" data-path="data-transformation.html"><a href="data-transformation.html#actigraph"><i class="fa fa-check"></i><b>3.2</b> Actigraph</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="data-transformation.html"><a href="data-transformation.html#definition-and-explanation-of-each-column"><i class="fa fa-check"></i><b>3.2.1</b> Definition and explanation of each column</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="data-transformation.html"><a href="data-transformation.html#activity"><i class="fa fa-check"></i><b>3.3</b> Activity</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="data-transformation.html"><a href="data-transformation.html#definition-and-explanation-of-each-column-1"><i class="fa fa-check"></i><b>3.3.1</b> Definition and explanation of each column</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="data-transformation.html"><a href="data-transformation.html#questionnaire"><i class="fa fa-check"></i><b>3.4</b> Questionnaire</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="data-transformation.html"><a href="data-transformation.html#definition-and-explanation-of-each-column-2"><i class="fa fa-check"></i><b>3.4.1</b> Definition and explanation of each column</a></li>
+</ul></li>
+</ul></li>
 <li class="chapter" data-level="4" data-path="missing-values.html"><a href="missing-values.html"><i class="fa fa-check"></i><b>4</b> Missing values</a></li>
 <li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results</a></li>
 <li class="chapter" data-level="6" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>6</b> Interactive component</a></li>
@@ -89,7 +110,7 @@
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">YOUR TITLE HERE</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">MultilevelSleepAnalysis</a>
           </h1>
         </div>
 
@@ -99,7 +120,46 @@
             <section class="normal" id="section-">
 <div id="data-sources" class="section level1" number="2">
 <h1><span class="header-section-number">Chapter 2</span> Data sources</h1>
+<ol style="list-style-type: decimal">
+<li>Multilevel Monitoring of Activity and Sleep in Healthy People: <a href="https://physionet.org/content/mmash/1.0.0/" class="uri">https://physionet.org/content/mmash/1.0.0/</a></li>
+<li>CAP Sleep Database: <a href="https://physionet.org/content/capslpdb/1.0.0/" class="uri">https://physionet.org/content/capslpdb/1.0.0/</a></li>
+</ol>
+<div id="mmash" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> MMASH</h2>
+<p>There are 22 folders in the MMASH dataset, and each contains 7 files with the information of the user.</p>
+<p>Each user folder contains
+1. <code>Actigraph.csv</code>
+2. <code>Activity.csv</code>
+3. <code>questionnaire.csv</code>
+4. <code>RR.csv</code>
+5. <code>saliva.csv</code>
+6. <code>sleep.csv</code>
+7. <code>user_info.csv</code></p>
+<div class="figure">
+<img src="img/Structure%20of%20MMASH%20dataset.png" alt="" />
+<p class="caption">image shows the folder structure</p>
+</div>
+<pre><code>## [1] &quot;user_11 is missing sleep.csv information, having errorError in `[&lt;-.data.frame`(`*tmp*`, \&quot;user\&quot;, value = \&quot;user_11\&quot;): replacement has 1 row, data has 0\n&quot;</code></pre>
+<p>refer to the dataset documents, create some ID table.</p>
+<ol style="list-style-type: decimal">
+<li>sleeping.</li>
+<li>laying down.</li>
+<li>sitting, e.g. studying, eating and driving.</li>
+<li>light movement, e.g. slow/medium walk, chores and work.</li>
+<li>medium, e.g. fast walk and bike.</li>
+<li>heavy, e.g. gym, running.</li>
+<li>eating.</li>
+<li>small screen usage, e.g. smartphone and computer.</li>
+<li>large screen usage, e.g. TV and cinema.</li>
+<li>caffeinated drink consumption, e.g. coffee or coke.</li>
+<li>smoking.
+12 alcohol assumption.</li>
+</ol>
+</div>
+<div id="cap" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> CAP</h2>
 
+</div>
 </div>
             </section>
 
@@ -111,7 +171,6 @@
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -130,6 +189,7 @@ gitbook.start({
 "weibo": false,
 "instapaper": false,
 "vk": false,
+"whatsapp": false,
 "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
@@ -138,7 +198,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/YOUR GITHUB USERNAME/YOUR REPO NAME/edit/main/02-data.Rmd",
+"link": "https://github.com/Shruti-Kaushal/MultilevelSleepAnalysis/edit/main/02-data.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -146,10 +206,14 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": "https://github.com/YOUR GITHUB USERNAME/YOUR REPO NAME/blob/main/02-data.Rmd",
+"link": "https://github.com/Shruti-Kaushal/MultilevelSleepAnalysis/blob/main/02-data.Rmd",
 "text": null
 },
 "download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
 "toc": {
 "collapse": "subsection"
 }
