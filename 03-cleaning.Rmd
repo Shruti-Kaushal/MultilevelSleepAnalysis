@@ -1,7 +1,7 @@
 # Data transformation
 
-## define function
 ```{r}
+# define function
 load("./data/RData/data_MMASH.RData")
 library(chron)
 # create function to transform string object to time object for further calculation
@@ -11,7 +11,8 @@ string2time <- function(x, format = "%H:%M"){
 ```
 
 ## Actigraph
-the only thing we need to do here is to transform the `day` column into datetime type in R
+
+The only thing we need to do here is to transform the `time` column into datetime type in R. Also, since initial `time` column doesn't contain date information, we add days according to the `day` column to create a relative time stamp for each record in order to facilitate future calculation.
 
 ### Definition and explanation of each column
 
@@ -52,26 +53,116 @@ activity$Duration = difftime(activity$End,activity$Start)
 
 ## Questionnaire
 
+For this part, the dataset contains the answer of a total of 7 questionnaires for each user. The questionnaires examined users' anxiety, sleep quality, stress, emotion, etc, in order to understand the users' behavior.
+
+No data cleaning is needed for this part.
+
 ### Definition and explanation of each column
 
 questionnaire.csv - scores for all the questionnaires:
 
-1. MEQ: Morningness-Eveningness Questionnaire value. The chronotype score is ranging from 16 to 86: scores of 41 and below indicate Evening types, scores of 59 and above indicate Morning types, scores between 42-58 indicate intermediate types [1].
+*TODO: make visualization for each scale and score of each questionnaire.csv.*
 
-2. STAI1: State Anxiety value obtained from State-Trait Anxiety Inventory. The results are range from 20 to 80. Scores less than 31 may indicate low or no anxiety, scores between 31 and 49 an average level of anxiety or borderline levels, and scores higher than 50 a high level of anxiety or positive test results [2].
+1. MEQ: Morningness-Eveningness Questionnaire value. The chronotype score is ranging from 16 to 86: scores of 41 and below indicate Evening types, scores of 59 and above indicate Morning types, scores between 42-58 indicate intermediate types.
 
-3. STAI2: Trait Anxiety value obtained from the State-Trait Anxiety Inventory. The results are range from 20 to 80. Scores less than 31 may indicate low or no anxiety, scores between 31 and 49 an average level of anxiety or borderline levels, and scores higher than 50 a high level of anxiety or positive test results [2].
+2. STAI1: State Anxiety value obtained from State-Trait Anxiety Inventory. The results are range from 20 to 80. Scores less than 31 may indicate low or no anxiety, scores between 31 and 49 an average level of anxiety or borderline levels, and scores higher than 50 a high level of anxiety or positive test results.
 
-4. PSQI: Pittsburgh Sleep Quality Questionnaire Index. It gives a score rating from 0 to 21, with values lower than 6 indicating good sleep quality [3].
+3. STAI2: Trait Anxiety value obtained from the State-Trait Anxiety Inventory. The results are range from 20 to 80. Scores less than 31 may indicate low or no anxiety, scores between 31 and 49 an average level of anxiety or borderline levels, and scores higher than 50 a high level of anxiety or positive test results.
 
-5. BIS/BAS: Behavioural avoidance/inhibition index [4]. BIS/BAS scales are a typical measure of reinforcement sensitivity theory that establish biological roots in personality characteristics, derived from neuropsychological differences. The BIS/BAS scales comprise a self‐report measure of avoidance and approach tendencies that contains four sub-factors (A high score in one of the subscale describes the degree of that temperamental characteristic for the individual, according to the original sample):
-Bis facet reflects subject sensitivity toward aversive events that promote avoidance behaviours.
-Drive describes individual persistence and motivational intensity.
-Reward corresponds to Reward Responsiveness that indicates a propensity to show a higher degree of positive emotion for goal attainment.
-Fun corresponds to Fun-Seeking that is related to impulsivity and immediate reward due to sensory stimuli or risky situations.
+4. PSQI: Pittsburgh Sleep Quality Questionnaire Index. It gives a score rating from 0 to 21, with values lower than 6 indicating good sleep quality.
 
-6. Daily_stress: Daily Stress Inventory value (DSI) is a 58 items self-reported measures which allows a person to indicate the events they experienced in the last 24 hours. After indicating which event occurred, they indicate the stressfulness of the invent on a Likert scale from 1 (occurred but was not stressful) to 7 (Cause me to panic). It gives a score between 0 and 406. The higher is this values, the higher is the frequency and degree of the events and the perceived daily stress [5].
-PANAS: Positive and Negative Affect Schedule. It gives a score rating between 5 and 50 for both positive and negative emotions [6]. The higher is the PANAS value, the higher is the perceived emotion. Columns name with 10, 14, 22 and 9+1 refer to the time of the day when the questionnaire is filled in. 9+1 indicates the 9 AM of the second recording day.
+5. BIS/BAS: Behavioural avoidance/inhibition index. BIS/BAS scales are a typical measure of reinforcement sensitivity theory that establish biological roots in personality characteristics, derived from neuropsychological differences. The BIS/BAS scales comprise a self‐report measure of avoidance and approach tendencies that contains four sub-factors (A high score in one of the subscale describes the degree of that temperamental characteristic for the individual, according to the original sample):
+
+  + Bis facet: reflects subject sensitivity toward aversive events that promote avoidance behaviours.
+  + Drive: describes individual persistence and motivational intensity.
+  + Reward: corresponds to Reward Responsiveness that indicates a propensity to show a higher degree of positive emotion for goal attainment.
+  + Fun: corresponds to Fun-Seeking that is related to impulsivity and immediate reward due to sensory stimuli or risky situations.
+
+6. Daily_stress: Daily Stress Inventory value (DSI) is a 58 items self-reported measures which allows a person to indicate the events they experienced in the last 24 hours. After indicating which event occurred, they indicate the stressfulness of the invent on a Likert scale from 1 (occurred but was not stressful) to 7 (Cause me to panic). It gives a score between 0 and 406. The higher is this values, the higher is the frequency and degree of the events and the perceived daily stress.
+
+7. PANAS: Positive and Negative Affect Schedule. It gives a score rating between 5 and 50 for both positive and negative emotions. The higher is the PANAS value, the higher is the perceived emotion. Columns name with 10, 14, 22 and 9+1 refer to the time of the day when the questionnaire is filled in. 9+1 indicates the 9 AM of the second recording day.
+
+
+## RR
+
+`RR` dataset contains the heartbeat records for each user. We can transform `ibi_s` to rate of heartbeat and align with activity records using `time` column.
+
+Similar to `Actigraph` dataset, the only thing we need to do here is to transform the `time` column into datetime type in R. Also, since initial `time` column doesn't contain date information, we add days according to the `day` column to create a relative time stamp for each record in order to facilitate future calculation.
+
+### Definition and explanation of each column
+
+RR.csv - beat-to-beat interval data:
+
+1. ibi_s: time in seconds between two consecutive beats.
+2. day: 1 and 2 refer to the first and second day of data recording, respectively.
+3. time: day time when the heartbeat happened (hours:minutes:seconds)
+
+```{r}
+RR$time = string2time(RR$time, format = "%H:%M:%S") + lubridate::days(RR$day)
+```
+
+
+## Saliva
+Nothing need to be transformed or cleaned in this dataset.
+
+### Definition and explanation of each column
+saliva.csv - clock genes and hormones concentrations in the saliva before going to bed and after waking up. 
+
+1. Sample: Two samples per participant are included, one before sleep and one after waking up.
+2. Melatonin levels are reported in μg of melatonin per μg of protein.
+3. Cortisol levels are in μg of cortisol per 100 μg of protein. 
+
+No clock genes and hormones concentrations data was provided for User_21 due to problem in the salivary samples that do not permit to analyse it.
+
+```{r}
+
+```
+
+
+## Sleep
+
+We need to transform all the time relate column in this dataset, "In.Bed.Date", "In.Bed.Time", "Out.Bed.Date", "Out.Bed.Time", "Onset.Date", and "Onset.Time". The method is similar to previous `actigraph` and `RR` dataset.
+
+### Definition and explanation of each column
+
+sleep.csv - information about sleep duration and sleep quality of the participant:
+
+1. In Bed Date: 1 and 2 refer to the first and second day of data recording, respectively.
+2. In Bed Time: time of the day (hours:minutes) when the user went to the bed.
+3. Out Bed Date: 1 and 2 refer to the first and second day of data recording, respectively.
+4. Out Bed Time: time of the day (hours:minutes) when the user went out of the bed.
+5. Onset Date: 1 and 2 refer to the first and second day of data recording, respectively.
+6. Onset Time: time of the day (hours:minutes) when the user falls asleep.
+7. Latency Efficiency: percentage of sleep time on total sleep in bed.
+8. Total Minutes in Bed: minutes spent in the bed per night.
+9. Total Sleep Time (TST): length of the sleep per night expressed in minutes.
+10. Wake After Sleep Onset (WASO): time spent awake after falling asleep the first time.
+11. Number of Awakenings during the night
+12. Average Awakening Length: time in seconds spent awakening during the night.
+13. Movement Index: number of minutes without movement expressed as a percentage of the movement phase (i.e., number of period with arm movement).
+14. Fragmentation Index: number of minutes with movement expressed as a percentage of the immobile phase (i.e., the number of period without arm movement).
+15. Sleep Fragmentation Index: ratio between the Movement and Fragmentation indices.
+
+```{r}
+# colnames(sleep)
+sleep$In.Bed.Time = string2time(sleep$In.Bed.Time, format = "%H:%M") + lubridate::days(sleep$In.Bed.Date)
+sleep$Out.Bed.Time = string2time(sleep$Out.Bed.Time, format = "%H:%M") + lubridate::days(sleep$Out.Bed.Date)
+sleep$Onset.Time = string2time(sleep$Onset.Time, format = "%H:%M") + lubridate::days(sleep$Onset.Date)
+```
+
+
+## User info
+
+missing age for user_18. Otherwise, nothing need to be transformed or cleaned in this dataset
+
+### Definition and explanation of each column
+
+user_info.csv - anthropocentric characteristics of the participant:
+
+1. gender: M and F refer to Male and Female, respectively.
+2. height is expressed in centimetre (cm).
+3. weight is expressed in kilograms (kg).
+4. age is expressed in years.
 
 ```{r}
 
@@ -79,17 +170,6 @@ PANAS: Positive and Negative Affect Schedule. It gives a score rating between 5 
 
 
 ```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
-```
-
-```{r}
-
+# save workplace after data cleaning/for this stage.
+save.image(file = "./data/RData/data_MMASH_cleaned.RData")
 ```

@@ -1,1 +1,7 @@
 # Missing values
+
+file information missing: user_11 is missing sleep.csv information
+
+No clock genes and hormones concentrations data was provided for User_21 due to problem in the salivary samples that do not permit to analyse it.
+
+missing age for user_18 in user_info
