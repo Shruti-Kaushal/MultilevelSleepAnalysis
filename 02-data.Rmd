@@ -92,7 +92,7 @@ refer to the dataset documents, create some ID table.
 9. large screen usage, e.g. TV and cinema.
 10. caffeinated drink consumption, e.g. coffee or coke.
 11. smoking.
-12 alcohol assumption. 
+12. alcohol assumption. 
 
 ```{r}
 ID_activity <- data.frame(ID = 1:12, cate = c(

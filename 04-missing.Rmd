@@ -5,3 +5,150 @@ file information missing: user_11 is missing sleep.csv information
 No clock genes and hormones concentrations data was provided for User_21 due to problem in the salivary samples that do not permit to analyse it.
 
 missing age for user_18 in user_info
+
+
+## Missing Value Plot
+
+Here we revise the function we created in problem set 4 to plot the missing patterns. Very less missing value is in the dataset. As shown in the plots, only one row with missing values exist in `activity` and `questionnaire`, respectively.
+```{r}
+# missing value plot function from problem set 4
+library(dplyr)
+library(ggplot2)
+library(tidyverse)
+library(patchwork)
+library(ggnewscale)
+
+missingValuePlot <- function(df, mode = "count", title = 'Missing value patterns' ){
+  # create the missing value dataframe, depends on the mode chosen
+  if(mode == 'count'){
+    # construct dataframe/table base on counts
+    missing_patterns <- data.frame(is.na(df)) %>%
+    group_by_all() %>%
+    count(name = "count", sort = TRUE) %>%
+    ungroup()
+
+  }else if(mode == 'percent'){
+    # construct dataframe/table base on percentages
+    missing_patterns <- data.frame(is.na(df)) %>%
+    group_by_all() %>%
+    count(name = "count", sort = TRUE) %>% 
+    ungroup()
+    missing_patterns$count <- missing_patterns$count/sum(missing_patterns$count) * 100
+    
+  }else{
+    warning('Please select valid options: "mode" or "percent"')
+  }
+  
+  
+  # plot here
+  
+  missing_count = missing_patterns$count
+  missing_patterns$count = NULL
+  
+  # side plot for column
+  col_count = data.frame(count = colSums(missing_patterns * missing_count), col = names(missing_patterns))
+  col_count = arrange(col_count, -count)
+  
+  missing_patterns <- data.frame(lapply(missing_patterns, as.numeric))
+  # create vector to highlight complete cases
+  complete_case = c()
+  for (pat in c(1:dim(missing_patterns)[1])){
+    if (all(missing_patterns[pat,] == 0)){
+      complete_case = c(complete_case, 1)
+    }else{
+      complete_case = c(complete_case, 0)
+    }
+  }
+  complete_case = data.frame(complete = complete_case, pattern = c(1:dim(missing_patterns)[1]))
+  
+  # side plot for row
+  row_count = data.frame(count = missing_count, pattern = complete_case$pattern)
+  row_count <- dplyr::left_join(row_count, complete_case, by = 'pattern')
+  
+  # plot side bar plot for column
+  if(mode == 'count'){
+    p_col = col_count %>% ggplot(aes(x = reorder(col,-count), y = count)) + 
+      geom_col(fill = 'blue', alpha = 0.7, show.legend = FALSE) + 
+      scale_x_discrete(labels = abbreviate) +
+      theme_bw() + 
+      theme(panel.grid.minor.x = element_blank(),
+            panel.grid.major.x = element_blank()) +
+      labs(title = title, x = " ", y = "num rows missing")
+  }else{ # percentage
+    p_col = col_count %>% ggplot(aes(x = reorder(col,-count), y = count)) + 
+      geom_col(fill = 'blue', alpha = 0.7, show.legend = FALSE) + 
+      scale_x_discrete(labels = abbreviate) +
+      ylim(0, 100) + 
+      theme_bw() + 
+      theme(panel.grid.minor.x = element_blank(),
+            panel.grid.major.x = element_blank()) +
+      labs(title = title, x = " ", y = "% rows missing")
+  }
+  
+  # plot side bar plot for row
+  if(mode == 'count'){
+    p_row = row_count %>% ggplot(aes(x = factor(pattern), y = count, alpha = factor(complete))) + 
+      geom_col(fill = 'blue', show.legend = FALSE) + 
+      scale_x_discrete(limits = rev) +
+      coord_flip() + 
+      theme_bw() +
+      scale_alpha_manual(values = c(0.7,1)) +
+      theme(panel.grid.minor.y = element_blank(),
+            panel.grid.major.y = element_blank()) +
+      labs(x = ' ', y = 'row count')
+  }else{ # percentage
+    p_row = row_count %>% ggplot(aes(x = factor(pattern), y = count, alpha = factor(complete))) + 
+      geom_col(fill = 'blue', show.legend = FALSE) + 
+      scale_x_discrete(limits = rev) +
+      ylim(0, 100) +
+      coord_flip() + 
+      theme_bw() +
+      scale_alpha_manual(values = c(0.7,1)) +
+      theme(panel.grid.minor.y = element_blank(),
+            panel.grid.major.y = element_blank()) +
+      labs(x = ' ', y = '% rows')
+  }
+  
+  # main plot
+  # temp = missing_patterns
+  missing_patterns$pattern = c(1:dim(missing_patterns)[1])
+  df = missing_patterns %>% pivot_longer(!pattern, names_to = "column", values_to = "missing") %>% dplyr::left_join(complete_case)
+  
+  p_main = df %>% 
+    ggplot(aes(x = factor(column,levels = rownames(col_count)), y = factor(pattern,levels = rev(rownames(row_count))), fill = factor(missing), alpha = factor(complete))) + 
+    geom_tile(color = 'white', lwd = 0.4, linetype = 1, show.legend = FALSE)+  
+    scale_x_discrete(labels = abbreviate) +
+    scale_fill_manual(values = c('grey', 'purple')) +
+    scale_alpha_manual(values = c(0.5,1)) +
+    theme(panel.background = element_blank() )+
+    ylab('missing pattern') +
+    xlab('variable')
+  
+  # patchwork
+  layout <- "
+  AA#
+  BBC
+  BBC
+  "
+  # final plot
+  p_col + p_main + p_row + plot_layout(design = layout)
+    
+}
+```
+
+
+```{r}
+# load data from previous stage
+load("./data/RData/data_MMASH_cleaned.RData")
+# plot
+missingValuePlot(actigraph, title = 'Missing value patterns for actigraph')
+missingValuePlot(activity, title = 'Missing value patterns for activity')
+missingValuePlot(questionnaire, title = 'Missing value patterns for questionnaire')
+missingValuePlot(RR, title = 'Missing value patterns for RR')
+missingValuePlot(saliva, title = 'Missing value patterns for saliva')
+missingValuePlot(sleep, title = 'Missing value patterns for sleep')
+missingValuePlot(user_info, title = 'Missing value patterns for user_info')
+```
+
+
+
