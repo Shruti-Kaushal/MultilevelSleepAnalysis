@@ -37,10 +37,11 @@ actigraph$time = string2time(actigraph$time, format = "%H:%M:%S") + lubridate::d
 ```
 
 ## Activity
-calculate duration for each activity
+Here we substitute "00:00" to "24:00" to prevent calculating between wrong dates, and then calculate duration for each activity. The document labeled the activity categories from 1 to 12. However, an extra category, labeled as `0`, also included in the dataset. In this project, we will assume that the `0` represented undetermined activities.
 
 ### Definition and explanation of each column
 'Start' and 'end' columns refer to the time of the day (hours:minutes) when the event happened, while 'day' columns refers to the day when it happened (1 and 2 refer to the first and second day of data recording, respectively).
+
 ```{r}
 activity$Start = string2time(activity$Start)+ lubridate::days(activity$Day)
 # we need to substitute "00:00" to "24:00" to prevent calculating on the wrong day
