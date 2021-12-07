@@ -34,6 +34,27 @@ Actigraph.csv - accelerometer and inclinometer data recorded throughout the day:
 ```{r}
 library(lubridate)
 actigraph$time = string2time(actigraph$time, format = "%H:%M:%S") + lubridate::days(actigraph$day)
+# actigraph$duration = lead(actigraph$time) - actigraph$time
+# actigraph$duration.secs = as.numeric(actigraph$duration)
+# Verify at least one value of Inclinometer is true: True
+# all((actigraph[7] == 1) | (actigraph[8]== 1) | (actigraph[9]== 1) | (actigraph[10]== 1))
+
+# position = cbind(actigraph[1],actigraph[14], actigraph[7:10]) %>%
+#   group_by(X, user) %>% 
+#   gather(position, val, -c(X,user)) %>%
+#   filter(val == 1) %>%
+#   select(-val) %>%
+#   arrange(user, X)
+# 
+# actigraph$position = position$position
+
+postition = actigraph %>% 
+  group_by(user) %>% 
+  mutate(duration = lead(time) - time) %>%
+  ungroup() %>% 
+  group_by(user, position) %>% 
+  summarise(total = sum(duration, na.rm = TRUE), .groups = "keep")
+
 ```
 
 ## Activity
@@ -42,13 +63,54 @@ Here we substitute "00:00" to "24:00" to prevent calculating between wrong dates
 ### Definition and explanation of each column
 'Start' and 'end' columns refer to the time of the day (hours:minutes) when the event happened, while 'day' columns refers to the day when it happened (1 and 2 refer to the first and second day of data recording, respectively).
 
-```{r}
+```{r, fig.width=10}
 activity$Start = string2time(activity$Start)+ lubridate::days(activity$Day)
 # we need to substitute "00:00" to "24:00" to prevent calculating on the wrong day
 activity$End = sub("00:00", "24:00", activity$End)
 activity$End = string2time(activity$End)+ lubridate::days(activity$Day)
+
+# wrong inputs for activity start time and end time
+# switch start time and end time
+# activity[activity$End < activity$Start & !is.na(activity$End),] 
+temp = activity[c(413,428,445),]$Start
+activity[c(413,428,445),]$Start = activity[c(413,428,445),]$End
+activity[c(413,428,445),]$End = temp
+
+# some has records across time
+activity$End[activity$End < activity$Start & !is.na(activity$End)] = activity$End[activity$End < activity$Start & !is.na(activity$End)] + lubridate::days(1)
+ 
 # duration in seconds
-activity$Duration = difftime(activity$End,activity$Start)
+activity_duration = activity %>% 
+  group_by(user) %>% 
+  mutate(duration = End - Start) %>%
+  ungroup() %>% 
+  group_by(user, Activity) %>% 
+  summarise(total = as.numeric(sum(duration, na.rm = TRUE)), .groups = "keep")
+
+# label of activity ID
+ID_activity <- data.frame(ID = 0:12, category = c(
+  "undefined",
+  "sleeping",
+  "laying down",
+  "sitting",
+  "light mvmnt",
+  "medium",
+  "heavy",
+  "eating",
+  "small scr.usg", 
+  "large scr.usg", 
+  "caff. consump.",
+  "smoking",
+  "alc. consump." 
+))
+
+activity_duration = activity_duration %>% left_join(ID_activity, by = c('Activity' = "ID"))
+
+
+activity_duration %>% ggplot(aes(x = factor(user), y = factor(category), alpha = total)) +
+  geom_tile(color = 'white', lwd = 0.4, linetype = 1) +
+  scale_x_discrete(labels = abbreviate) +
+  theme(panel.background = element_blank() )
 ```
 
 
