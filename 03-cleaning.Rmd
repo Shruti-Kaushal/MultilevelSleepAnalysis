@@ -107,10 +107,13 @@ ID_activity <- data.frame(ID = 0:12, category = c(
 activity_duration = activity_duration %>% left_join(ID_activity, by = c('Activity' = "ID"))
 
 
-activity_duration %>% ggplot(aes(x = factor(user), y = factor(category), alpha = total)) +
+activity_duration %>% ggplot(aes(x = factor(user, levels = paste0("user_",c(1:22))), y = factor(category), alpha = total)) +
   geom_tile(color = 'white', lwd = 0.4, linetype = 1) +
   scale_x_discrete(labels = abbreviate) +
-  theme(panel.background = element_blank() )
+  theme(panel.background = element_blank() ) + 
+  xlab("User") + 
+  ylab("Activity") +
+  ggtitle("Time spent on each activity")
 ```
 
 
@@ -166,7 +169,7 @@ RR$time = string2time(RR$time, format = "%H:%M:%S") + lubridate::days(RR$day)
 
 
 ## Saliva
-Nothing need to be transformed or cleaned in this dataset.
+We calculated the difference in chemical concentration between sample collected before sleep and after waking up per each participant. 
 
 ### Definition and explanation of each column
 saliva.csv - clock genes and hormones concentrations in the saliva before going to bed and after waking up. 
@@ -178,6 +181,26 @@ saliva.csv - clock genes and hormones concentrations in the saliva before going 
 No clock genes and hormones concentrations data was provided for User_21 due to problem in the salivary samples that do not permit to analyse it.
 
 ```{r}
+# get the difference of chemicals per participant
+before_sleep = saliva %>% 
+  gather("Chemicals","Concentration", 3:4) %>% 
+  filter(SAMPLES == "before sleep") %>% 
+  arrange(user, Chemicals)
+
+after_sleep = saliva %>% 
+  gather("Chemicals","Concentration", 3:4) %>% 
+  filter(SAMPLES == "wake up") %>% 
+  arrange(user, Chemicals)
+
+difference = data.frame(user = before_sleep$user, Chemicals = before_sleep$Chemicals, difference = after_sleep$Concentration - before_sleep$Concentration)
+
+difference %>% ggplot(aes(x = factor(user, levels = paste0("user_",c(1:22))), y = difference)) +
+  geom_col() +
+  scale_x_discrete(labels = abbreviate)+
+  facet_grid(rows = vars(Chemicals), scales = "free") + 
+  xlab("User") +
+  ylab("Concentration") +
+  ggtitle("Concentration difference per participant")
 
 ```
 
@@ -216,7 +239,7 @@ sleep$Onset.Time = string2time(sleep$Onset.Time, format = "%H:%M") + lubridate::
 
 ## User info
 
-missing age for user_18. Otherwise, nothing need to be transformed or cleaned in this dataset
+missing age for user_18. Otherwise, nothing need to be transformed or cleaned in this dataset. All male participants.
 
 ### Definition and explanation of each column
 
@@ -228,7 +251,7 @@ user_info.csv - anthropocentric characteristics of the participant:
 4. age is expressed in years.
 
 ```{r}
-
+# BMI
 ```
 
 
