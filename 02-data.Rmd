@@ -118,7 +118,5 @@ save.image(file = "./data/RData/data_MMASH.RData")
 ```
 ## CAP
 
-```{r}
-
-```
+We initially wanted to include this dataset in order to compare sleep quality of healthy individuals with that of diseased individuals. We anticipate not having enough time to perform the analysis now. Please stay tuned and check back after a month to see the results relating to CAP dataset.
 
