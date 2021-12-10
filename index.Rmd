@@ -7,7 +7,7 @@ site: bookdown::bookdown_site
 
 # Introduction
 
-This project is focused on characterizing the sleep quality of 22 healthy young adults using numerous variables like age, sex, sleep fragmentation index, mental state and heart rate to name a few. There are variables that seems to have a direct relationship with sleep, for example, sleep fragmentation index and the time spent in bed, but there are others that one wouldn't suspect being related, like height or weight of the user. Biologists may argue that they are indeed related through many different paths but as data scientists we would like to uncover those through the data.
+This project is focused on characterizing the sleep quality of 20 healthy young adults using numerous variables like age, sex, sleep fragmentation index, mental state and heart rate to name a few. There are variables that seems to have a direct relationship with sleep, for example, sleep fragmentation index and the time spent in bed, but there are others that one wouldn't suspect being related, like height or weight of the user. Biologists may argue that they are indeed related through many different paths but as data scientists we would like to uncover those through the data.
 
 The first step is to formulate a metric for the quality of sleep using only the variables that we know are correlated to it. This would mean defining a metric over the set of variables in the sleep.csv file of every user. Preliminary analysis is done to prevent multicollinearity. 
 
