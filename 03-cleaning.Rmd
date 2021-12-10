@@ -1,5 +1,7 @@
 # Data transformation
 
+As mentioned in the introduction, for each sample or "user" many variables were sampled over the course of two days. These measurements are organized into 7 different file or categories like sleep, activity, actigraph, saliva samples etc. In this section we will focus on transforming each of the files that we used to perform any kind of analysis.
+
 ```{r}
 # define function
 load("./data/RData/data_MMASH.RData")
@@ -8,6 +10,19 @@ library(chron)
 string2time <- function(x, format = "%H:%M"){
   return(as.POSIXct(x, format = format)) # times(sub(".*\\s+", "",  
 }
+```
+
+## Sleep
+The sleep file includes measurements ranging from the time the user gets into bed to the time that he gets out of bed. The measurements can be broadly grouped into two categories - one that actually relates to the quality of sleep, for example, sleep fragmentation index and the average awakening length, and other category includes time measurements, for example, the time it took for the user to fall asleep and the time he was in bed after waking up. Variables that fall in the second category have a lot of information but can be combined together to transform time measurements to duration. "Durations" can be easily compared across users in a succinct manner. However, there are some variables, like in-bed and out-bed time, that we used as is because transforming them would actually lead to a loss in information. 
+
+We will define variables wherever needed.. The reader is encouraged to go through the documentation of the dataset (link in chapter 2), to understand the variables in depth. 
+
+
+```{r}
+# colnames(sleep)
+sleep$In.Bed.Time = string2time(sleep$In.Bed.Time, format = "%H:%M") + lubridate::days(sleep$In.Bed.Date)
+sleep$Out.Bed.Time = string2time(sleep$Out.Bed.Time, format = "%H:%M") + lubridate::days(sleep$Out.Bed.Date)
+sleep$Onset.Time = string2time(sleep$Onset.Time, format = "%H:%M") + lubridate::days(sleep$Onset.Date)
 ```
 
 ## Actigraph
@@ -120,36 +135,7 @@ No clock genes and hormones concentrations data was provided for User_21 due to 
 ```
 
 
-## Sleep
 
-We need to transform all the time relate column in this dataset, "In.Bed.Date", "In.Bed.Time", "Out.Bed.Date", "Out.Bed.Time", "Onset.Date", and "Onset.Time". The method is similar to previous `actigraph` and `RR` dataset.
-
-### Definition and explanation of each column
-
-sleep.csv - information about sleep duration and sleep quality of the participant:
-
-1. In Bed Date: 1 and 2 refer to the first and second day of data recording, respectively.
-2. In Bed Time: time of the day (hours:minutes) when the user went to the bed.
-3. Out Bed Date: 1 and 2 refer to the first and second day of data recording, respectively.
-4. Out Bed Time: time of the day (hours:minutes) when the user went out of the bed.
-5. Onset Date: 1 and 2 refer to the first and second day of data recording, respectively.
-6. Onset Time: time of the day (hours:minutes) when the user falls asleep.
-7. Latency Efficiency: percentage of sleep time on total sleep in bed.
-8. Total Minutes in Bed: minutes spent in the bed per night.
-9. Total Sleep Time (TST): length of the sleep per night expressed in minutes.
-10. Wake After Sleep Onset (WASO): time spent awake after falling asleep the first time.
-11. Number of Awakenings during the night
-12. Average Awakening Length: time in seconds spent awakening during the night.
-13. Movement Index: number of minutes without movement expressed as a percentage of the movement phase (i.e., number of period with arm movement).
-14. Fragmentation Index: number of minutes with movement expressed as a percentage of the immobile phase (i.e., the number of period without arm movement).
-15. Sleep Fragmentation Index: ratio between the Movement and Fragmentation indices.
-
-```{r}
-# colnames(sleep)
-sleep$In.Bed.Time = string2time(sleep$In.Bed.Time, format = "%H:%M") + lubridate::days(sleep$In.Bed.Date)
-sleep$Out.Bed.Time = string2time(sleep$Out.Bed.Time, format = "%H:%M") + lubridate::days(sleep$Out.Bed.Date)
-sleep$Onset.Time = string2time(sleep$Onset.Time, format = "%H:%M") + lubridate::days(sleep$Onset.Date)
-```
 
 
 ## User info
