@@ -1,6 +1,7 @@
 introduction
 data-sources
-mmash
+dataset-overview
+data-collection
 cap
 data-transformation
 sleep
@@ -24,5 +25,3 @@ preliminary-observations
 distribution-of-variables
 interactive-component
 conclusion
-data-collection
-dataset-overview
