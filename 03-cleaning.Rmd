@@ -161,7 +161,7 @@ ID_activity <- data.frame(ID = 0:12, category = c(
 activity_duration = activity_duration %>% left_join(ID_activity, by = c('Activity' = "ID"))
 
 
-activity_duration %>% ggplot(aes(x = factor(user, levels = paste0("user_",c(1:22))), y = factor(category), alpha = total)) +
+activity_duration %>% ggplot(aes(x = factor(user, levels = c(1:22)), y = factor(category), alpha = total)) +
   geom_tile(color = 'white', lwd = 0.4, linetype = 1) +
   scale_x_discrete(labels = abbreviate) +
   theme(panel.background = element_blank() ) + 
@@ -172,36 +172,36 @@ activity_duration %>% ggplot(aes(x = factor(user, levels = paste0("user_",c(1:22
 
 
 
-## Questionnaire
+<!-- ## Questionnaire -->
 
-For this part, the dataset contains the answer of a total of 7 questionnaires for each user. The questionnaires examined users' anxiety, sleep quality, stress, emotion, etc, in order to understand the users' behavior.
+<!-- For this part, the dataset contains the answer of a total of 7 questionnaires for each user. The questionnaires examined users' anxiety, sleep quality, stress, emotion, etc, in order to understand the users' behavior. -->
 
-No data cleaning is needed for this part.
+<!-- No data cleaning is needed for this part. -->
 
-### Definition and explanation of each column
+<!-- ### Definition and explanation of each column -->
 
-questionnaire.csv - scores for all the questionnaires:
+<!-- questionnaire.csv - scores for all the questionnaires: -->
 
-*TODO: make visualization for each scale and score of each questionnaire.csv.*
+<!-- *TODO: make visualization for each scale and score of each questionnaire.csv.* -->
 
-1. MEQ: Morningness-Eveningness Questionnaire value. The chronotype score is ranging from 16 to 86: scores of 41 and below indicate Evening types, scores of 59 and above indicate Morning types, scores between 42-58 indicate intermediate types.
+<!-- 1. MEQ: Morningness-Eveningness Questionnaire value. The chronotype score is ranging from 16 to 86: scores of 41 and below indicate Evening types, scores of 59 and above indicate Morning types, scores between 42-58 indicate intermediate types. -->
 
-2. STAI1: State Anxiety value obtained from State-Trait Anxiety Inventory. The results are range from 20 to 80. Scores less than 31 may indicate low or no anxiety, scores between 31 and 49 an average level of anxiety or borderline levels, and scores higher than 50 a high level of anxiety or positive test results.
+<!-- 2. STAI1: State Anxiety value obtained from State-Trait Anxiety Inventory. The results are range from 20 to 80. Scores less than 31 may indicate low or no anxiety, scores between 31 and 49 an average level of anxiety or borderline levels, and scores higher than 50 a high level of anxiety or positive test results. -->
 
-3. STAI2: Trait Anxiety value obtained from the State-Trait Anxiety Inventory. The results are range from 20 to 80. Scores less than 31 may indicate low or no anxiety, scores between 31 and 49 an average level of anxiety or borderline levels, and scores higher than 50 a high level of anxiety or positive test results.
+<!-- 3. STAI2: Trait Anxiety value obtained from the State-Trait Anxiety Inventory. The results are range from 20 to 80. Scores less than 31 may indicate low or no anxiety, scores between 31 and 49 an average level of anxiety or borderline levels, and scores higher than 50 a high level of anxiety or positive test results. -->
 
-4. PSQI: Pittsburgh Sleep Quality Questionnaire Index. It gives a score rating from 0 to 21, with values lower than 6 indicating good sleep quality.
+<!-- 4. PSQI: Pittsburgh Sleep Quality Questionnaire Index. It gives a score rating from 0 to 21, with values lower than 6 indicating good sleep quality. -->
 
-5. BIS/BAS: Behavioural avoidance/inhibition index. BIS/BAS scales are a typical measure of reinforcement sensitivity theory that establish biological roots in personality characteristics, derived from neuropsychological differences. The BIS/BAS scales comprise a self‐report measure of avoidance and approach tendencies that contains four sub-factors (A high score in one of the subscale describes the degree of that temperamental characteristic for the individual, according to the original sample):
+<!-- 5. BIS/BAS: Behavioural avoidance/inhibition index. BIS/BAS scales are a typical measure of reinforcement sensitivity theory that establish biological roots in personality characteristics, derived from neuropsychological differences. The BIS/BAS scales comprise a self‐report measure of avoidance and approach tendencies that contains four sub-factors (A high score in one of the subscale describes the degree of that temperamental characteristic for the individual, according to the original sample): -->
 
-  + Bis facet: reflects subject sensitivity toward aversive events that promote avoidance behaviours.
-  + Drive: describes individual persistence and motivational intensity.
-  + Reward: corresponds to Reward Responsiveness that indicates a propensity to show a higher degree of positive emotion for goal attainment.
-  + Fun: corresponds to Fun-Seeking that is related to impulsivity and immediate reward due to sensory stimuli or risky situations.
+<!--   + Bis facet: reflects subject sensitivity toward aversive events that promote avoidance behaviours. -->
+<!--   + Drive: describes individual persistence and motivational intensity. -->
+<!--   + Reward: corresponds to Reward Responsiveness that indicates a propensity to show a higher degree of positive emotion for goal attainment. -->
+<!--   + Fun: corresponds to Fun-Seeking that is related to impulsivity and immediate reward due to sensory stimuli or risky situations. -->
 
-6. Daily_stress: Daily Stress Inventory value (DSI) is a 58 items self-reported measures which allows a person to indicate the events they experienced in the last 24 hours. After indicating which event occurred, they indicate the stressfulness of the invent on a Likert scale from 1 (occurred but was not stressful) to 7 (Cause me to panic). It gives a score between 0 and 406. The higher is this values, the higher is the frequency and degree of the events and the perceived daily stress.
+<!-- 6. Daily_stress: Daily Stress Inventory value (DSI) is a 58 items self-reported measures which allows a person to indicate the events they experienced in the last 24 hours. After indicating which event occurred, they indicate the stressfulness of the invent on a Likert scale from 1 (occurred but was not stressful) to 7 (Cause me to panic). It gives a score between 0 and 406. The higher is this values, the higher is the frequency and degree of the events and the perceived daily stress. -->
 
-7. PANAS: Positive and Negative Affect Schedule. It gives a score rating between 5 and 50 for both positive and negative emotions. The higher is the PANAS value, the higher is the perceived emotion. Columns name with 10, 14, 22 and 9+1 refer to the time of the day when the questionnaire is filled in. 9+1 indicates the 9 AM of the second recording day.
+<!-- 7. PANAS: Positive and Negative Affect Schedule. It gives a score rating between 5 and 50 for both positive and negative emotions. The higher is the PANAS value, the higher is the perceived emotion. Columns name with 10, 14, 22 and 9+1 refer to the time of the day when the questionnaire is filled in. 9+1 indicates the 9 AM of the second recording day. -->
 
 
 <!-- ## RR -->
@@ -249,7 +249,7 @@ after_sleep = saliva %>%
 
 difference = data.frame(user = before_sleep$user, Chemicals = before_sleep$Chemicals, difference = after_sleep$Concentration - before_sleep$Concentration)
 
-difference %>% ggplot(aes(x = factor(user, levels = paste0("user_",c(1:22))), y = difference)) +
+difference %>% ggplot(aes(x = factor(user, levels = c(1:22)), y = difference)) +
   geom_col() +
   scale_x_discrete(labels = abbreviate)+
   facet_grid(rows = vars(Chemicals), scales = "free") + 

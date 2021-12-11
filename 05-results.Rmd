@@ -16,6 +16,7 @@ Formulating a metric requires an extensive analysis of the spread of the data an
 ```{r}
 library(Hmisc)
 library(corrplot)
+load("./data/RData/data_MMASH_cleaned.RData")
 sleep_data <- read.csv('data/raw/multilevel-monitoring-of-activity-and-sleep-in-healthy-people-1.0.0/main_sleep_transformed.csv')
 
 sleep_data <- as.data.frame(t(sleep_data))
