@@ -54,6 +54,7 @@ M \alpha (\frac{TST}{AverageTimeSpentAwake} + \frac{1}{SleepFragmentationIndex})
 
 The units of the right hand side are "per hh:mm" (because of addition of latency). Since this expression was constructed using just the correlation, to establish a stronger relationship i.e. equality, it is important to look at the distribution of each of these variables. It might happen that even though intuitively one might think that a variable should have an effect on the sleep quality but if in reality the distribution of that variable turns out to be narrow then including it would not be a good idea. We would like to stress that the number of samples available to us are very less to do this sort of analysis without any selection bias i.e. inferences might hold for this small cohort but not necessarily for a bigger cohort.
 
+We defined sleep ratio to be the ratio of TST and Average Time Spent Awake. The latter was calculated by simply multiplying Number of Awakengings with the Average Awakening Length. The box plot below shows the distribution of the Sleep Ratio and Sleep Fragmentation Index. Indeed both ratios seem to have a positive variance. 
 ```{r}
 library(dplyr)
 mydata['Average Time Awake'] = mydata$`Number of Awakenings`*mydata$`Average Awakening Length`
@@ -63,7 +64,17 @@ df <- dplyr::select(mydata,c('Sleep Ratio','Sleep Fragmentation Index'))
 ggplot(stack(df), aes(x = ind, y = values)) + geom_boxplot() +labs(x = "", y = "Ratio Values", title = "Distribution of Sleep Ratio and Sleep Fragmentation Index in Cohort")
 ```
 
+Since Latency is the time taken by the user to fall asleep once he gets into the bed, we wanted to visualize it separately. We noticed that a lot of the users had a latency time of 0 mins. This seems a little absurd given its definition so we assumed that any user that fell asleep within a minute had a latency of 0. This creates a problem since the metric is inversely proportional to latency and if it has a value of zero, it would mean the absolute value of M would be infinity. Clearly, this isn't possible and so when replacing proportionality with equality, we add a dummy term to latency. 
+
 
 ```{r}
 ggplot(df, aes(mydata$user, mydata$Latency)) + geom_point() + scale_x_continuous(breaks = scales::pretty_breaks(n = 17)) + labs(x = "User ID", y = "Time in Mintues", title = "Latency per User")
 ```
+
+We define the sleep quality of a user as - 
+
+\begin{align*}
+M = (\frac{TST}{AverageTimeSpentAwake} + \frac{1}{SleepFragmentationIndex}).\frac{1}{Latency + 1}
+\end{align*}
+
+The dummy term takes care of the case when Latency is 0. 
