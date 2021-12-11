@@ -15,7 +15,15 @@ string2time <- function(x, format = "%H:%M"){
 ## Sleep
 The sleep file includes measurements ranging from the time the user gets into bed to the time that he gets out of bed. The measurements can be broadly grouped into two categories - one that actually relates to the quality of sleep, for example, sleep fragmentation index and the average awakening length, and other category includes time measurements, for example, the time it took for the user to fall asleep and the time he was in bed after waking up. Variables that fall in the second category have a lot of information but can be combined together to transform time measurements to duration. "Durations" can be easily compared across users in a succinct manner. However, there are some variables, like in-bed and out-bed time, that we used as is because transforming them would actually lead to a loss in information. 
 
-We will define variables wherever needed.. The reader is encouraged to go through the documentation of the dataset (link in chapter 2), to understand the variables in depth. 
+We will define variables wherever needed but the reader is encouraged to go through the documentation of the dataset (link in chapter 2), to understand the variables in depth. 
+
+### Preliminary Observations
+Before we delved into the data analysis part we wanted to see how the distribution of each of the variables in the sleep.csv file. A few of the observations that we made were - 
+
+(1) None of the users got out of the bed after getting in for the night except user 1
+(2)
+(3)
+(4)
 
 
 ```{r}

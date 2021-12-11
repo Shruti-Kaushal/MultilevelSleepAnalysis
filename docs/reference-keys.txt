@@ -3,6 +3,7 @@ data-sources
 mmash
 cap
 data-transformation
+sleep
 actigraph
 definition-and-explanation-of-each-column
 activity
@@ -13,10 +14,8 @@ rr
 definition-and-explanation-of-each-column-3
 saliva
 definition-and-explanation-of-each-column-4
-sleep
-definition-and-explanation-of-each-column-5
 user-info
-definition-and-explanation-of-each-column-6
+definition-and-explanation-of-each-column-5
 missing-values
 missing-value-plot
 results
