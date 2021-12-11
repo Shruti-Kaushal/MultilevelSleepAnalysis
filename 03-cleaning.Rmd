@@ -47,7 +47,8 @@ Actigraph.csv - accelerometer and inclinometer data recorded throughout the day:
 
 ```{r}
 library(lubridate)
-actigraph$time = string2time(actigraph$time, format = "%H:%M:%S") + lubridate::days(actigraph$day)
+library(dplyr)
+#actigraph$time = string2time(actigraph$time, format = "%H:%M:%S") + # lubridate::days(actigraph$day)
 # actigraph$duration = lead(actigraph$time) - actigraph$time
 # actigraph$duration.secs = as.numeric(actigraph$duration)
 # Verify at least one value of Inclinometer is true: True
@@ -62,12 +63,12 @@ actigraph$time = string2time(actigraph$time, format = "%H:%M:%S") + lubridate::d
 # 
 # actigraph$position = position$position
 
-postition = actigraph %>% 
-  group_by(user) %>% 
-  mutate(duration = lead(time) - time) %>%
-  ungroup() %>% 
-  group_by(user, position) %>% 
-  summarise(total = sum(duration, na.rm = TRUE), .groups = "keep")
+#postition = actigraph %>% 
+#  group_by(user) %>% 
+#  mutate(duration = lead(time) - time) %>%
+#  ungroup() %>% 
+#  group_by(user, position) %>% 
+#  summarise(total = sum(duration, na.rm = TRUE), .groups = "keep")
 
 ```
 
