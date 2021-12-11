@@ -19,8 +19,8 @@ definition-and-explanation-of-each-column-5
 missing-values
 missing-value-plot
 results
+metric-formulation
 preliminary-observations
+distribution-of-variables
 interactive-component
 conclusion
-metric-formulation
-distribution-of-variables

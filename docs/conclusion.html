@@ -113,7 +113,11 @@
 </ul></li>
 <li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="results.html"><a href="results.html#preliminary-observations"><i class="fa fa-check"></i><b>5.1</b> Preliminary Observations</a></li>
+<li class="chapter" data-level="5.1" data-path="results.html"><a href="results.html#metric-formulation"><i class="fa fa-check"></i><b>5.1</b> Metric Formulation</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="results.html"><a href="results.html#preliminary-observations"><i class="fa fa-check"></i><b>5.1.1</b> Preliminary Observations</a></li>
+<li class="chapter" data-level="5.1.2" data-path="results.html"><a href="results.html#distribution-of-variables"><i class="fa fa-check"></i><b>5.1.2</b> Distribution of Variables</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>6</b> Interactive component</a></li>
 <li class="chapter" data-level="7" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>7</b> Conclusion</a></li>
@@ -200,6 +204,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>
