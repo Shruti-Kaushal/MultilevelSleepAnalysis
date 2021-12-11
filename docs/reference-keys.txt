@@ -22,3 +22,5 @@ results
 preliminary-observations
 interactive-component
 conclusion
+metric-formulation
+distribution-of-variables

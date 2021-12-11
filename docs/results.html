@@ -113,7 +113,11 @@
 </ul></li>
 <li class="chapter" data-level="5" data-path="results.html"><a href="results.html"><i class="fa fa-check"></i><b>5</b> Results</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="results.html"><a href="results.html#preliminary-observations"><i class="fa fa-check"></i><b>5.1</b> Preliminary Observations</a></li>
+<li class="chapter" data-level="5.1" data-path="results.html"><a href="results.html#metric-formulation"><i class="fa fa-check"></i><b>5.1</b> Metric Formulation</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="results.html"><a href="results.html#preliminary-observations"><i class="fa fa-check"></i><b>5.1.1</b> Preliminary Observations</a></li>
+<li class="chapter" data-level="5.1.2" data-path="results.html"><a href="results.html#distribution-of-variables"><i class="fa fa-check"></i><b>5.1.2</b> Distribution of Variables</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>6</b> Interactive component</a></li>
 <li class="chapter" data-level="7" data-path="conclusion.html"><a href="conclusion.html"><i class="fa fa-check"></i><b>7</b> Conclusion</a></li>
@@ -138,18 +142,37 @@
             <section class="normal" id="section-">
 <div id="results" class="section level1" number="5">
 <h1><span class="header-section-number">Chapter 5</span> Results</h1>
-<div id="preliminary-observations" class="section level2" number="5.1">
-<h2><span class="header-section-number">5.1</span> Preliminary Observations</h2>
+<p>The results chapter is broadly divided into two sections - one for each of the goals of this project. The first section will document all preliminary findings related to the sleep measurements and the procedure of defining a metric for quantifying quality of sleep.</p>
+<div id="metric-formulation" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Metric Formulation</h2>
+<div id="preliminary-observations" class="section level3" number="5.1.1">
+<h3><span class="header-section-number">5.1.1</span> Preliminary Observations</h3>
 <p>Before we delved into the data analysis part we wanted to see how each of the variables in the sleep.csv file is distributed. Upon digging into the data we realized that user 11 had no measurements for his sleep. The authors of the data did not mention a reason as to why there were no records for that particular user. Since our problem statement is about quanitfying sleep quality and the factors affecting it, we thought it only logical to remove user 11 from our analysis altogether.</p>
 <p>Formulating a metric requires an extensive analysis of the spread of the data and each variable in it. It is also important to determine correlated variables to avoid duplication and/or multicollinearity while defining the metric. Below is a heatmap we generated for variables that do not have the format of a time stamp (for example hh:mm). We made the following observations -</p>
 <ol style="list-style-type: decimal">
-<li>Latent efficiency does not seem to be correlated with anything</li>
-<li>Interestingly enough, the total sleep time is not correlated with neither Number of Awakenings and Average Awakening Length. One would suspect that the form is negatively correlated to the latter two but that is not the case as these correlation coefficients are statistically significant</li>
+<li>Latency does not seem to be correlated with anything which is interesting as it is defined as the time taken for the user to fall asleep after he gets into bed</li>
+<li>Interestingly enough, the total sleep time is not correlated with neither Number of Awakenings and Average Awakening Length. One would suspect that the form is negatively correlated to the latter two but that is not the case as these correlation coefficients are statistically significant with a default critical value of 0.05</li>
 <li>Movement, Fragmentation and Sleep Fragmentation index are highly correlated and this relationship is statistically significant. This observation is not surprising as sleep fragmentation index is defined as the ratio of movement index and fragmentation index</li>
 <li>Wake After Sleep Onset (WASO) is strongly correlated to almost every variable with the direction being positive except for Latent Efficiency</li>
 </ol>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-19-1.png" width="672" /><img src="finalproj_files/figure-html/unnamed-chunk-19-2.png" width="672" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-3-1.png" width="672" /><img src="finalproj_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
+</div>
+<div id="distribution-of-variables" class="section level3" number="5.1.2">
+<h3><span class="header-section-number">5.1.2</span> Distribution of Variables</h3>
+<p>The clustering of heatmap showed that there are 3 clear clusters which are consistent with the observations we made. To avoid multicollinearity, we decided to pick 1-2 variables from each of the clusters depending on the strength and statistical significance of the correlation coefficient. Let’s denote our metric with M and is defined as a characterization of quality of sleep. Intuitively, M should be higher for users that are able to sleep through the night and do not have any trouble falling asleep. Expanding this thought process further and combining it with the correlation analysis, we came up with the following associations -</p>
+<ol style="list-style-type: decimal">
+<li>M <span class="math inline">\(\alpha\)</span> Total Sleep Time (TST)</li>
+<li>M <span class="math inline">\(\alpha\)</span> <span class="math inline">\(\frac{1}{SleepFragmentation Index}\)</span></li>
+<li>M <span class="math inline">\(\alpha\)</span> <span class="math inline">\(\frac{1}{Latency}\)</span></li>
+<li>M <span class="math inline">\(\alpha\)</span> <span class="math inline">\(\frac{1}{AverageTimeSpentAwake}\)</span></li>
+</ol>
+<p>Note that (2) is a ratio while others have units “hh:mm”. So, keeping that in mind we combined all the above relationship as -</p>
+<p><span class="math display">\[\begin{align*}
+M \alpha (\frac{TST}{AverageTimeSpentAwake} + \frac{1}{SleepFragmentationIndex}).\frac{1}{Latency}
+\end{align*}\]</span></p>
+<p>The units of the right hand side are “per hh:mm” (because of addition of latency). Since this expression was constructed using just the correlation, to establish a stronger relationship i.e. equality, it is important to look at the distribution of each of these variables. It might happen that even though intuitively one might think that a variable should have an effect on the sleep quality but if in reality the distribution of that variable turns out to be narrow then including it would not be a good idea. We would like to stress that the number of samples available to us are very less to do this sort of analysis without any selection bias i.e. inferences might hold for this small cohort but not necessarily for a bigger cohort.</p>
 
+</div>
 </div>
 </div>
             </section>
@@ -212,6 +235,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>
