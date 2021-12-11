@@ -139,7 +139,7 @@ missingValuePlot <- function(df, mode = "count", title = 'Missing value patterns
 ```
 
 
-```{r}
+```{r, fig.width=10, fig.height=8}
 # load data from previous stage
 load("./data/RData/data_MMASH_cleaned.RData")
 # plot

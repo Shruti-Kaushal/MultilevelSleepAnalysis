@@ -98,7 +98,7 @@ During the test, *participants wore two devices continuously for 24 hours*: a he
 
 Twice a day (i.e., before going to bed and when they woke up) the subjects *collected saliva samples* at home in appropriate vials. Saliva samples were used to extract RNA and measure the induction of specific clock genes, and to assess specific hormones. A washout period from drugs of at least a week was required from the participants in the study.
 
-## CAP
+<!-- ## CAP -->
 
-We initially wanted to include this dataset in order to compare sleep quality of healthy individuals with that of diseased individuals. We anticipate not having enough time to perform this analysis now. Please stay tuned and check back after a month to see the results relating to this dataset.
+<!-- We initially wanted to include this dataset in order to compare sleep quality of healthy individuals with that of diseased individuals. We anticipate not having enough time to perform this analysis now. Please stay tuned and check back after a month to see the results relating to this dataset. -->
 

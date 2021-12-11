@@ -33,7 +33,7 @@
   
 <link rel="prev" href="index.html"/>
 <link rel="next" href="data-transformation.html"/>
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -78,7 +78,6 @@
 <ul>
 <li class="chapter" data-level="2.1" data-path="data-sources.html"><a href="data-sources.html#dataset-overview"><i class="fa fa-check"></i><b>2.1</b> Dataset Overview</a></li>
 <li class="chapter" data-level="2.2" data-path="data-sources.html"><a href="data-sources.html#data-collection"><i class="fa fa-check"></i><b>2.2</b> Data Collection</a></li>
-<li class="chapter" data-level="2.3" data-path="data-sources.html"><a href="data-sources.html#cap"><i class="fa fa-check"></i><b>2.3</b> CAP</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="data-transformation.html"><a href="data-transformation.html"><i class="fa fa-check"></i><b>3</b> Data transformation</a>
 <ul>
@@ -93,18 +92,14 @@
 <li class="chapter" data-level="3.3.1" data-path="data-transformation.html"><a href="data-transformation.html#definition-and-explanation-of-each-column-1"><i class="fa fa-check"></i><b>3.3.1</b> Definition and explanation of each column</a></li>
 <li class="chapter" data-level="3.3.2" data-path="data-transformation.html"><a href="data-transformation.html#transformation-process-1"><i class="fa fa-check"></i><b>3.3.2</b> Transformation process:</a></li>
 </ul></li>
-<li class="chapter" data-level="3.4" data-path="data-transformation.html"><a href="data-transformation.html#questionnaire"><i class="fa fa-check"></i><b>3.4</b> Questionnaire</a>
+<li class="chapter" data-level="3.4" data-path="data-transformation.html"><a href="data-transformation.html#saliva"><i class="fa fa-check"></i><b>3.4</b> Saliva</a>
 <ul>
 <li class="chapter" data-level="3.4.1" data-path="data-transformation.html"><a href="data-transformation.html#definition-and-explanation-of-each-column-2"><i class="fa fa-check"></i><b>3.4.1</b> Definition and explanation of each column</a></li>
+<li class="chapter" data-level="3.4.2" data-path="data-transformation.html"><a href="data-transformation.html#transformation-process-2"><i class="fa fa-check"></i><b>3.4.2</b> Transformation process</a></li>
 </ul></li>
-<li class="chapter" data-level="3.5" data-path="data-transformation.html"><a href="data-transformation.html#saliva"><i class="fa fa-check"></i><b>3.5</b> Saliva</a>
+<li class="chapter" data-level="3.5" data-path="data-transformation.html"><a href="data-transformation.html#user-info"><i class="fa fa-check"></i><b>3.5</b> User info</a>
 <ul>
 <li class="chapter" data-level="3.5.1" data-path="data-transformation.html"><a href="data-transformation.html#definition-and-explanation-of-each-column-3"><i class="fa fa-check"></i><b>3.5.1</b> Definition and explanation of each column</a></li>
-<li class="chapter" data-level="3.5.2" data-path="data-transformation.html"><a href="data-transformation.html#transformation-process-2"><i class="fa fa-check"></i><b>3.5.2</b> Transformation process</a></li>
-</ul></li>
-<li class="chapter" data-level="3.6" data-path="data-transformation.html"><a href="data-transformation.html#user-info"><i class="fa fa-check"></i><b>3.6</b> User info</a>
-<ul>
-<li class="chapter" data-level="3.6.1" data-path="data-transformation.html"><a href="data-transformation.html#definition-and-explanation-of-each-column-4"><i class="fa fa-check"></i><b>3.6.1</b> Definition and explanation of each column</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="missing-values.html"><a href="missing-values.html"><i class="fa fa-check"></i><b>4</b> Missing values</a>
@@ -173,10 +168,8 @@
 </ul>
 <p>During the test, <em>participants wore two devices continuously for 24 hours</em>: a heart rate monitor to record heartbeats and beat-to-beat interval, and an actigraph to record actigraphy information such as accelerometer data, sleep quality and physical activity. Moreover, the perceived mood (Positive and Negative Affect Schedule - PANAS) were recorded at different times of the day (i.e. 10, 14, 18, 22 and 9 of the next day). Additionally, participants filled in <em>Daily Stress Inventory (DSI)</em> before going to sleep, to summarize the stressful events of the day.</p>
 <p>Twice a day (i.e., before going to bed and when they woke up) the subjects <em>collected saliva samples</em> at home in appropriate vials. Saliva samples were used to extract RNA and measure the induction of specific clock genes, and to assess specific hormones. A washout period from drugs of at least a week was required from the participants in the study.</p>
-</div>
-<div id="cap" class="section level2" number="2.3">
-<h2><span class="header-section-number">2.3</span> CAP</h2>
-<p>We initially wanted to include this dataset in order to compare sleep quality of healthy individuals with that of diseased individuals. We anticipate not having enough time to perform this analysis now. Please stay tuned and check back after a month to see the results relating to this dataset.</p>
+<!-- ## CAP -->
+<!-- We initially wanted to include this dataset in order to compare sleep quality of healthy individuals with that of diseased individuals. We anticipate not having enough time to perform this analysis now. Please stay tuned and check back after a month to see the results relating to this dataset. -->
 
 </div>
 </div>
@@ -240,20 +233,6 @@ gitbook.start({
 });
 </script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:")
-      if (/^https?:/.test(src))
-        src = src.replace(/^https?:/, '');
-    script.src = src;
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 </body>
 
 </html>
