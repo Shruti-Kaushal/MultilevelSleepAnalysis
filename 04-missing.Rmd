@@ -143,13 +143,13 @@ missingValuePlot <- function(df, mode = "count", title = 'Missing value patterns
 # load data from previous stage
 load("./data/RData/data_MMASH_cleaned.RData")
 # plot
-missingValuePlot(actigraph, title = 'Missing value patterns for actigraph')
+# missingValuePlot(actigraph, title = 'Missing value patterns for actigraph')
 missingValuePlot(activity, title = 'Missing value patterns for activity')
 missingValuePlot(questionnaire, title = 'Missing value patterns for questionnaire')
-missingValuePlot(RR, title = 'Missing value patterns for RR')
-missingValuePlot(saliva, title = 'Missing value patterns for saliva')
-missingValuePlot(sleep, title = 'Missing value patterns for sleep')
-missingValuePlot(user_info, title = 'Missing value patterns for user_info')
+# missingValuePlot(RR, title = 'Missing value patterns for RR')
+# missingValuePlot(saliva, title = 'Missing value patterns for saliva')
+# missingValuePlot(sleep, title = 'Missing value patterns for sleep')
+# missingValuePlot(user_info, title = 'Missing value patterns for user_info')
 ```
 
 
