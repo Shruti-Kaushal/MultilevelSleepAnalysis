@@ -24,7 +24,7 @@
 <meta name="author" content="Shruti Kaushal &amp; Clarissa Tai" />
 
 
-<meta name="date" content="2021-12-10" />
+<meta name="date" content="2021-12-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -81,7 +81,10 @@
 </ul></li>
 <li class="chapter" data-level="3" data-path="data-transformation.html"><a href="data-transformation.html"><i class="fa fa-check"></i><b>3</b> Data transformation</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="data-transformation.html"><a href="data-transformation.html#sleep"><i class="fa fa-check"></i><b>3.1</b> Sleep</a></li>
+<li class="chapter" data-level="3.1" data-path="data-transformation.html"><a href="data-transformation.html#sleep"><i class="fa fa-check"></i><b>3.1</b> Sleep</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="data-transformation.html"><a href="data-transformation.html#preliminary-observations"><i class="fa fa-check"></i><b>3.1.1</b> Preliminary Observations</a></li>
+</ul></li>
 <li class="chapter" data-level="3.2" data-path="data-transformation.html"><a href="data-transformation.html#actigraph"><i class="fa fa-check"></i><b>3.2</b> Actigraph</a>
 <ul>
 <li class="chapter" data-level="3.2.1" data-path="data-transformation.html"><a href="data-transformation.html#definition-and-explanation-of-each-column"><i class="fa fa-check"></i><b>3.2.1</b> Definition and explanation of each column</a></li>
@@ -139,7 +142,19 @@
 <div id="sleep" class="section level2" number="3.1">
 <h2><span class="header-section-number">3.1</span> Sleep</h2>
 <p>The sleep file includes measurements ranging from the time the user gets into bed to the time that he gets out of bed. The measurements can be broadly grouped into two categories - one that actually relates to the quality of sleep, for example, sleep fragmentation index and the average awakening length, and other category includes time measurements, for example, the time it took for the user to fall asleep and the time he was in bed after waking up. Variables that fall in the second category have a lot of information but can be combined together to transform time measurements to duration. “Durations” can be easily compared across users in a succinct manner. However, there are some variables, like in-bed and out-bed time, that we used as is because transforming them would actually lead to a loss in information.</p>
-<p>We will define variables wherever needed.. The reader is encouraged to go through the documentation of the dataset (link in chapter 2), to understand the variables in depth.</p>
+<p>We will define variables wherever needed but the reader is encouraged to go through the documentation of the dataset (link in chapter 2), to understand the variables in depth.</p>
+<div id="preliminary-observations" class="section level3" number="3.1.1">
+<h3><span class="header-section-number">3.1.1</span> Preliminary Observations</h3>
+<p>Before we delved into the data analysis part we wanted to see how each of the variables in the sleep.csv file is distributed. Upon digging into the data we realized that user 11 had no measurements for his sleep. The authors of the data did not mention a reason as to why there were no records for that particular user. Since our problem statement is about quanitfying sleep quality and the factors affecting it, we thought it only logical to remove user 11 from our analysis altogether.</p>
+<p>Formulating a metric requires an extensive analysis of the spread of the data and each variable in it. It is also important to determine correlated variables to avoid duplication and/or multicollinearity while defining the metric. Below is a heatmap we generated for variables that do not have the format of a time stamp (for example hh:mm). We made the following observations -</p>
+<ol style="list-style-type: decimal">
+<li>Latent efficiency does not seem to be correlated with anything</li>
+<li>Interestingly enough, the total sleep time is not correlated with neither Number of Awakenings and Average Awakening Length. One would suspect that the form is negatively correlated to the latter two but that is not the case as these correlation coefficients are statistically significant</li>
+<li>Movement, Fragmentation and Sleep Fragmentation index are highly correlated and this relationship is statistically significant. This observation is not surprising as sleep fragmentation index is defined as the ratio of movement index and fragmentation index</li>
+<li>Wake After Sleep Onset (WASO) is strongly correlated to almost every variable with the direction being positive except for Latent Efficiency</li>
+</ol>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-4-1.png" width="672" /><img src="finalproj_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+</div>
 </div>
 <div id="actigraph" class="section level2" number="3.2">
 <h2><span class="header-section-number">3.2</span> Actigraph</h2>
