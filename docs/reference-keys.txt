@@ -26,3 +26,6 @@ interactive-component
 conclusion
 data-collection
 dataset-overview
+transformation-process
+transformation-process-1
+transformation-process-2
