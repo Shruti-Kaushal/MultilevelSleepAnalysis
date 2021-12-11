@@ -79,6 +79,7 @@ Here we substitute "00:00" to "24:00" to prevent calculating between wrong dates
 'Start' and 'end' columns refer to the time of the day (hours:minutes) when the event happened, while 'day' columns refers to the day when it happened (1 and 2 refer to the first and second day of data recording, respectively).
 
 ```{r, fig.width=10}
+library(ggplot2)
 activity$Start = string2time(activity$Start)+ lubridate::days(activity$Day)
 # we need to substitute "00:00" to "24:00" to prevent calculating on the wrong day
 activity$End = sub("00:00", "24:00", activity$End)
