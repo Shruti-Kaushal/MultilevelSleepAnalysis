@@ -61,20 +61,29 @@ mydata['Average Time Awake'] = mydata$`Number of Awakenings`*mydata$`Average Awa
 mydata['Sleep Ratio'] = mydata$`Total Sleep Time (TST)`/mydata$`Average Time Awake`
 df <- dplyr::select(mydata,c('Sleep Ratio','Sleep Fragmentation Index'))
 
-ggplot(stack(df), aes(x = ind, y = values)) + geom_boxplot() +labs(x = "", y = "Ratio Values", title = "Distribution of Sleep Ratio and Sleep Fragmentation Index in Cohort")
+ggplot(stack(df), aes(x = ind, y = values)) + geom_boxplot() +labs(x = "", y = "Ratio Values", title = "Distribution of Sleep Ratio and Sleep Fragmentation Index in Cohort") 
 ```
 
 Since Latency is the time taken by the user to fall asleep once he gets into the bed, we wanted to visualize it separately. We noticed that a lot of the users had a latency time of 0 mins. This seems a little absurd given its definition so we assumed that any user that fell asleep within a minute had a latency of 0. This creates a problem since the metric is inversely proportional to latency and if it has a value of zero, it would mean the absolute value of M would be infinity. Clearly, this isn't possible and so when replacing proportionality with equality, we add a dummy term to latency. 
 
 
 ```{r}
-ggplot(df, aes(mydata$user, mydata$Latency)) + geom_point() + scale_x_continuous(breaks = scales::pretty_breaks(n = 17)) + labs(x = "User ID", y = "Time in Mintues", title = "Latency per User")
+ggplot(df, aes(mydata$user, mydata$Latency)) + geom_point() + scale_x_continuous(breaks = scales::pretty_breaks(n = 17)) + labs(x = "User ID", y = "Time in Mintues", title = "Latency per User") + theme_bw()
 ```
 
 We define the sleep quality of a user as - 
 
 \begin{align*}
-M = (\frac{TST}{AverageTimeSpentAwake} + \frac{1}{SleepFragmentationIndex}).\frac{1}{Latency + 1}
+M = (\frac{TST}{AverageTimeSpentAwake} + \frac{1}{SleepFragmentationIndex}).(\frac{1}{Latency + 1})
 \end{align*}
 
 The dummy term takes care of the case when Latency is 0. 
+
+```{r}
+# calculating the metric
+mydata['M'] = ((mydata$`Total Sleep Time (TST)`/mydata$`Average Time Awake`)+(1/mydata$`Sleep Fragmentation Index`))*(1/(mydata$Latency + 1))
+
+ggplot(mydata, aes(mydata$user, mydata$M)) + geom_point() + scale_x_continuous(breaks = scales::pretty_breaks(n = 17)) + labs(x = "User ID", y = "Time in Mintues", title = "Latency per User") + theme_bw()
+
+ggplot(stack(dplyr::select(mydata, c('M'))), aes(x = ind, y = values)) + geom_point() + geom_boxplot() +labs(x = "", y = "Ratio Values", title = "Distribution of Sleep Ratio and Sleep Fragmentation Index in Cohort") 
+```
