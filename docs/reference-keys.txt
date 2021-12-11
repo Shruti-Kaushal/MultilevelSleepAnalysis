@@ -4,7 +4,6 @@ mmash
 cap
 data-transformation
 sleep
-preliminary-observations
 actigraph
 definition-and-explanation-of-each-column
 activity
@@ -20,5 +19,6 @@ definition-and-explanation-of-each-column-5
 missing-values
 missing-value-plot
 results
+preliminary-observations
 interactive-component
 conclusion
