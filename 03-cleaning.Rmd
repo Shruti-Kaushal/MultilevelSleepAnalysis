@@ -59,7 +59,7 @@ sleep$Onset.Time = string2time(sleep$Onset.Time, format = "%H:%M") + lubridate::
 ```{r}
 library(lubridate)
 library(dplyr)
-#actigraph$time = string2time(actigraph$time, format = "%H:%M:%S") + # lubridate::days(actigraph$day)
+actigraph$time = string2time(actigraph$time, format = "%H:%M:%S") + lubridate::days(actigraph$day)
 # actigraph$duration = lead(actigraph$time) - actigraph$time
 # actigraph$duration.secs = as.numeric(actigraph$duration)
 # Verify at least one value of Inclinometer is true: True
@@ -77,7 +77,7 @@ actigraph$position = position$position
 
 position = actigraph %>% 
   group_by(user) %>% 
-  mutate(duration = lead(time) - time) %>%
+  mutate(duration = (lead(time) - time)) %>%
   ungroup() %>% 
   group_by(user, position) %>% 
   summarise(total = sum(duration, na.rm = TRUE), .groups = "keep")
