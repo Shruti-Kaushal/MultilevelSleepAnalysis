@@ -17,42 +17,6 @@ The sleep file includes measurements ranging from the time the user gets into be
 
 We will define variables wherever needed but the reader is encouraged to go through the documentation of the dataset (link in chapter 2), to understand the variables in depth. 
 
-### Preliminary Observations
-Before we delved into the data analysis part we wanted to see how each of the variables in the sleep.csv file is distributed. Upon digging into the data we realized that user 11 had no measurements for his sleep. The authors of the data did not mention a reason as to why there were no records for that particular user. Since our problem statement is about quanitfying sleep quality and the factors affecting it, we thought it only logical to remove user 11 from our analysis altogether.
-
-Formulating a metric requires an extensive analysis of the spread of the data and each variable in it. It is also important to determine correlated variables to avoid duplication and/or multicollinearity while defining the metric. Below is a heatmap we generated for variables that do not have the format of a time stamp (for example hh:mm). We made the following observations - 
-
-(1) Latent efficiency does not seem to be correlated with anything
-(2) Interestingly enough, the total sleep time is not correlated with neither Number of Awakenings and Average Awakening Length. One would suspect that the form is negatively correlated to the latter two but that is not the case as these correlation coefficients are statistically significant
-(3) Movement, Fragmentation and Sleep Fragmentation index are highly correlated and this relationship is statistically significant. This observation is not surprising as sleep fragmentation index is defined as the ratio of movement index and fragmentation index
-(4) Wake After Sleep Onset (WASO) is strongly correlated to almost every variable with the direction being positive except for Latent Efficiency
-
-
-```{r}
-library(Hmisc)
-library(corrplot)
-sleep_data <- read.csv('data/raw/multilevel-monitoring-of-activity-and-sleep-in-healthy-people-1.0.0/main_sleep.csv')
-
-sleep_data <- as.data.frame(t(sleep_data))
-colnames(sleep_data) <- sleep_data[1, ]
-sleep_data <- sleep_data[-1, ]
-
-#removing variables with time entries of format hh::mm
-sleep_subset <- subset(sleep_data, select = -c(1,3,5))
-
-# converting all values that are not time readings to numeric type
-sleep_subset[,4:length(sleep_subset)] <- sapply( sleep_subset[,4:length(sleep_subset)], as.numeric)
-mydata <- sleep_subset[,4:length(sleep_subset)]
-mydata.rcorr = rcorr(as.matrix(mydata))
-mydata.coeff = mydata.rcorr$r
-mydata.p = mydata.rcorr$P
-palette = colorRampPalette(c("darkblue", "white", "darkred")) (20)
-heatmap(x = mydata.coeff, col = palette, symm = TRUE)
-corrplot(mydata.coeff)
-```
-
-
-
 ```{r}
 # colnames(sleep)
 sleep$In.Bed.Time = string2time(sleep$In.Bed.Time, format = "%H:%M") + lubridate::days(sleep$In.Bed.Date)
