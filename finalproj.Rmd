@@ -1,16 +1,60 @@
+--- 
+title: "MultilevelSleepAnalysis"
+author: "Shruti Kaushal & Clarissa Tai"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+---
+--- 
+title: "MultilevelSleepAnalysis"
+author: "Shruti Kaushal & Clarissa Tai"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+---
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+# Introduction
+
+This project is focused on characterizing the sleep quality of 20 healthy young adults using numerous variables like age, sex, sleep fragmentation index, mental state and heart rate to name a few. There are variables that seems to have a direct relationship with sleep, for example, sleep fragmentation index and the time spent in bed, but there are others that one wouldn't suspect being related, like height or weight of the user. Biologists may argue that they are indeed related through many different paths but as data scientists we would like to uncover those through the data.
+
+The first step is to formulate a metric for the quality of sleep using only the variables that we know are correlated to it. This would mean defining a metric over the set of variables in the sleep.csv file of every user. Preliminary analysis is done to prevent multicollinearity. 
+
+Once we have established an tested our metric, we will move on to looking into how other variables affect the distribution of the metric across users. This section will be aimed at answering questions about correlation and causality. Our ultimate goal is to identify any confounders if any and quantify their relationship with the metric we define.
+
+<!--chapter:end:index.Rmd-->
+
+
+# Data sources
+
+Placeholder
+
+
+## Dataset Overview
+## Data Collection
+## CAP
+
+<!--chapter:end:02-data.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
 # Data transformation
 
 As mentioned in the introduction, for each sample or "user" many variables were sampled over the course of two days. These measurements are organized into 7 different file or categories like sleep, activity, actigraph, saliva samples etc. In this section we will focus on transforming each of the files that we used to perform any kind of analysis.
-
-In conclusion, we worked on all the datetime columns and transformed them into the format `YYYY-MM-DD HH:MM:SS` due to analysis convenience. We decided to not include `RR.csv` in our discussion, since the heartbeat information is also included in the `actigraph.csv`. We considered it redundant and were more interested in relating heartbeat data to activities. 
 
 ```{r}
 # define function
 load("./data/RData/data_MMASH.RData")
 library(chron)
-library(dplyr)
-library(tidyverse)
-library(tidyr)
 # create function to transform string object to time object for further calculation
 string2time <- function(x, format = "%H:%M"){
   return(as.POSIXct(x, format = format)) # times(sub(".*\\s+", "",  
@@ -31,9 +75,11 @@ sleep$Onset.Time = string2time(sleep$Onset.Time, format = "%H:%M") + lubridate::
 
 ## Actigraph
 
-`Actigraph.csv` contained accelerometer and inclinometer data recorded throughout the day. Overall, it tracked users' movement data, such as steps, direction, acceleration, positions, etc. 
+The only thing we need to do here is to transform the `time` column into datetime type in R. Also, since initial `time` column doesn't contain date information, we add days according to the `day` column to create a relative time stamp for each record in order to facilitate future calculation.
 
 ### Definition and explanation of each column
+
+Actigraph.csv - accelerometer and inclinometer data recorded throughout the day:
 
 1. Axis1: Raw Acceleration data of the X-axis expressed in Newton-meter.
 2. Axis2: Raw Acceleration data of the Y-axis expressed in Newton-meter.
@@ -48,14 +94,6 @@ sleep$Onset.Time = string2time(sleep$Onset.Time, format = "%H:%M") + lubridate::
 11. day: 1 and 2 refer to the first and second day of data recording, respectively.
 12. time: day time when the heartbeat happened (hours:minutes:seconds)
 
-### Transformation process:
-
-1. Datetime format: We transform the `time` column into datetime type in R. Also, since initial `time` column doesn't contain date information, we add days according to the `day` column to create a relative time stamp for each record in order to facilitate future calculation.
-
-2. Create category `Position`: Here we gathered columns with inclinometer information, which were `Inclinometer.Off`, `Inclinometer.Standing`, `Inclinometer.Sitting`, `Inclinometer.Lying`, transformed them into categorical column `Position`. By doing so, we can explore data correlations under groups of position throughout the day.
-
-
-
 ```{r}
 library(lubridate)
 library(dplyr)
@@ -65,56 +103,29 @@ library(dplyr)
 # Verify at least one value of Inclinometer is true: True
 # all((actigraph[7] == 1) | (actigraph[8]== 1) | (actigraph[9]== 1) | (actigraph[10]== 1))
 
-position = cbind(actigraph[1],actigraph[14], actigraph[7:10]) %>%
-  group_by(X, user) %>%
-  gather(position, val, -c(X,user)) %>%
-  filter(val == 1) %>%
-  select(-val) %>%
-  arrange(user, X)
+# position = cbind(actigraph[1],actigraph[14], actigraph[7:10]) %>%
+#   group_by(X, user) %>% 
+#   gather(position, val, -c(X,user)) %>%
+#   filter(val == 1) %>%
+#   select(-val) %>%
+#   arrange(user, X)
+# 
+# actigraph$position = position$position
 
-actigraph$position = position$position
-
-
-position = actigraph %>% 
-  group_by(user) %>% 
-  mutate(duration = lead(time) - time) %>%
-  ungroup() %>% 
-  group_by(user, position) %>% 
-  summarise(total = sum(duration, na.rm = TRUE), .groups = "keep")
-
+#postition = actigraph %>% 
+#  group_by(user) %>% 
+#  mutate(duration = lead(time) - time) %>%
+#  ungroup() %>% 
+#  group_by(user, position) %>% 
+#  summarise(total = sum(duration, na.rm = TRUE), .groups = "keep")
 
 ```
 
 ## Activity
+Here we substitute "00:00" to "24:00" to prevent calculating between wrong dates, and then calculate duration for each activity. The document labeled the activity categories from 1 to 12. However, an extra category, labeled as `0`, also included in the dataset. In this project, we will assume that the `0` represented undetermined activities.
 
 ### Definition and explanation of each column
 'Start' and 'end' columns refer to the time of the day (hours:minutes) when the event happened, while 'day' columns refers to the day when it happened (1 and 2 refer to the first and second day of data recording, respectively).
-
-### Transformation process:
-
-1. Datetime format: Here we substitute "00:00" to "24:00" in column `End` to avoid calculating between wrong dates, and then transformed into the format as we did for `Actigraph.csv`.
-
-2. Relabel the activities: The document labeled the activity categories from 1 to 12. However, an extra category, labeled as `0`, also included in the dataset. In this project, we will assume that the `0` represented undetermined activities. Here, we also had to deal with several minor mistakes in the dataset manually.
-
-+ 13 Categories of activity:
-  - undefined: all other unlabeled activity will count here.
-  - sleeping
-  - laying down
-  - sitting: e.g. studying and driving
-  - light mvmnt: e.g. slow/medium walk, chores and work.
-  - medium: e.g. fast walk and bike
-  - heavy: e.g. gym, running.
-  - eating
-  - small scr.usg: e.g. smartphone and computer.
-  - large scr.usg: e.g. TV and cinema.
-  - caff. consump.: caffeinated drink consumption, e.g. coffee or coke.
-  - smoking
-  - alc. consump.: alcohol assumption.
-
-3. Calculate duration for each activity: To figure the total time each user spent on each activity, we calculate time intervals (`End` - `Start`) between different activities in seconds.
-
-4. Plotting: We explored the dataset using `geom_tile` in ggplot2 package. From the plot below, we noticed that user 21 was laying down for quite a long time.
-
 
 ```{r, fig.width=10}
 library(ggplot2)
@@ -171,7 +182,6 @@ activity_duration %>% ggplot(aes(x = factor(user, levels = paste0("user_",c(1:22
 ```
 
 
-
 ## Questionnaire
 
 For this part, the dataset contains the answer of a total of 7 questionnaires for each user. The questionnaires examined users' anxiety, sleep quality, stress, emotion, etc, in order to understand the users' behavior.
@@ -204,36 +214,36 @@ questionnaire.csv - scores for all the questionnaires:
 7. PANAS: Positive and Negative Affect Schedule. It gives a score rating between 5 and 50 for both positive and negative emotions. The higher is the PANAS value, the higher is the perceived emotion. Columns name with 10, 14, 22 and 9+1 refer to the time of the day when the questionnaire is filled in. 9+1 indicates the 9 AM of the second recording day.
 
 
-<!-- ## RR -->
+## RR
 
-<!-- `RR` dataset contains the heartbeat records for each user. We can transform `ibi_s` to rate of heartbeat and align with activity records using `time` column. -->
+`RR` dataset contains the heartbeat records for each user. We can transform `ibi_s` to rate of heartbeat and align with activity records using `time` column.
 
-<!-- Similar to `Actigraph` dataset, the only thing we need to do here is to transform the `time` column into datetime type in R. Also, since initial `time` column doesn't contain date information, we add days according to the `day` column to create a relative time stamp for each record in order to facilitate future calculation. -->
+Similar to `Actigraph` dataset, the only thing we need to do here is to transform the `time` column into datetime type in R. Also, since initial `time` column doesn't contain date information, we add days according to the `day` column to create a relative time stamp for each record in order to facilitate future calculation.
 
-<!-- ### Definition and explanation of each column -->
+### Definition and explanation of each column
 
-<!-- RR.csv - beat-to-beat interval data: -->
+RR.csv - beat-to-beat interval data:
 
-<!-- 1. ibi_s: time in seconds between two consecutive beats. -->
-<!-- 2. day: 1 and 2 refer to the first and second day of data recording, respectively. -->
-<!-- 3. time: day time when the heartbeat happened (hours:minutes:seconds) -->
+1. ibi_s: time in seconds between two consecutive beats.
+2. day: 1 and 2 refer to the first and second day of data recording, respectively.
+3. time: day time when the heartbeat happened (hours:minutes:seconds)
 
-<!-- ```{r} -->
-<!-- RR$time = string2time(RR$time, format = "%H:%M:%S") + lubridate::days(RR$day) -->
-<!-- ``` -->
+```{r}
+RR$time = string2time(RR$time, format = "%H:%M:%S") + lubridate::days(RR$day)
+```
 
 
 ## Saliva
-`Saliva.csv` collected `Melatonin` and `Cortisol` concentrations in the saliva for each participants before going to bed and after waking up. However, no data was provided for User_21 due to problem in the salivary samples that do not permit to analyse it.
+We calculated the difference in chemical concentration between sample collected before sleep and after waking up per each participant. 
 
 ### Definition and explanation of each column
+saliva.csv - clock genes and hormones concentrations in the saliva before going to bed and after waking up. 
 
 1. Sample: Two samples per participant are included, one before sleep and one after waking up.
 2. Melatonin levels are reported in μg of melatonin per μg of protein.
 3. Cortisol levels are in μg of cortisol per 100 μg of protein. 
 
-### Transformation process
-We calculated the difference in chemical concentration between sample collected before sleep and after waking up per each participant. 
+No clock genes and hormones concentrations data was provided for User_21 due to problem in the salivary samples that do not permit to analyse it.
 
 ```{r}
 # get the difference of chemicals per participant
@@ -285,3 +295,53 @@ user_info.csv - anthropocentric characteristics of the participant:
 # save workplace after data cleaning/for this stage.
 save.image(file = "./data/RData/data_MMASH_cleaned.RData")
 ```
+
+<!--chapter:end:03-cleaning.Rmd-->
+
+
+# Missing values
+
+Placeholder
+
+
+## Missing Value Plot
+
+<!--chapter:end:04-missing.Rmd-->
+
+
+# Results
+
+Placeholder
+
+
+## Metric Formulation
+### Preliminary Observations
+### Distribution of Variables
+
+<!--chapter:end:05-results.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Interactive component
+
+
+
+<!--chapter:end:06-interactive.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Conclusion
+
+
+<!--chapter:end:07-conclusion.Rmd-->
+
