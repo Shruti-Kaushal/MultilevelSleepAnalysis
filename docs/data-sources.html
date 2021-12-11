@@ -33,7 +33,7 @@
   
 <link rel="prev" href="index.html"/>
 <link rel="next" href="data-transformation.html"/>
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -76,8 +76,9 @@
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
 <li class="chapter" data-level="2" data-path="data-sources.html"><a href="data-sources.html"><i class="fa fa-check"></i><b>2</b> Data sources</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="data-sources.html"><a href="data-sources.html#mmash"><i class="fa fa-check"></i><b>2.1</b> MMASH</a></li>
-<li class="chapter" data-level="2.2" data-path="data-sources.html"><a href="data-sources.html#cap"><i class="fa fa-check"></i><b>2.2</b> CAP</a></li>
+<li class="chapter" data-level="2.1" data-path="data-sources.html"><a href="data-sources.html#dataset-overview"><i class="fa fa-check"></i><b>2.1</b> Dataset Overview</a></li>
+<li class="chapter" data-level="2.2" data-path="data-sources.html"><a href="data-sources.html#data-collection"><i class="fa fa-check"></i><b>2.2</b> Data Collection</a></li>
+<li class="chapter" data-level="2.3" data-path="data-sources.html"><a href="data-sources.html#cap"><i class="fa fa-check"></i><b>2.3</b> CAP</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="data-transformation.html"><a href="data-transformation.html"><i class="fa fa-check"></i><b>3</b> Data transformation</a>
 <ul>
@@ -146,37 +147,36 @@
 <li>Multilevel Monitoring of Activity and Sleep in Healthy People: <a href="https://physionet.org/content/mmash/1.0.0/" class="uri">https://physionet.org/content/mmash/1.0.0/</a></li>
 <li>CAP Sleep Database: <a href="https://physionet.org/content/capslpdb/1.0.0/" class="uri">https://physionet.org/content/capslpdb/1.0.0/</a></li>
 </ol>
-<div id="mmash" class="section level2" number="2.1">
-<h2><span class="header-section-number">2.1</span> MMASH</h2>
-<p>There are 22 folders in the MMASH dataset corresponding to the 22 healthy male young adults that were monitored for two consecutive days. A myriad of variables were measured for each of the samples or “users” (what the authors of the dataset calls them) including mental state, heart rate, level of clock genes in saliva, amount of sleep to the different activities that the user does throughout the days. These measurements are organized into 7 folders i.e. for each of the 22 users we have the following 7 folders -</p>
+<div id="dataset-overview" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Dataset Overview</h2>
+<p>There are 22 folders in the MMASH dataset corresponding to the 22 healthy male young adults that were monitored for two consecutive days. A myriad of variables were measured for each of the samples or “users” (what the authors of the dataset calls them) including mental state, heart rate, level of clock genes in saliva, amount of sleep to the different activities that the user does throughout the days. These measurements are organized into 7 folders i.e. for each of the 22 users we have the following 7 folders:</p>
 <ol style="list-style-type: decimal">
-<li><code>Actigraph.csv</code></li>
-<li><code>Activity.csv</code></li>
-<li><code>questionnaire.csv</code></li>
-<li><code>RR.csv</code></li>
-<li><code>saliva.csv</code></li>
-<li><code>sleep.csv</code></li>
-<li><code>user_info.csv</code></li>
+<li><code>Actigraph.csv</code>: accelerometer and inclinometer data recorded throughout the day.</li>
+<li><code>Activity.csv</code>: list of the activity categories throughout the day.</li>
+<li><code>questionnaire.csv</code>: scores for all the questionnaires.</li>
+<li><code>RR.csv</code>: beat-to-beat interval data.</li>
+<li><code>saliva.csv</code>: clock genes and hormones concentrations in the saliva before going to bed and after waking up. Melatonin levels are reported in μg of melatonin per μg of protein, while cortisol levels are in μg of cortisol per 100 μg of protein. <em>No clock genes and hormones concentrations data was provided for User_21 due to problem in the salivary samples that do not permit to analyse it.</em></li>
+<li><code>sleep.csv</code>: information about sleep duration and sleep quality of the participant.</li>
+<li><code>user_info.csv</code>: anthropocentric characteristics of the participant, such as age, height, weight, etc.</li>
 </ol>
 <pre><code>## [1] &quot;user_11 is missing sleep.csv information, having errorError in `[&lt;-.data.frame`(`*tmp*`, \&quot;user\&quot;, value = \&quot;user_11\&quot;): replacement has 1 row, data has 0\n&quot;</code></pre>
-<p>refer to the dataset documents, create some ID table.</p>
-<ol style="list-style-type: decimal">
-<li>sleeping.</li>
-<li>laying down.</li>
-<li>sitting, e.g. studying, eating and driving.</li>
-<li>light movement, e.g. slow/medium walk, chores and work.</li>
-<li>medium, e.g. fast walk and bike.</li>
-<li>heavy, e.g. gym, running.</li>
-<li>eating.</li>
-<li>small screen usage, e.g. smartphone and computer.</li>
-<li>large screen usage, e.g. TV and cinema.</li>
-<li>caffeinated drink consumption, e.g. coffee or coke.</li>
-<li>smoking.</li>
-<li>alcohol assumption.</li>
-</ol>
 </div>
-<div id="cap" class="section level2" number="2.2">
-<h2><span class="header-section-number">2.2</span> CAP</h2>
+<div id="data-collection" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> Data Collection</h2>
+<p>According to the document, the data were collected and provided by BioBeats (biobeats.com) in collaboration with researchers from the University of Pisa. BioBeats operates in the health science industry that produces IoT <em>wearable devices</em> aiming to detect people’s psychophysiological stress. The data were recorded by sport and health scientists, psychologists and chemists with the objective of assessing psychophysiological response to stress stimuli and sleep.</p>
+<p><em>22 healthy young adult males</em> were recruited. In accordance with the Helsinki Declaration as revised in 2013, the study was approved by the Ethical Committee of the University of Pisa (#0077455/2018).</p>
+<p>At the start of the data recording, <em>anthropomorphic characteristics</em> (i.e. age, height and weight) of the participants were recorded. At the same time, participants filled in a set of initial questionnaires that provide information about participants psychological status:</p>
+<ul>
+<li>Morningness-Eveningness Questionnaire (MEQ)</li>
+<li>State-Trait Anxiety Inventory (STAI-Y)</li>
+<li>Pittsburgh Sleep Quality Questionnaire Index (PSQI)</li>
+<li>Behavioural avoidance/inhibition (BIS/BAS)</li>
+</ul>
+<p>During the test, <em>participants wore two devices continuously for 24 hours</em>: a heart rate monitor to record heartbeats and beat-to-beat interval, and an actigraph to record actigraphy information such as accelerometer data, sleep quality and physical activity. Moreover, the perceived mood (Positive and Negative Affect Schedule - PANAS) were recorded at different times of the day (i.e. 10, 14, 18, 22 and 9 of the next day). Additionally, participants filled in <em>Daily Stress Inventory (DSI)</em> before going to sleep, to summarize the stressful events of the day.</p>
+<p>Twice a day (i.e., before going to bed and when they woke up) the subjects <em>collected saliva samples</em> at home in appropriate vials. Saliva samples were used to extract RNA and measure the induction of specific clock genes, and to assess specific hormones. A washout period from drugs of at least a week was required from the participants in the study.</p>
+</div>
+<div id="cap" class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> CAP</h2>
 <p>We initially wanted to include this dataset in order to compare sleep quality of healthy individuals with that of diseased individuals. We anticipate not having enough time to perform this analysis now. Please stay tuned and check back after a month to see the results relating to this dataset.</p>
 
 </div>
@@ -241,20 +241,6 @@ gitbook.start({
 });
 </script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:")
-      if (/^https?:/.test(src))
-        src = src.replace(/^https?:/, '');
-    script.src = src;
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 </body>
 
 </html>

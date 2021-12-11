@@ -24,3 +24,5 @@ preliminary-observations
 distribution-of-variables
 interactive-component
 conclusion
+data-collection
+dataset-overview

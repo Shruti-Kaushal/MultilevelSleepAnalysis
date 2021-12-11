@@ -2,18 +2,17 @@
 1. Multilevel Monitoring of Activity and Sleep in Healthy People: https://physionet.org/content/mmash/1.0.0/
 2. CAP Sleep Database: https://physionet.org/content/capslpdb/1.0.0/
 
-## MMASH
+## Dataset Overview
 
-There are 22 folders in the MMASH dataset corresponding to the 22 healthy male young adults that were monitored for two consecutive days. A myriad of variables were measured for each of the samples or "users" (what the authors of the dataset calls them) including mental state, heart rate, level of clock genes in saliva, amount of sleep to the different activities that the user does throughout the days. These measurements are organized into 7 folders i.e. for each of the 22 users we have the following 7 folders - 
+There are 22 folders in the MMASH dataset corresponding to the 22 healthy male young adults that were monitored for two consecutive days. A myriad of variables were measured for each of the samples or "users" (what the authors of the dataset calls them) including mental state, heart rate, level of clock genes in saliva, amount of sleep to the different activities that the user does throughout the days. These measurements are organized into 7 folders i.e. for each of the 22 users we have the following 7 folders:
 
-1. `Actigraph.csv`
-2. `Activity.csv`
-3. `questionnaire.csv`
-4. `RR.csv`
-5. `saliva.csv`
-6. `sleep.csv`
-7. `user_info.csv`
-
+1. `Actigraph.csv`: accelerometer and inclinometer data recorded throughout the day.
+2. `Activity.csv`: list of the activity categories throughout the day.
+3. `questionnaire.csv`: scores for all the questionnaires.
+4. `RR.csv`: beat-to-beat interval data.
+5. `saliva.csv`: clock genes and hormones concentrations in the saliva before going to bed and after waking up. Melatonin levels are reported in μg of melatonin per μg of protein, while cortisol levels are in μg of cortisol per 100 μg of protein. *No clock genes and hormones concentrations data was provided for User_21 due to problem in the salivary samples that do not permit to analyse it.*
+6. `sleep.csv`: information about sleep duration and sleep quality of the participant.
+7. `user_info.csv`: anthropocentric characteristics of the participant, such as age, height, weight, etc.
 
 
 ```{r}
@@ -77,43 +76,28 @@ for (i in 1:length(files)) {
 ```
 
 
-refer to the dataset documents, create some ID table.
-
-1. sleeping.
-2. laying down.
-3. sitting, e.g. studying, eating and driving.
-4. light movement, e.g. slow/medium walk, chores and work.
-5. medium, e.g. fast walk and bike.
-6. heavy, e.g. gym, running.
-7. eating.
-8. small screen usage, e.g. smartphone and computer.
-9. large screen usage, e.g. TV and cinema.
-10. caffeinated drink consumption, e.g. coffee or coke.
-11. smoking.
-12. alcohol assumption. 
-
-```{r}
-ID_activity <- data.frame(ID = 1:12, cate = c(
-  "sleeping",
-  "laying down",
-  "sitting",
-  "light movement",
-  "medium",
-  "heavy",
-  "eating",
-  "small screen usage", 
-  "large screen usage", 
-  "caffeinated drink consumption",
-  "smoking",
-  "alcohol assumption" 
-))
-
-```
-
 ```{r}
 # save workplace and variables for later use.
 save.image(file = "./data/RData/data_MMASH.RData")
 ```
+
+## Data Collection
+
+According to the document, the data were collected and provided by BioBeats (biobeats.com) in collaboration with researchers from the University of Pisa. BioBeats operates in the health science industry that produces IoT *wearable devices* aiming to detect people's psychophysiological stress. The data were recorded by sport and health scientists, psychologists and chemists with the objective of assessing psychophysiological response to stress stimuli and sleep.
+
+*22 healthy young adult males* were recruited. In accordance with the Helsinki Declaration as revised in 2013, the study was approved by the Ethical Committee of the University of Pisa (#0077455/2018).
+
+At the start of the data recording, *anthropomorphic characteristics* (i.e. age, height and weight) of the participants were recorded. At the same time, participants filled in a set of initial questionnaires that provide information about participants psychological status: 
+
++ Morningness-Eveningness Questionnaire (MEQ)
++ State-Trait Anxiety Inventory (STAI-Y)
++ Pittsburgh Sleep Quality Questionnaire Index (PSQI) 
++ Behavioural avoidance/inhibition (BIS/BAS)
+
+During the test, *participants wore two devices continuously for 24 hours*: a heart rate monitor to record heartbeats and beat-to-beat interval, and an actigraph to record actigraphy information such as accelerometer data, sleep quality and physical activity. Moreover, the perceived mood (Positive and Negative Affect Schedule - PANAS) were recorded at different times of the day (i.e. 10, 14, 18, 22 and 9 of the next day). Additionally, participants filled in *Daily Stress Inventory (DSI)* before going to sleep, to summarize the stressful events of the day.
+
+Twice a day (i.e., before going to bed and when they woke up) the subjects *collected saliva samples* at home in appropriate vials. Saliva samples were used to extract RNA and measure the induction of specific clock genes, and to assess specific hormones. A washout period from drugs of at least a week was required from the participants in the study.
+
 ## CAP
 
 We initially wanted to include this dataset in order to compare sleep quality of healthy individuals with that of diseased individuals. We anticipate not having enough time to perform this analysis now. Please stay tuned and check back after a month to see the results relating to this dataset.
