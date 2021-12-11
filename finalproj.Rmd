@@ -1,0 +1,661 @@
+--- 
+title: "MultilevelSleepAnalysis"
+author: "Shruti Kaushal & Clarissa Tai"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+---
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+# Introduction
+
+This project is focused on characterizing the sleep quality of 20 healthy young adults using numerous variables like age, sex, sleep fragmentation index, mental state and heart rate to name a few. There are variables that seems to have a direct relationship with sleep, for example, sleep fragmentation index and the time spent in bed, but there are others that one wouldn't suspect being related, like height or weight of the user. Biologists may argue that they are indeed related through many different paths but as data scientists we would like to uncover those through the data.
+
+The first step is to formulate a metric for the quality of sleep using only the variables that we know are correlated to it. This would mean defining a metric over the set of variables in the sleep.csv file of every user. Preliminary analysis is done to prevent multicollinearity. 
+
+Once we have established an tested our metric, we will move on to looking into how other variables affect the distribution of the metric across users. This section will be aimed at answering questions about correlation and causality. Our ultimate goal is to identify any confounders if any and quantify their relationship with the metric we define.
+
+<!--chapter:end:index.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Data sources
+1. Multilevel Monitoring of Activity and Sleep in Healthy People: https://physionet.org/content/mmash/1.0.0/
+2. CAP Sleep Database: https://physionet.org/content/capslpdb/1.0.0/
+
+## Dataset Overview
+
+There are 22 folders in the MMASH dataset corresponding to the 22 healthy male young adults that were monitored for two consecutive days. A myriad of variables were measured for each of the samples or "users" (what the authors of the dataset calls them) including mental state, heart rate, level of clock genes in saliva, amount of sleep to the different activities that the user does throughout the days. These measurements are organized into 7 folders i.e. for each of the 22 users we have the following 7 folders:
+
+1. `Actigraph.csv`: accelerometer and inclinometer data recorded throughout the day.
+2. `Activity.csv`: list of the activity categories throughout the day.
+3. `questionnaire.csv`: scores for all the questionnaires.
+4. `RR.csv`: beat-to-beat interval data.
+5. `saliva.csv`: clock genes and hormones concentrations in the saliva before going to bed and after waking up. Melatonin levels are reported in μg of melatonin per μg of protein, while cortisol levels are in μg of cortisol per 100 μg of protein. *No clock genes and hormones concentrations data was provided for User_21 due to problem in the salivary samples that do not permit to analyse it.*
+6. `sleep.csv`: information about sleep duration and sleep quality of the participant.
+7. `user_info.csv`: anthropocentric characteristics of the participant, such as age, height, weight, etc.
+
+
+```{r}
+# read dataset from path
+fdpath = "./data/raw/multilevel-monitoring-of-activity-and-sleep-in-healthy-people-1.0.0/DataPaper/" 
+
+# get the list of file names
+files <- list.files(path = fdpath) # 22 user folders
+
+# create empty lists to store information
+actigraph = data.frame()
+activity = data.frame()
+questionnaire = data.frame()
+RR = data.frame()
+saliva = data.frame()
+sleep = data.frame()
+user_info = data.frame()
+
+# for each user's folder, create data frame for the information with same source and function.
+for (i in 1:length(files)) {
+  f <- list.files(path = paste0(fdpath,files[i])) # data for each user
+  for (fname in f){
+    if ('Actigraph.csv' == fname){
+      temp = read.csv(paste0(fdpath,files[i],'/',fname), header = T, sep = ",")
+      temp['user'] = files[i]
+      actigraph = rbind(actigraph, temp)
+    }else if('Activity.csv' == fname){
+      temp = read.csv(paste0(fdpath,files[i],'/',fname), header = T, sep = ",")
+      temp['user'] = files[i]
+      activity = rbind(activity, temp)
+    }else if('questionnaire.csv' == fname){
+      temp = read.csv(paste0(fdpath,files[i],'/',fname), header = T, sep = ",")
+      temp['user'] = files[i]
+      questionnaire = rbind(questionnaire, temp)
+    }else if('RR.csv' == fname){
+      temp = read.csv(paste0(fdpath,files[i],'/',fname), header = T, sep = ",")
+      temp['user'] = files[i]
+      RR = rbind(RR, temp)
+    }else if('saliva.csv' == fname){
+      temp = read.csv(paste0(fdpath,files[i],'/',fname), header = T, sep = ",")
+      temp['user'] = files[i]
+      saliva = rbind(saliva, temp)
+    }else if('sleep.csv' == fname){
+      temp = read.csv(paste0(fdpath,files[i],'/',fname), header = T, sep = ",")
+      # user_11 is missing sleep.csv information
+      tryCatch(expr = {
+        temp['user'] = files[i]
+        sleep = rbind(sleep, temp)
+        }, error = function(e){
+          print(paste0(files[i], " is missing sleep.csv information, having error", e))})
+    }else if('user_info.csv' == fname){
+      temp = read.csv(paste0(fdpath,files[i],'/',fname), header = T, sep = ",")
+      temp['user'] = files[i]
+      user_info = rbind(user_info, temp)
+    }else{
+      next
+    }
+  }
+}
+
+```
+
+
+```{r}
+# save workplace and variables for later use.
+save.image(file = "./data/RData/data_MMASH.RData")
+```
+
+## Data Collection
+
+According to the document, the data were collected and provided by BioBeats (biobeats.com) in collaboration with researchers from the University of Pisa. BioBeats operates in the health science industry that produces IoT *wearable devices* aiming to detect people's psychophysiological stress. The data were recorded by sport and health scientists, psychologists and chemists with the objective of assessing psychophysiological response to stress stimuli and sleep.
+
+*22 healthy young adult males* were recruited. In accordance with the Helsinki Declaration as revised in 2013, the study was approved by the Ethical Committee of the University of Pisa (#0077455/2018).
+
+At the start of the data recording, *anthropomorphic characteristics* (i.e. age, height and weight) of the participants were recorded. At the same time, participants filled in a set of initial questionnaires that provide information about participants psychological status: 
+
++ Morningness-Eveningness Questionnaire (MEQ)
++ State-Trait Anxiety Inventory (STAI-Y)
++ Pittsburgh Sleep Quality Questionnaire Index (PSQI) 
++ Behavioural avoidance/inhibition (BIS/BAS)
+
+During the test, *participants wore two devices continuously for 24 hours*: a heart rate monitor to record heartbeats and beat-to-beat interval, and an actigraph to record actigraphy information such as accelerometer data, sleep quality and physical activity. Moreover, the perceived mood (Positive and Negative Affect Schedule - PANAS) were recorded at different times of the day (i.e. 10, 14, 18, 22 and 9 of the next day). Additionally, participants filled in *Daily Stress Inventory (DSI)* before going to sleep, to summarize the stressful events of the day.
+
+Twice a day (i.e., before going to bed and when they woke up) the subjects *collected saliva samples* at home in appropriate vials. Saliva samples were used to extract RNA and measure the induction of specific clock genes, and to assess specific hormones. A washout period from drugs of at least a week was required from the participants in the study.
+
+## CAP
+
+We initially wanted to include this dataset in order to compare sleep quality of healthy individuals with that of diseased individuals. We anticipate not having enough time to perform this analysis now. Please stay tuned and check back after a month to see the results relating to this dataset.
+
+
+<!--chapter:end:02-data.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Data transformation
+
+As mentioned in the introduction, for each sample or "user" many variables were sampled over the course of two days. These measurements are organized into 7 different file or categories like sleep, activity, actigraph, saliva samples etc. In this section we will focus on transforming each of the files that we used to perform any kind of analysis.
+
+```{r}
+# define function
+load("./data/RData/data_MMASH.RData")
+library(chron)
+# create function to transform string object to time object for further calculation
+string2time <- function(x, format = "%H:%M"){
+  return(as.POSIXct(x, format = format)) # times(sub(".*\\s+", "",  
+}
+```
+
+## Sleep
+The sleep file includes measurements ranging from the time the user gets into bed to the time that he gets out of bed. The measurements can be broadly grouped into two categories - one that actually relates to the quality of sleep, for example, sleep fragmentation index and the average awakening length, and other category includes time measurements, for example, the time it took for the user to fall asleep and the time he was in bed after waking up. Variables that fall in the second category have a lot of information but can be combined together to transform time measurements to duration. "Durations" can be easily compared across users in a succinct manner. However, there are some variables, like in-bed and out-bed time, that we used as is because transforming them would actually lead to a loss in information. 
+
+We will define variables wherever needed but the reader is encouraged to go through the documentation of the dataset (link in chapter 2), to understand the variables in depth. 
+
+```{r}
+# colnames(sleep)
+sleep$In.Bed.Time = string2time(sleep$In.Bed.Time, format = "%H:%M") + lubridate::days(sleep$In.Bed.Date)
+sleep$Out.Bed.Time = string2time(sleep$Out.Bed.Time, format = "%H:%M") + lubridate::days(sleep$Out.Bed.Date)
+sleep$Onset.Time = string2time(sleep$Onset.Time, format = "%H:%M") + lubridate::days(sleep$Onset.Date)
+```
+
+## Actigraph
+
+The only thing we need to do here is to transform the `time` column into datetime type in R. Also, since initial `time` column doesn't contain date information, we add days according to the `day` column to create a relative time stamp for each record in order to facilitate future calculation.
+
+### Definition and explanation of each column
+
+Actigraph.csv - accelerometer and inclinometer data recorded throughout the day:
+
+1. Axis1: Raw Acceleration data of the X-axis expressed in Newton-meter.
+2. Axis2: Raw Acceleration data of the Y-axis expressed in Newton-meter.
+3. Axis3: Raw Acceleration data of the Z-axis expressed in Newton-meter.
+4. Steps: number of steps per second.
+5. HR: beats per minutes (bpm).
+6. Inclinometer Off: values equal to 1 refer to no activation of the inclinometer. The values are reported per second.
+7. Inclinometer Standing: values equal to 1 refer to the standing position of the user, while 0 refers to other user positions. Values are reported per second.
+8. Inclinometer Sitting: values equal to 1 refer to the sitting position of the user, while 0 refers to other user positions. Values are reported per second.
+9. Inclinometer Lying: values equal to 1 refer to the lying position of the user, while 0 refers to other user positions. Values are reported per second.
+10. Vector Magnitude: vector movement derived from raw acceleration data expressed in Newton-meter.
+11. day: 1 and 2 refer to the first and second day of data recording, respectively.
+12. time: day time when the heartbeat happened (hours:minutes:seconds)
+
+```{r}
+library(lubridate)
+actigraph$time = string2time(actigraph$time, format = "%H:%M:%S") + lubridate::days(actigraph$day)
+# actigraph$duration = lead(actigraph$time) - actigraph$time
+# actigraph$duration.secs = as.numeric(actigraph$duration)
+# Verify at least one value of Inclinometer is true: True
+# all((actigraph[7] == 1) | (actigraph[8]== 1) | (actigraph[9]== 1) | (actigraph[10]== 1))
+
+# position = cbind(actigraph[1],actigraph[14], actigraph[7:10]) %>%
+#   group_by(X, user) %>% 
+#   gather(position, val, -c(X,user)) %>%
+#   filter(val == 1) %>%
+#   select(-val) %>%
+#   arrange(user, X)
+# 
+# actigraph$position = position$position
+
+postition = actigraph %>% 
+  group_by(user) %>% 
+  mutate(duration = lead(time) - time) %>%
+  ungroup() %>% 
+  group_by(user, position) %>% 
+  summarise(total = sum(duration, na.rm = TRUE), .groups = "keep")
+
+```
+
+## Activity
+Here we substitute "00:00" to "24:00" to prevent calculating between wrong dates, and then calculate duration for each activity. The document labeled the activity categories from 1 to 12. However, an extra category, labeled as `0`, also included in the dataset. In this project, we will assume that the `0` represented undetermined activities.
+
+### Definition and explanation of each column
+'Start' and 'end' columns refer to the time of the day (hours:minutes) when the event happened, while 'day' columns refers to the day when it happened (1 and 2 refer to the first and second day of data recording, respectively).
+
+```{r, fig.width=10}
+activity$Start = string2time(activity$Start)+ lubridate::days(activity$Day)
+# we need to substitute "00:00" to "24:00" to prevent calculating on the wrong day
+activity$End = sub("00:00", "24:00", activity$End)
+activity$End = string2time(activity$End)+ lubridate::days(activity$Day)
+
+# wrong inputs for activity start time and end time
+# switch start time and end time
+# activity[activity$End < activity$Start & !is.na(activity$End),] 
+temp = activity[c(413,428,445),]$Start
+activity[c(413,428,445),]$Start = activity[c(413,428,445),]$End
+activity[c(413,428,445),]$End = temp
+
+# some has records across time
+activity$End[activity$End < activity$Start & !is.na(activity$End)] = activity$End[activity$End < activity$Start & !is.na(activity$End)] + lubridate::days(1)
+ 
+# duration in seconds
+activity_duration = activity %>% 
+  group_by(user) %>% 
+  mutate(duration = End - Start) %>%
+  ungroup() %>% 
+  group_by(user, Activity) %>% 
+  summarise(total = as.numeric(sum(duration, na.rm = TRUE)), .groups = "keep")
+
+# label of activity ID
+ID_activity <- data.frame(ID = 0:12, category = c(
+  "undefined",
+  "sleeping",
+  "laying down",
+  "sitting",
+  "light mvmnt",
+  "medium",
+  "heavy",
+  "eating",
+  "small scr.usg", 
+  "large scr.usg", 
+  "caff. consump.",
+  "smoking",
+  "alc. consump." 
+))
+
+activity_duration = activity_duration %>% left_join(ID_activity, by = c('Activity' = "ID"))
+
+
+activity_duration %>% ggplot(aes(x = factor(user, levels = paste0("user_",c(1:22))), y = factor(category), alpha = total)) +
+  geom_tile(color = 'white', lwd = 0.4, linetype = 1) +
+  scale_x_discrete(labels = abbreviate) +
+  theme(panel.background = element_blank() ) + 
+  xlab("User") + 
+  ylab("Activity") +
+  ggtitle("Time spent on each activity")
+```
+
+
+## Questionnaire
+
+For this part, the dataset contains the answer of a total of 7 questionnaires for each user. The questionnaires examined users' anxiety, sleep quality, stress, emotion, etc, in order to understand the users' behavior.
+
+No data cleaning is needed for this part.
+
+### Definition and explanation of each column
+
+questionnaire.csv - scores for all the questionnaires:
+
+*TODO: make visualization for each scale and score of each questionnaire.csv.*
+
+1. MEQ: Morningness-Eveningness Questionnaire value. The chronotype score is ranging from 16 to 86: scores of 41 and below indicate Evening types, scores of 59 and above indicate Morning types, scores between 42-58 indicate intermediate types.
+
+2. STAI1: State Anxiety value obtained from State-Trait Anxiety Inventory. The results are range from 20 to 80. Scores less than 31 may indicate low or no anxiety, scores between 31 and 49 an average level of anxiety or borderline levels, and scores higher than 50 a high level of anxiety or positive test results.
+
+3. STAI2: Trait Anxiety value obtained from the State-Trait Anxiety Inventory. The results are range from 20 to 80. Scores less than 31 may indicate low or no anxiety, scores between 31 and 49 an average level of anxiety or borderline levels, and scores higher than 50 a high level of anxiety or positive test results.
+
+4. PSQI: Pittsburgh Sleep Quality Questionnaire Index. It gives a score rating from 0 to 21, with values lower than 6 indicating good sleep quality.
+
+5. BIS/BAS: Behavioural avoidance/inhibition index. BIS/BAS scales are a typical measure of reinforcement sensitivity theory that establish biological roots in personality characteristics, derived from neuropsychological differences. The BIS/BAS scales comprise a self‐report measure of avoidance and approach tendencies that contains four sub-factors (A high score in one of the subscale describes the degree of that temperamental characteristic for the individual, according to the original sample):
+
+  + Bis facet: reflects subject sensitivity toward aversive events that promote avoidance behaviours.
+  + Drive: describes individual persistence and motivational intensity.
+  + Reward: corresponds to Reward Responsiveness that indicates a propensity to show a higher degree of positive emotion for goal attainment.
+  + Fun: corresponds to Fun-Seeking that is related to impulsivity and immediate reward due to sensory stimuli or risky situations.
+
+6. Daily_stress: Daily Stress Inventory value (DSI) is a 58 items self-reported measures which allows a person to indicate the events they experienced in the last 24 hours. After indicating which event occurred, they indicate the stressfulness of the invent on a Likert scale from 1 (occurred but was not stressful) to 7 (Cause me to panic). It gives a score between 0 and 406. The higher is this values, the higher is the frequency and degree of the events and the perceived daily stress.
+
+7. PANAS: Positive and Negative Affect Schedule. It gives a score rating between 5 and 50 for both positive and negative emotions. The higher is the PANAS value, the higher is the perceived emotion. Columns name with 10, 14, 22 and 9+1 refer to the time of the day when the questionnaire is filled in. 9+1 indicates the 9 AM of the second recording day.
+
+
+## RR
+
+`RR` dataset contains the heartbeat records for each user. We can transform `ibi_s` to rate of heartbeat and align with activity records using `time` column.
+
+Similar to `Actigraph` dataset, the only thing we need to do here is to transform the `time` column into datetime type in R. Also, since initial `time` column doesn't contain date information, we add days according to the `day` column to create a relative time stamp for each record in order to facilitate future calculation.
+
+### Definition and explanation of each column
+
+RR.csv - beat-to-beat interval data:
+
+1. ibi_s: time in seconds between two consecutive beats.
+2. day: 1 and 2 refer to the first and second day of data recording, respectively.
+3. time: day time when the heartbeat happened (hours:minutes:seconds)
+
+```{r}
+RR$time = string2time(RR$time, format = "%H:%M:%S") + lubridate::days(RR$day)
+```
+
+
+## Saliva
+We calculated the difference in chemical concentration between sample collected before sleep and after waking up per each participant. 
+
+### Definition and explanation of each column
+saliva.csv - clock genes and hormones concentrations in the saliva before going to bed and after waking up. 
+
+1. Sample: Two samples per participant are included, one before sleep and one after waking up.
+2. Melatonin levels are reported in μg of melatonin per μg of protein.
+3. Cortisol levels are in μg of cortisol per 100 μg of protein. 
+
+No clock genes and hormones concentrations data was provided for User_21 due to problem in the salivary samples that do not permit to analyse it.
+
+```{r}
+# get the difference of chemicals per participant
+before_sleep = saliva %>% 
+  gather("Chemicals","Concentration", 3:4) %>% 
+  filter(SAMPLES == "before sleep") %>% 
+  arrange(user, Chemicals)
+
+after_sleep = saliva %>% 
+  gather("Chemicals","Concentration", 3:4) %>% 
+  filter(SAMPLES == "wake up") %>% 
+  arrange(user, Chemicals)
+
+difference = data.frame(user = before_sleep$user, Chemicals = before_sleep$Chemicals, difference = after_sleep$Concentration - before_sleep$Concentration)
+
+difference %>% ggplot(aes(x = factor(user, levels = paste0("user_",c(1:22))), y = difference)) +
+  geom_col() +
+  scale_x_discrete(labels = abbreviate)+
+  facet_grid(rows = vars(Chemicals), scales = "free") + 
+  xlab("User") +
+  ylab("Concentration") +
+  ggtitle("Concentration difference per participant")
+
+```
+
+
+
+
+
+## User info
+
+missing age for user_18. Otherwise, nothing need to be transformed or cleaned in this dataset. All male participants.
+
+### Definition and explanation of each column
+
+user_info.csv - anthropocentric characteristics of the participant:
+
+1. gender: M and F refer to Male and Female, respectively.
+2. height is expressed in centimetre (cm).
+3. weight is expressed in kilograms (kg).
+4. age is expressed in years.
+
+```{r}
+# BMI
+```
+
+
+```{r}
+# save workplace after data cleaning/for this stage.
+save.image(file = "./data/RData/data_MMASH_cleaned.RData")
+```
+
+<!--chapter:end:03-cleaning.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Missing values
+
+file information missing: user_11 is missing sleep.csv information
+
+No clock genes and hormones concentrations data was provided for User_21 due to problem in the salivary samples that do not permit to analyse it.
+
+missing age for user_18 in user_info
+
+user_13 is missing questionnaire
+
+
+## Missing Value Plot
+
+Here we revise the function we created in problem set 4 to plot the missing patterns. Very less missing value is in the dataset. As shown in the plots, only one row with missing values exist in `activity` and `questionnaire`, respectively.
+```{r}
+# missing value plot function from problem set 4
+library(dplyr)
+library(ggplot2)
+library(tidyverse)
+library(patchwork)
+library(ggnewscale)
+
+missingValuePlot <- function(df, mode = "count", title = 'Missing value patterns' ){
+  # create the missing value dataframe, depends on the mode chosen
+  if(mode == 'count'){
+    # construct dataframe/table base on counts
+    missing_patterns <- data.frame(is.na(df)) %>%
+    group_by_all() %>%
+    count(name = "count", sort = TRUE) %>%
+    ungroup()
+
+  }else if(mode == 'percent'){
+    # construct dataframe/table base on percentages
+    missing_patterns <- data.frame(is.na(df)) %>%
+    group_by_all() %>%
+    count(name = "count", sort = TRUE) %>% 
+    ungroup()
+    missing_patterns$count <- missing_patterns$count/sum(missing_patterns$count) * 100
+    
+  }else{
+    warning('Please select valid options: "mode" or "percent"')
+  }
+  
+  
+  # plot here
+  
+  missing_count = missing_patterns$count
+  missing_patterns$count = NULL
+  
+  # side plot for column
+  col_count = data.frame(count = colSums(missing_patterns * missing_count), col = names(missing_patterns))
+  col_count = arrange(col_count, -count)
+  
+  missing_patterns <- data.frame(lapply(missing_patterns, as.numeric))
+  # create vector to highlight complete cases
+  complete_case = c()
+  for (pat in c(1:dim(missing_patterns)[1])){
+    if (all(missing_patterns[pat,] == 0)){
+      complete_case = c(complete_case, 1)
+    }else{
+      complete_case = c(complete_case, 0)
+    }
+  }
+  complete_case = data.frame(complete = complete_case, pattern = c(1:dim(missing_patterns)[1]))
+  
+  # side plot for row
+  row_count = data.frame(count = missing_count, pattern = complete_case$pattern)
+  row_count <- dplyr::left_join(row_count, complete_case, by = 'pattern')
+  
+  # plot side bar plot for column
+  if(mode == 'count'){
+    p_col = col_count %>% ggplot(aes(x = reorder(col,-count), y = count)) + 
+      geom_col(fill = 'blue', alpha = 0.7, show.legend = FALSE) + 
+      scale_x_discrete(labels = abbreviate) +
+      theme_bw() + 
+      theme(panel.grid.minor.x = element_blank(),
+            panel.grid.major.x = element_blank()) +
+      labs(title = title, x = " ", y = "num rows missing")
+  }else{ # percentage
+    p_col = col_count %>% ggplot(aes(x = reorder(col,-count), y = count)) + 
+      geom_col(fill = 'blue', alpha = 0.7, show.legend = FALSE) + 
+      scale_x_discrete(labels = abbreviate) +
+      ylim(0, 100) + 
+      theme_bw() + 
+      theme(panel.grid.minor.x = element_blank(),
+            panel.grid.major.x = element_blank()) +
+      labs(title = title, x = " ", y = "% rows missing")
+  }
+  
+  # plot side bar plot for row
+  if(mode == 'count'){
+    p_row = row_count %>% ggplot(aes(x = factor(pattern), y = count, alpha = factor(complete))) + 
+      geom_col(fill = 'blue', show.legend = FALSE) + 
+      scale_x_discrete(limits = rev) +
+      coord_flip() + 
+      theme_bw() +
+      scale_alpha_manual(values = c(0.7,1)) +
+      theme(panel.grid.minor.y = element_blank(),
+            panel.grid.major.y = element_blank()) +
+      labs(x = ' ', y = 'row count')
+  }else{ # percentage
+    p_row = row_count %>% ggplot(aes(x = factor(pattern), y = count, alpha = factor(complete))) + 
+      geom_col(fill = 'blue', show.legend = FALSE) + 
+      scale_x_discrete(limits = rev) +
+      ylim(0, 100) +
+      coord_flip() + 
+      theme_bw() +
+      scale_alpha_manual(values = c(0.7,1)) +
+      theme(panel.grid.minor.y = element_blank(),
+            panel.grid.major.y = element_blank()) +
+      labs(x = ' ', y = '% rows')
+  }
+  
+  # main plot
+  # temp = missing_patterns
+  missing_patterns$pattern = c(1:dim(missing_patterns)[1])
+  df = missing_patterns %>% pivot_longer(!pattern, names_to = "column", values_to = "missing") %>% dplyr::left_join(complete_case)
+  
+  p_main = df %>% 
+    ggplot(aes(x = factor(column,levels = rownames(col_count)), y = factor(pattern,levels = rev(rownames(row_count))), fill = factor(missing), alpha = factor(complete))) + 
+    geom_tile(color = 'white', lwd = 0.4, linetype = 1, show.legend = FALSE)+  
+    scale_x_discrete(labels = abbreviate) +
+    scale_fill_manual(values = c('grey', 'purple')) +
+    scale_alpha_manual(values = c(0.5,1)) +
+    theme(panel.background = element_blank() )+
+    ylab('missing pattern') +
+    xlab('variable')
+  
+  # patchwork
+  layout <- "
+  AA#
+  BBC
+  BBC
+  "
+  # final plot
+  p_col + p_main + p_row + plot_layout(design = layout)
+    
+}
+```
+
+
+```{r}
+# load data from previous stage
+load("./data/RData/data_MMASH_cleaned.RData")
+# plot
+missingValuePlot(actigraph, title = 'Missing value patterns for actigraph')
+missingValuePlot(activity, title = 'Missing value patterns for activity')
+missingValuePlot(questionnaire, title = 'Missing value patterns for questionnaire')
+missingValuePlot(RR, title = 'Missing value patterns for RR')
+missingValuePlot(saliva, title = 'Missing value patterns for saliva')
+missingValuePlot(sleep, title = 'Missing value patterns for sleep')
+missingValuePlot(user_info, title = 'Missing value patterns for user_info')
+```
+
+
+
+
+<!--chapter:end:04-missing.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Results
+The results chapter is broadly divided into two sections - one for each of the goals of this project. The first section will document all preliminary findings related to the sleep measurements and the procedure of defining a metric for quantifying quality of sleep.
+
+## Metric Formulation
+### Preliminary Observations
+Before we delved into the data analysis part we wanted to see how each of the variables in the sleep.csv file is distributed. Upon digging into the data we realized that user 11 had no measurements for his sleep. The authors of the data did not mention a reason as to why there were no records for that particular user. Since our problem statement is about quanitfying sleep quality and the factors affecting it, we thought it only logical to remove user 11 from our analysis altogether.
+
+Formulating a metric requires an extensive analysis of the spread of the data and each variable in it. It is also important to determine correlated variables to avoid duplication and/or multicollinearity while defining the metric. Below is a heatmap we generated for variables that do not have the format of a time stamp (for example hh:mm). We made the following observations - 
+
+(1) Latency does not seem to be correlated with anything which is interesting as it is defined as the time taken for the user to fall asleep after he gets into bed
+(2) Interestingly enough, the total sleep time is not correlated with neither Number of Awakenings and Average Awakening Length. One would suspect that the form is negatively correlated to the latter two but that is not the case as these correlation coefficients are statistically significant with a default critical value of 0.05
+(3) Movement, Fragmentation and Sleep Fragmentation index are highly correlated and this relationship is statistically significant. This observation is not surprising as sleep fragmentation index is defined as the ratio of movement index and fragmentation index
+(4) Wake After Sleep Onset (WASO) is strongly correlated to almost every variable with the direction being positive except for Latent Efficiency
+
+
+```{r}
+library(Hmisc)
+library(corrplot)
+sleep_data <- read.csv('data/raw/multilevel-monitoring-of-activity-and-sleep-in-healthy-people-1.0.0/main_sleep_transformed.csv')
+
+sleep_data <- as.data.frame(t(sleep_data))
+colnames(sleep_data) <- sleep_data[1, ]
+sleep_data <- sleep_data[-1, ]
+
+#removing variables with time entries of format hh::mm
+sleep_subset <- subset(sleep_data, select = -c(1,3,5))
+
+# converting all values that are not time readings to numeric type
+sleep_subset[,4:length(sleep_subset)] <- sapply( sleep_subset[,4:length(sleep_subset)], as.numeric)
+mydata <- sleep_subset[,4:length(sleep_subset)]
+mydata['user'] <- c(1,2,3,4,5,6,7,8,9,10,12,13,14,15,16,17,18,19,20,21,22)
+mydata.rcorr = rcorr(as.matrix(mydata))
+mydata.coeff = mydata.rcorr$r
+mydata.p = mydata.rcorr$P
+palette = colorRampPalette(c("darkblue", "white", "darkred")) (20)
+heatmap(x = mydata.coeff, col = palette, symm = TRUE)
+corrplot(mydata.coeff)
+```
+
+### Distribution of Variables
+The clustering of heatmap showed that there are 3 clear clusters which are consistent with the observations we made. To avoid multicollinearity, we decided to pick 1-2 variables from each of the clusters depending on the strength and statistical significance of the correlation coefficient. Let's denote our metric with M and is defined as a characterization of quality of sleep. Intuitively, M should be higher for users that are able to sleep through the night and do not have any trouble falling asleep. Expanding this thought process further and combining it with the correlation analysis, we came up with the following associations - 
+
+(1) M $\alpha$ Total Sleep Time (TST)
+(2) M $\alpha$ $\frac{1}{SleepFragmentation Index}$
+(3) M $\alpha$ $\frac{1}{Latency}$
+(4) M $\alpha$ $\frac{1}{AverageTimeSpentAwake}$
+
+Note that (2) is a ratio while others have units "hh:mm". So, keeping that in mind we combined all the above relationship as - 
+
+\begin{align*}
+M \alpha (\frac{TST}{AverageTimeSpentAwake} + \frac{1}{SleepFragmentationIndex}).\frac{1}{Latency}
+\end{align*}
+
+The units of the right hand side are "per hh:mm" (because of addition of latency). Since this expression was constructed using just the correlation, to establish a stronger relationship i.e. equality, it is important to look at the distribution of each of these variables. It might happen that even though intuitively one might think that a variable should have an effect on the sleep quality but if in reality the distribution of that variable turns out to be narrow then including it would not be a good idea. We would like to stress that the number of samples available to us are very less to do this sort of analysis without any selection bias i.e. inferences might hold for this small cohort but not necessarily for a bigger cohort.
+
+```{r}
+library(dplyr)
+mydata['Average Time Awake'] = mydata$`Number of Awakenings`*mydata$`Average Awakening Length`
+mydata['Sleep Ratio'] = mydata$`Total Sleep Time (TST)`/mydata$`Average Time Awake`
+df <- dplyr::select(mydata,c('Sleep Ratio','Sleep Fragmentation Index'))
+
+ggplot(stack(df), aes(x = ind, y = values)) + geom_boxplot() +labs(x = "", y = "Ratio Values", title = "Distribution of Sleep Ratio and Sleep Fragmentation Index in Cohort")
+
+ggplot(df, aes(mydata$user, mydata$Latency)) + geom_point() + scale_x_continuous(breaks = scales::pretty_breaks(n = 17)) + labs(x = "User ID", y = "Time in Mintues", title = "Latency per User")
+
+```
+
+<!--chapter:end:05-results.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Interactive component
+
+
+
+<!--chapter:end:06-interactive.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Conclusion
+
+
+<!--chapter:end:07-conclusion.Rmd-->
+
