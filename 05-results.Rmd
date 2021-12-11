@@ -61,7 +61,9 @@ mydata['Sleep Ratio'] = mydata$`Total Sleep Time (TST)`/mydata$`Average Time Awa
 df <- dplyr::select(mydata,c('Sleep Ratio','Sleep Fragmentation Index'))
 
 ggplot(stack(df), aes(x = ind, y = values)) + geom_boxplot() +labs(x = "", y = "Ratio Values", title = "Distribution of Sleep Ratio and Sleep Fragmentation Index in Cohort")
+```
 
+
+```{r}
 ggplot(df, aes(mydata$user, mydata$Latency)) + geom_point() + scale_x_continuous(breaks = scales::pretty_breaks(n = 17)) + labs(x = "User ID", y = "Time in Mintues", title = "Latency per User")
-
 ```
