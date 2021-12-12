@@ -127,7 +127,11 @@ Having established a metric and quantified its distribution, we want to identify
 This section is divided further into subsections for each of the 7 files in the dataset. Since some of the data is redundant, we decided to analyze only 5 out of the 7 - sleep records, user information, actigraph measurements, activities performed and the saliva samples.
 
 ### Bed Time Does Not Affect Sleep Quality
+Time and again the society and many cultures have encouraged the practice going to bed early and rising early for a healthy life and better sleep. We wanted to test this hypothesis and see if bed time does have an effect on the quality of sleep. 
 
+From the scatterplot below, we concluded that in fact, bed time does not have any impact on the sleep quality. There is no linear relationship; some participants who went to bed later than "usual" have a higher sleep quality than most participants who went to bed early. Similar conclusion can be made for the time a participant got out of bed. The data has high variance and so we cannot conclude that a relationship between bed times and sleep quality exists.
+
+This conclusion can be justified logically as well - if anything should affect the sleep quality it most likely would be the amount of tiredness the participant feels and total time they slept the day before. Given these quantities, bed time shouldn't affect sleep at all. Since the dataset does not measure these quantities we can assume them to be latent variables. In the coming sections we will analyze the activity log of each user with respect to their sleep quality.
 
 ```{r}
 sleep %>% ggplot()+geom_point(aes(x = `In.Bed.Time`, y = `M`, color = 'in_bed')) + geom_point(aes(x = `Out.Bed.Time`, y = `M`, color = 'out_bed'))
