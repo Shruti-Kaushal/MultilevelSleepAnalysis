@@ -254,12 +254,13 @@ after_sleep = saliva %>%
 difference = data.frame(user = before_sleep$user, Chemicals = before_sleep$Chemicals, difference = after_sleep$Concentration - before_sleep$Concentration)
 
 difference %>% ggplot(aes(x = factor(user,  levels = paste0("user_",c(1:22)), labels = c(1:22)), y = difference)) +
-  geom_col() +
+  geom_col(fill = 'lightblue', color = 'black') +
   scale_x_discrete(labels = abbreviate)+
   facet_grid(rows = vars(Chemicals), scales = "free") + 
   xlab("User ID") +
   ylab("Concentration") +
-  ggtitle("Concentration difference per participant")
+  ggtitle("Concentration difference per participant") +
+  theme_bw()
 
 ```
 

@@ -19,6 +19,9 @@ library(corrplot)
 library(gplots)
 load("./data/RData/data_MMASH_cleaned.RData")
 sleep_data <- read.csv('data/raw/multilevel-monitoring-of-activity-and-sleep-in-healthy-people-1.0.0/main_sleep_transformed.csv')
+# adding user id
+sleep$user.id <- as.numeric(unlist(map(strsplit(sleep$user, split = "_"), 2)))
+sleep <- sleep[order(sleep$user.id),]
 
 sleep_data <- as.data.frame(t(sleep_data))
 colnames(sleep_data) <- sleep_data[1, ]
@@ -90,6 +93,9 @@ library(tidyverse)
 # calculating the metric
 mydata['M'] = ((mydata$`Total Sleep Time (TST)`/mydata$`Average Time Awake`)+(1/mydata$`Sleep Fragmentation Index`))*(1/(mydata$Latency + 1))
 
+#adding M to sleep data
+sleep$M <- c(rep(mydata$M[1],2), mydata$M[2:length(mydata$M)])
+
 # ggplot(mydata, aes(`user`, `M`)) + geom_point() + scale_x_continuous(breaks = scales::pretty_breaks(n = 17)) + labs(x = "User ID", y = "Units (per minute)", title = "Sleep Quality of each User") + theme_bw()
 
 ggplot(stack(dplyr::select(mydata, c('M'))), aes(x = ind, y = values))  + geom_boxplot() + geom_jitter() +labs(x = "Sleep Quality", y = "Units (per minute)", title = "Distribution of Sleep Quality") 
@@ -101,7 +107,9 @@ fivenum(l) %>% set_names(fivenumnames)
 
 Having defined the metric, we wanted to do a sanity check that it indeed is capturing the quality of sleep. The only way to do that was to compare the values of Efficiency variable to M. Efficiency is defined as the percentage of Total Sleep Time upon total sleep in bed. The reader might think that the metric defined above could have been made way simpler if Efficiency was included but we had motivation to not include it altogether. One of the things that pops out is the Efficiency is not strongly correlated to both of the variables TST and Total Minutes in Bed. This seems absurd and since we couldn't explain why this was happening we ultimately decided to remove efficiency from the equation and instead use it as a sanity check. It is only logical to think Efficiency and sleep quality should be positively correlated.  
 
-It can be concluded from the log-log plot of Efficiency vs Sleep Quality below
+To test the relationship, we generated a log-log scale plot. The motivation behind using a log10 scale over the normal scale was first to normalize the values and second to see how the magnitudes of the two variables are related. The regression model is statistically significant with a p-value of 3.681e-05 and the positive slope indicates that as the sleep quality increases, so does the efficiency. However, caution needs to be exercised while making this conclusion as the adjusted R square value is 0.6 which means that the model captures less than 70% of the variance. 
+
+In summary, the metric defined by the formula above seems to be capturing the information that directly affects the sleep quality of a user. Moreover, the statistical significance combined with the positive slope of the regression model and line prove to be a sanity check for our metric.
 
 ```{r}
 library(ggpubr)
@@ -109,4 +117,20 @@ ggplot(mydata, aes(x = log(`M`, 10), y = log(`Efficiency`, 10))) + geom_point() 
 
 model <- lm(log(mydata$Efficiency, 10)~log(mydata$M, 10), header = T)
 summary(model)
+```
+
+
+## Establishing Direct/Indirect Effects on Sleep Quality
+Having established a metric and quantified its distribution, we want to identify variables that have a direct or indirect relationship with sleep quality. These relationships might not necessarily be causal in nature as correlation does not imply causation. 
+
+This section is divided further into subsections for each of the 7 files in the dataset. Since some of the data is redundant, we decided to analyze only 5 out of the 7 - sleep records, user information, actigraph measurements, activities performed and the saliva samples.
+
+### In/Out Bed Time is Related to Sleep Metric?
+
+
+```{r}
+sleep %>% slice(-c(1)) %>% ggplot(aes(`In.Bed.Time`,`M`)) + geom_point() + labs(title = "Sleep Quality vs In Bed Time", x = "Time", y = "Sleep Quality (M)") + theme_bw()
+
+sleep %>% slice(-c(1)) %>% ggplot(aes(`Out.Bed.Time`,`M`)) + geom_point() + labs(title = "Sleep Quality vs Out Bed Time", x = "Time", y = "Sleep Quality (M)") + theme_bw()
+
 ```
