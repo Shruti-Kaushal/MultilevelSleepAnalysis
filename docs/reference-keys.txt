@@ -24,3 +24,8 @@ distribution-of-variables
 distribution-of-sleep-quality-metric
 interactive-component
 conclusion
+establishing-directindirect-effects-on-sleep-quality
+inout-bed-time-is-related-to-sleep-metric
+discussion
+establishing-direct-indirect-effects-on-sleep-quality
+bed-time-does-not-affect-sleep-quality

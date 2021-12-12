@@ -17,6 +17,7 @@ Formulating a metric requires an extensive analysis of the spread of the data an
 library(Hmisc)
 library(corrplot)
 library(gplots)
+library(purrr)
 load("./data/RData/data_MMASH_cleaned.RData")
 sleep_data <- read.csv('data/raw/multilevel-monitoring-of-activity-and-sleep-in-healthy-people-1.0.0/main_sleep_transformed.csv')
 # adding user id
@@ -120,17 +121,17 @@ summary(model)
 ```
 
 
-## Establishing Direct/Indirect Effects on Sleep Quality
+## Establishing Direct & Indirect Effects on Sleep Quality
 Having established a metric and quantified its distribution, we want to identify variables that have a direct or indirect relationship with sleep quality. These relationships might not necessarily be causal in nature as correlation does not imply causation. 
 
 This section is divided further into subsections for each of the 7 files in the dataset. Since some of the data is redundant, we decided to analyze only 5 out of the 7 - sleep records, user information, actigraph measurements, activities performed and the saliva samples.
 
-### In/Out Bed Time is Related to Sleep Metric?
+### Bed Time Does Not Affect Sleep Quality
 
 
 ```{r}
-sleep %>% slice(-c(1)) %>% ggplot(aes(`In.Bed.Time`,`M`)) + geom_point() + labs(title = "Sleep Quality vs In Bed Time", x = "Time", y = "Sleep Quality (M)") + theme_bw()
+sleep %>% ggplot()+geom_point(aes(x = `In.Bed.Time`, y = `M`, color = 'in_bed')) + geom_point(aes(x = `Out.Bed.Time`, y = `M`, color = 'out_bed'))
 
-sleep %>% slice(-c(1)) %>% ggplot(aes(`Out.Bed.Time`,`M`)) + geom_point() + labs(title = "Sleep Quality vs Out Bed Time", x = "Time", y = "Sleep Quality (M)") + theme_bw()
+sleep_data %>% ggplot()+geom_point(aes(x = `In Bed Time`, y = `Efficiency`, color = 'in_bed')) + geom_point(aes(x = `Out Bed Time`, y = `Efficiency`, color = 'out_bed')) 
 
 ```
