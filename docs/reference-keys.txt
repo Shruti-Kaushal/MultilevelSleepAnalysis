@@ -25,11 +25,7 @@ distribution-of-sleep-quality-metric
 establishing-direct-indirect-effects-on-sleep-quality
 bed-time-does-not-affect-sleep-quality
 does-your-build-affect-your-sleep
-correlation-with-other-factors
 activity-vs-sleep-quality
-biofactors-vs-sleep-quality
 interactive-component
 conclusion
 discussion
-correlation-with-other-factors
-activity-vs-sleep-quality

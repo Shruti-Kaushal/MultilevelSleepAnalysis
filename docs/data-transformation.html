@@ -118,11 +118,7 @@
 <ul>
 <li class="chapter" data-level="5.2.1" data-path="results.html"><a href="results.html#bed-time-does-not-affect-sleep-quality"><i class="fa fa-check"></i><b>5.2.1</b> Bed Time Does Not Affect Sleep Quality</a></li>
 <li class="chapter" data-level="5.2.2" data-path="results.html"><a href="results.html#does-your-build-affect-your-sleep"><i class="fa fa-check"></i><b>5.2.2</b> Does Your Build Affect Your Sleep?</a></li>
-</ul></li>
-<li class="chapter" data-level="5.3" data-path="results.html"><a href="results.html#correlation-with-other-factors"><i class="fa fa-check"></i><b>5.3</b> Correlation with Other Factors</a>
-<ul>
-<li class="chapter" data-level="5.3.1" data-path="results.html"><a href="results.html#activity-vs-sleep-quality"><i class="fa fa-check"></i><b>5.3.1</b> Activity vs Sleep Quality</a></li>
-<li class="chapter" data-level="5.3.2" data-path="results.html"><a href="results.html#biofactors-vs-sleep-quality"><i class="fa fa-check"></i><b>5.3.2</b> Biofactors vs Sleep Quality</a></li>
+<li class="chapter" data-level="5.2.3" data-path="results.html"><a href="results.html#activity-vs-sleep-quality"><i class="fa fa-check"></i><b>5.2.3</b> Activity vs Sleep Quality</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>6</b> Interactive component</a></li>
@@ -222,7 +218,7 @@
 <li><p>Calculate duration for each activity: To figure the total time each user spent on each activity, we calculate time intervals (<code>End</code> - <code>Start</code>) between different activities in seconds.</p></li>
 <li><p>Plotting: We explored the dataset using <code>geom_tile</code> in ggplot2 package. From the plot below, we noticed that user 21 was laying down for quite a long time.</p></li>
 </ol>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-6-1.png" width="960" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-9-1.png" width="960" /></p>
 <!-- ## Questionnaire -->
 <!-- For this part, the dataset contains the answer of a total of 7 questionnaires for each user. The questionnaires examined users' anxiety, sleep quality, stress, emotion, etc, in order to understand the users' behavior. -->
 <!-- No data cleaning is needed for this part. -->
@@ -267,7 +263,7 @@
 <div id="transformation-process-2" class="section level3" number="3.4.2">
 <h3><span class="header-section-number">3.4.2</span> Transformation process</h3>
 <p>We calculated the difference in chemical concentration between sample collected before sleep and after waking up per each participant.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 </div>
 </div>
 <div id="user-info" class="section level2" number="3.5">
@@ -346,6 +342,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

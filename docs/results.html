@@ -33,7 +33,7 @@
   
 <link rel="prev" href="missing-values.html"/>
 <link rel="next" href="interactive-component.html"/>
-<script src="libs/header-attrs-2.9/header-attrs.js"></script>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -160,7 +160,7 @@
 <li>Movement, Fragmentation and Sleep Fragmentation index are highly correlated and this relationship is statistically significant. This observation is not surprising as sleep fragmentation index is defined as the ratio of movement index and fragmentation index</li>
 <li>Wake After Sleep Onset (WASO) is strongly correlated to almost every variable with the direction being positive except for Latent Efficiency</li>
 </ol>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 </div>
 <div id="distribution-of-variables" class="section level3" number="5.1.2">
 <h3><span class="header-section-number">5.1.2</span> Distribution of Variables</h3>
@@ -177,25 +177,25 @@ M \alpha (\frac{TST}{AverageTimeSpentAwake} + \frac{1}{SleepFragmentationIndex})
 \end{align*}\]</span></p>
 <p>The units of the right hand side are “per hh:mm” (because of addition of latency). Since this expression was constructed using just the correlation, to establish a stronger relationship i.e. equality, it is important to look at the distribution of each of these variables. It might happen that even though intuitively one might think that a variable should have an effect on the sleep quality but if in reality the distribution of that variable turns out to be narrow then including it would not be a good idea. We would like to stress that the number of samples available to us are very less to do this sort of analysis without any selection bias i.e. inferences might hold for this small cohort but not necessarily for a bigger cohort.</p>
 <p>We defined sleep ratio to be the ratio of TST and Average Time Spent Awake. The latter was calculated by simply multiplying Number of Awakengings with the Average Awakening Length. The box plot below shows the distribution of the Sleep Ratio and Sleep Fragmentation Index. Indeed both ratios seem to have a positive variance.
-<img src="finalproj_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<img src="finalproj_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <p>Since Latency is the time taken by the user to fall asleep once he gets into the bed, we wanted to visualize it separately. We noticed that a lot of the users had a latency time of 0 mins. This seems a little absurd given its definition so we assumed that any user that fell asleep within a minute had a latency of 0. This creates a problem since the metric is inversely proportional to latency and if it has a value of zero, it would mean the absolute value of M would be infinity. Clearly, this isn’t possible and so when replacing proportionality with equality, we add a dummy term to latency.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 <p>We define the sleep quality of a user as -</p>
 <p><span class="math display">\[\begin{align*}
 M = (\frac{TST}{AverageTimeSpentAwake} + \frac{1}{SleepFragmentationIndex}).(\frac{1}{Latency + 1})
 \end{align*}\]</span></p>
-<p>The dummy term takes care of the case when Latency is 0.</p>
+<p>The dummy term takes care of the case when Latency is 0. In the case that other variables are 0, we simply replace them by 1. We did not add a dummy terms as the none of the users in our cohort had no sleep (TST) or did not get woken up in the middle of their sleep (Number of Awakenings). Also, this metric can never be negative since all the variables involved are non-negative.</p>
 </div>
 <div id="distribution-of-sleep-quality-metric" class="section level3" number="5.1.3">
 <h3><span class="header-section-number">5.1.3</span> Distribution of Sleep Quality Metric</h3>
 <p>We calculated the sleep quality metric for each of the users and visualized the results as a boxplot to be able to discern its distribution. The lowest value is 0.5902 corresponding to user 12 and the largest is 16.33 corresponding to user 12, who is also an outlier. We are particularly interested in investigating users that fall below the lower hinge and above the upper hinge. The former group includes users 2, 3, 8, 10 and 16. While the group with M &gt; 6.6874 includes users 1, 12, 14, 20 and 21. The rest lie within the 25th and 75th percentile of the metric data.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <pre><code>##         min lower-hinge      median upper-hinge         max 
 ##   0.5902389   1.2815906   3.0779926   6.6873567  16.3742315</code></pre>
 <p>Having defined the metric, we wanted to do a sanity check that it indeed is capturing the quality of sleep. The only way to do that was to compare the values of Efficiency variable to M. Efficiency is defined as the percentage of Total Sleep Time upon total sleep in bed. The reader might think that the metric defined above could have been made way simpler if Efficiency was included but we had motivation to not include it altogether. One of the things that pops out is the Efficiency is not strongly correlated to both of the variables TST and Total Minutes in Bed. This seems absurd and since we couldn’t explain why this was happening we ultimately decided to remove efficiency from the equation and instead use it as a sanity check. It is only logical to think Efficiency and sleep quality should be positively correlated.</p>
 <p>To test the relationship, we generated a log-log scale plot. The motivation behind using a log10 scale over the normal scale was first to normalize the values and second to see how the magnitudes of the two variables are related. The regression model is statistically significant with a p-value of 3.681e-05 and the positive slope indicates that as the sleep quality increases, so does the efficiency. However, caution needs to be exercised while making this conclusion as the adjusted R square value is 0.6 which means that the model captures less than 70% of the variance.</p>
 <p>In summary, the metric defined by the formula above seems to be capturing the information that directly affects the sleep quality of a user. Moreover, the statistical significance combined with the positive slope of the regression model and line prove to be a sanity check for our metric.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 <pre><code>## 
 ## Call:
 ## lm(formula = log(mydata$Efficiency, 10) ~ log(mydata$M, 10), 
@@ -226,7 +226,7 @@ M = (\frac{TST}{AverageTimeSpentAwake} + \frac{1}{SleepFragmentationIndex}).(\fr
 <p>Time and again the society and many cultures have encouraged the practice going to bed early and rising early for a healthy life and better sleep. We wanted to test this hypothesis and see if bed time does have an effect on the quality of sleep.</p>
 <p>From the scatterplot below, we concluded that in fact, bed time does not have any impact on the sleep quality. There is no linear relationship; some participants who went to bed later than “usual” have a higher sleep quality than most participants who went to bed early. Similar conclusion can be made for the time a participant got out of bed. The data has high variance and so we cannot conclude that a relationship between bed times and sleep quality exists.</p>
 <p>This conclusion can be justified logically as well - if anything should affect the sleep quality it most likely would be the amount of tiredness the participant feels and total time they slept the day before. Given these quantities, bed time shouldn’t affect sleep at all. Since the dataset does not measure these quantities we can assume them to be latent variables. In the coming sections we will analyze the activity log of each user with respect to their sleep quality.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-8-1.png" width="672" /><img src="finalproj_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 </div>
 <div id="does-your-build-affect-your-sleep" class="section level3" number="5.2.2">
 <h3><span class="header-section-number">5.2.2</span> Does Your Build Affect Your Sleep?</h3>
@@ -236,56 +236,8 @@ M = (\frac{TST}{AverageTimeSpentAwake} + \frac{1}{SleepFragmentationIndex}).(\fr
 </div>
 <div id="activity-vs-sleep-quality" class="section level3" number="5.2.3">
 <h3><span class="header-section-number">5.2.3</span> Activity vs Sleep Quality</h3>
-<pre><code>##                 user undefined sleeping laying down sitting light mvmnt medium
-## user              NA     FALSE    FALSE       FALSE   FALSE       FALSE  FALSE
-## undefined      FALSE        NA    FALSE       FALSE   FALSE        TRUE  FALSE
-## sleeping       FALSE     FALSE       NA       FALSE   FALSE       FALSE  FALSE
-## laying down    FALSE     FALSE    FALSE          NA   FALSE       FALSE  FALSE
-## sitting        FALSE     FALSE    FALSE       FALSE      NA       FALSE  FALSE
-## light mvmnt    FALSE      TRUE    FALSE       FALSE   FALSE          NA  FALSE
-## medium         FALSE     FALSE    FALSE       FALSE   FALSE       FALSE     NA
-## heavy          FALSE     FALSE    FALSE       FALSE   FALSE       FALSE  FALSE
-## eating         FALSE     FALSE    FALSE       FALSE    TRUE       FALSE  FALSE
-## small scr.usg  FALSE     FALSE    FALSE       FALSE   FALSE       FALSE  FALSE
-## large scr.usg  FALSE     FALSE    FALSE       FALSE   FALSE       FALSE   TRUE
-## caff. consump. FALSE      TRUE    FALSE       FALSE   FALSE        TRUE  FALSE
-## smoking        FALSE     FALSE    FALSE       FALSE   FALSE       FALSE  FALSE
-## alc. consump.  FALSE     FALSE    FALSE       FALSE   FALSE       FALSE  FALSE
-## M              FALSE     FALSE    FALSE       FALSE    TRUE       FALSE  FALSE
-##                heavy eating small scr.usg large scr.usg caff. consump. smoking
-## user           FALSE  FALSE         FALSE         FALSE          FALSE   FALSE
-## undefined      FALSE  FALSE         FALSE         FALSE           TRUE   FALSE
-## sleeping       FALSE  FALSE         FALSE         FALSE          FALSE   FALSE
-## laying down    FALSE  FALSE         FALSE         FALSE          FALSE   FALSE
-## sitting        FALSE   TRUE         FALSE         FALSE          FALSE   FALSE
-## light mvmnt    FALSE  FALSE         FALSE         FALSE           TRUE   FALSE
-## medium         FALSE  FALSE         FALSE          TRUE          FALSE   FALSE
-## heavy             NA  FALSE         FALSE         FALSE          FALSE   FALSE
-## eating         FALSE     NA         FALSE         FALSE          FALSE    TRUE
-## small scr.usg  FALSE  FALSE            NA         FALSE          FALSE   FALSE
-## large scr.usg  FALSE  FALSE         FALSE            NA          FALSE   FALSE
-## caff. consump. FALSE  FALSE         FALSE         FALSE             NA   FALSE
-## smoking        FALSE   TRUE         FALSE         FALSE          FALSE      NA
-## alc. consump.  FALSE  FALSE         FALSE         FALSE          FALSE    TRUE
-## M              FALSE  FALSE         FALSE         FALSE          FALSE   FALSE
-##                alc. consump.     M
-## user                   FALSE FALSE
-## undefined              FALSE FALSE
-## sleeping               FALSE FALSE
-## laying down            FALSE FALSE
-## sitting                FALSE  TRUE
-## light mvmnt            FALSE FALSE
-## medium                 FALSE FALSE
-## heavy                  FALSE FALSE
-## eating                 FALSE FALSE
-## small scr.usg          FALSE FALSE
-## large scr.usg          FALSE FALSE
-## caff. consump.         FALSE FALSE
-## smoking                 TRUE FALSE
-## alc. consump.             NA FALSE
-## M                      FALSE    NA</code></pre>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 
 </div>
 </div>
