@@ -163,7 +163,6 @@ ggplot(user_info_temp, aes(`Height`,`M`)) + geom_point() + labs(title = "Sleep Q
 ggplot(user_info_temp, aes(`Weight`,`M`)) + geom_point() + labs(title = "Sleep Quality vs Weight of Participants",y = "Sleep Qualtiy") + theme_bw()
 ggplot(user_info_temp, aes(`Gender`,`M`)) + geom_point() + labs(title = "Sleep Quality vs Gender of Participants") +theme_bw()
 ```
-=======
 
 ## Correlation with Other Factors
 
@@ -171,9 +170,12 @@ In this part, we will explore other possible factors that affected sleeping qual
 
 ### Activity vs Sleep Quality
 ```{r}
-activity_duration
-difference
+df_act = activity_duration [-2] %>% pivot_wider(names_from = category, values_from = total, values_fill = 0)
+df_act['user'] = lapply(df_act['user'],function(x) as.numeric(str_remove(x, "user_")))
+
+
+heatmap.2(x = df_act.coeff, symm = TRUE, labRow = abbreviate(rownames(df_act.coeff), minlength = 24), labCol = abbreviate(colnames(df_act.coeff), minlength = 24), col = palette, margins=c(8,10), srtCol=45, main = "heatmap", density.info="none", trace="none")
 ```
 
 ### Biofactors vs Sleep Quality
->>>>>>> Stashed changes
+
