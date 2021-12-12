@@ -117,6 +117,7 @@
 <li class="chapter" data-level="5.2" data-path="results.html"><a href="results.html#establishing-direct-indirect-effects-on-sleep-quality"><i class="fa fa-check"></i><b>5.2</b> Establishing Direct &amp; Indirect Effects on Sleep Quality</a>
 <ul>
 <li class="chapter" data-level="5.2.1" data-path="results.html"><a href="results.html#bed-time-does-not-affect-sleep-quality"><i class="fa fa-check"></i><b>5.2.1</b> Bed Time Does Not Affect Sleep Quality</a></li>
+<li class="chapter" data-level="5.2.2" data-path="results.html"><a href="results.html#does-your-build-affect-your-sleep"><i class="fa fa-check"></i><b>5.2.2</b> Does Your Build Affect Your Sleep?</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>6</b> Interactive component</a></li>
@@ -153,6 +154,7 @@
 <p>This project is focused on characterizing the sleep quality of 20 healthy young adults using numerous variables like age, sex, sleep fragmentation index, mental state and heart rate to name a few. There are variables that seems to have a direct relationship with sleep, for example, sleep fragmentation index and the time spent in bed, but there are others that one wouldn’t suspect being related, like height or weight of the user. Biologists may argue that they are indeed related through many different paths but as data scientists we would like to uncover those through the data.</p>
 <p>The first step is to formulate a metric for the quality of sleep using only the variables that we know are correlated to it. This would mean defining a metric over the set of variables in the sleep.csv file of every user. Preliminary analysis is done to prevent multicollinearity.</p>
 <p>Once we have established an tested our metric, we will move on to looking into how other variables affect the distribution of the metric across users. This section will be aimed at answering questions about correlation and causality. Our ultimate goal is to identify any confounders if any and quantify their relationship with the metric we define. However, we are cognizant of the fact that the cohort size is extremely small and the results might be “overfitting” the data. That said, we were not able to find any other datasets with the same level of sampling measurements which is why we exercise caution when making all the conclusions in the upcoming sections.</p>
+<p>Note: Since we are dealing with continuous categorical data, we use scatterplots and linear regression models to establish correlations and/or causal effects</p>
 
 </div>
             </section>

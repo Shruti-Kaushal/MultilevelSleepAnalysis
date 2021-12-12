@@ -117,6 +117,7 @@
 <li class="chapter" data-level="5.2" data-path="results.html"><a href="results.html#establishing-direct-indirect-effects-on-sleep-quality"><i class="fa fa-check"></i><b>5.2</b> Establishing Direct &amp; Indirect Effects on Sleep Quality</a>
 <ul>
 <li class="chapter" data-level="5.2.1" data-path="results.html"><a href="results.html#bed-time-does-not-affect-sleep-quality"><i class="fa fa-check"></i><b>5.2.1</b> Bed Time Does Not Affect Sleep Quality</a></li>
+<li class="chapter" data-level="5.2.2" data-path="results.html"><a href="results.html#does-your-build-affect-your-sleep"><i class="fa fa-check"></i><b>5.2.2</b> Does Your Build Affect Your Sleep?</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="interactive-component.html"><a href="interactive-component.html"><i class="fa fa-check"></i><b>6</b> Interactive component</a></li>
@@ -225,6 +226,12 @@ M = (\frac{TST}{AverageTimeSpentAwake} + \frac{1}{SleepFragmentationIndex}).(\fr
 <p>From the scatterplot below, we concluded that in fact, bed time does not have any impact on the sleep quality. There is no linear relationship; some participants who went to bed later than “usual” have a higher sleep quality than most participants who went to bed early. Similar conclusion can be made for the time a participant got out of bed. The data has high variance and so we cannot conclude that a relationship between bed times and sleep quality exists.</p>
 <p>This conclusion can be justified logically as well - if anything should affect the sleep quality it most likely would be the amount of tiredness the participant feels and total time they slept the day before. Given these quantities, bed time shouldn’t affect sleep at all. Since the dataset does not measure these quantities we can assume them to be latent variables. In the coming sections we will analyze the activity log of each user with respect to their sleep quality.</p>
 <p><img src="finalproj_files/figure-html/unnamed-chunk-22-1.png" width="672" /><img src="finalproj_files/figure-html/unnamed-chunk-22-2.png" width="672" /></p>
+</div>
+<div id="does-your-build-affect-your-sleep" class="section level3" number="5.2.2">
+<h3><span class="header-section-number">5.2.2</span> Does Your Build Affect Your Sleep?</h3>
+<p>It has been seen that as a person ages their quality of sleep deteriorates. This is attributed to many things pertaining to the process of aging that results the gradual death of many cells including neurons in the brain. To test this hypothesis, we decided to analyze the relationship between age and our sleep quality metric. It is surprising to see a general trend appear, excluding certain outliers. Sleep quality seems to be linearly correlated to age till a threshold of 30 years. We see a sharp decline in sleep quality for participants who are older than 30 years. Moreover, sleep quality seems to remain more or less constant beyond that threshold.</p>
+<p>Does that mean we can conclude that as a person ages their sleep quality deteriorates? Not entirely, as the cohort sample age is extremely skewed towards the left hand side i.e. we have more participants that are young adults in comparison to those who are middle aged. Again, we make this conclusion bearing in mind that it might fail with the addition of participants that are middle aged.</p>
+<p><img src="finalproj_files/figure-html/figures-side-1.png" width="50%" /><img src="finalproj_files/figure-html/figures-side-2.png" width="50%" /><img src="finalproj_files/figure-html/figures-side-3.png" width="50%" /><img src="finalproj_files/figure-html/figures-side-4.png" width="50%" /></p>
 
 </div>
 </div>
