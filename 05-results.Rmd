@@ -172,10 +172,10 @@ df_act['user'] = lapply(df_act['user'],function(x) as.numeric(str_remove(x, "use
 # filter out user 11
 df_act = df_act %>% arrange(user) %>% filter(user!=11)
 df_act['M'] = mydata$M
-df_act.rcorr = rcorr(as.matrix(df_act))
+df_act.rcorr = rcorr(as.matrix(df_act[-1]))
 df_act.coeff = df_act.rcorr$r
 df_act.p = df_act.rcorr$P
-df_act.p < 0.05
+
 heatmap.2(x = df_act.coeff, symm = TRUE, key = TRUE,labRow = abbreviate(rownames(df_act.coeff), minlength = 24), labCol = abbreviate(colnames(df_act.coeff), minlength = 24), col = palette, margins=c(8,10), srtCol=45, main = "heatmap", density.info="none", trace="none")
 ```
 
@@ -188,7 +188,7 @@ df_pos$Inclinometer.Lying = as.numeric(df_pos$Inclinometer.Lying)
 df_pos$Inclinometer.Off = as.numeric(df_pos$Inclinometer.Off)
 df_pos$Inclinometer.Sitting = as.numeric(df_pos$Inclinometer.Sitting)
 df_pos$Inclinometer.Standing = as.numeric(df_pos$Inclinometer.Standing)
-df_pos.rcorr = rcorr(as.matrix(df_pos))
+df_pos.rcorr = rcorr(as.matrix(df_pos[-1]))
 df_pos.coeff = df_pos.rcorr$r
 df_pos.p = df_pos.rcorr$P
 
