@@ -1,3 +1,84 @@
+--- 
+title: "MultilevelSleepAnalysis"
+author: "Shruti Kaushal & Clarissa Tai"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+---
+--- 
+title: "MultilevelSleepAnalysis"
+author: "Shruti Kaushal & Clarissa Tai"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+---
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+# Introduction
+
+This project is focused on characterizing the sleep quality of 20 healthy young adults using numerous variables like age, sex, sleep fragmentation index, mental state and heart rate to name a few. There are variables that seems to have a direct relationship with sleep, for example, sleep fragmentation index and the time spent in bed, but there are others that one wouldn't suspect being related, like height or weight of the user. Biologists may argue that they are indeed related through many different paths but as data scientists we would like to uncover those through the data.
+
+The first step is to formulate a metric for the quality of sleep using only the variables that we know are correlated to it. This would mean defining a metric over the set of variables in the sleep.csv file of every user. Preliminary analysis is done to prevent multicollinearity. 
+
+Once we have established an tested our metric, we will move on to looking into how other variables affect the distribution of the metric across users. This section will be aimed at answering questions about correlation and causality. Our ultimate goal is to identify any confounders if any and quantify their relationship with the metric we define. However, we are cognizant of the fact that the cohort size is extremely small and the results might be "overfitting" the data. That said, we were not able to find any other datasets with the same level of sampling measurements which is why we exercise caution when making all the conclusions in the upcoming sections.
+
+Note: Since we are dealing with continuous categorical data, we use scatterplots and linear regression models to establish correlations and/or causal effects
+
+<!--chapter:end:index.Rmd-->
+
+
+# Data sources
+
+Placeholder
+
+
+## Dataset Overview
+## Data Collection
+
+<!--chapter:end:02-data.Rmd-->
+
+
+# Data transformation
+
+Placeholder
+
+
+## Sleep
+## Actigraph
+### Definition and explanation of each column
+### Transformation process:
+## Activity
+### Definition and explanation of each column
+### Transformation process:
+## Saliva
+### Definition and explanation of each column
+### Transformation process
+## User info
+### Definition and explanation of each column
+
+<!--chapter:end:03-cleaning.Rmd-->
+
+
+# Missing values
+
+Placeholder
+
+
+## Missing Value Plot
+
+<!--chapter:end:04-missing.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
 # Results
 The results chapter is broadly divided into two sections - one for each of the goals of this project. The first section will document all preliminary findings related to the sleep measurements and the procedure of defining a metric for quantifying quality of sleep.
 
@@ -121,6 +202,7 @@ summary(model)
 ```
 
 
+<<<<<<< Updated upstream
 ## Establishing Direct & Indirect Effects on Sleep Quality
 Having established a metric and quantified its distribution, we want to identify variables that have a direct or indirect relationship with sleep quality. These relationships might not necessarily be causal in nature as correlation does not imply causation. 
 
@@ -177,4 +259,40 @@ heatmap.2(x = df_act.coeff, symm = TRUE, labRow = abbreviate(rownames(df_act.coe
 ```
 
 ### Biofactors vs Sleep Quality
+
+
+<!--chapter:end:05-results.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Interactive component
+
+
+
+<!--chapter:end:06-interactive.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Conclusion
+
+## Discussion
+
+(1) Expand on imputing missing values for sleep csv of user 11
+(2) Another area of discussion, which is beyond the scope of this project is to learn a DAG using all the variables and perform causal inference to identify confounders. The sleep metric can then be defined using the minimum control set or the sufficient set for the variables in the sleep.cs file. This definition will implicitly apply at least some of the relationships we identified in our results section
+(3) Is it possible to use other kinds of plots to establish dependencies and correlations?
+(4) Include the files that have been excluded from the analysis like questionnaires
+(5) Given the relationships identified, can we predict the sleep quality of a new participant who joins the cohort?
+
+
+<!--chapter:end:07-conclusion.Rmd-->
 
