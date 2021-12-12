@@ -83,7 +83,7 @@ We define the sleep quality of a user as -
 M = (\frac{TST}{AverageTimeSpentAwake} + \frac{1}{SleepFragmentationIndex}).(\frac{1}{Latency + 1})
 \end{align*}
 
-The dummy term takes care of the case when Latency is 0. 
+The dummy term takes care of the case when Latency is 0. In the case that other variables are 0, we simply replace them by 1. We did not add a dummy terms as the none of the users in our cohort had no sleep (TST) or did not get woken up in the middle of their sleep (Number of Awakenings).
 
 ### Distribution of Sleep Quality Metric
 
@@ -136,7 +136,7 @@ This conclusion can be justified logically as well - if anything should affect t
 ```{r}
 sleep %>% ggplot()+geom_point(aes(x = `In.Bed.Time`, y = `M`, color = 'in_bed')) + geom_point(aes(x = `Out.Bed.Time`, y = `M`, color = 'out_bed')) + theme_bw()
 
-sleep_data %>% ggplot()+geom_point(aes(x = `In Bed Time`, y = `Efficiency`, color = 'in_bed')) + geom_point(aes(x = `Out Bed Time`, y = `Efficiency`, color = 'out_bed')) + theme_bw()
+sleep_data %>% ggplot()+geom_point(aes(x = `In Bed Time`, y = `Efficiency`, color = 'in_bed')) + geom_point(aes(x = `Out Bed Time`, y = `Efficiency`, color = 'out_bed')) +  scale_x_continuous(breaks = scales::pretty_breaks(n = 17)) + theme_bw()
 
 ```
 
@@ -163,18 +163,16 @@ ggplot(user_info_temp, aes(`Weight`,`M`)) + geom_point() + labs(title = "Sleep Q
 ggplot(user_info_temp, aes(`Gender`,`M`)) + geom_point() + labs(title = "Sleep Quality vs Gender of Participants") +theme_bw()
 ```
 
-## Correlation with Other Factors
 
-In this part, we will explore other possible factors that affected sleeping quality, using the metric defined above. 
 
 ### Activity vs Sleep Quality
 ```{r}
 df_act = activity_duration [-2] %>% pivot_wider(names_from = category, values_from = total, values_fill = 0)
 df_act['user'] = lapply(df_act['user'],function(x) as.numeric(str_remove(x, "user_")))
 
+# no column named coeff
 
-heatmap.2(x = df_act.coeff, symm = TRUE, labRow = abbreviate(rownames(df_act.coeff), minlength = 24), labCol = abbreviate(colnames(df_act.coeff), minlength = 24), col = palette, margins=c(8,10), srtCol=45, main = "heatmap", density.info="none", trace="none")
+# heatmap.2(x = df_act.coeff, symm = TRUE, labRow = abbreviate(rownames(df_act.coeff), minlength = 24), labCol = abbreviate(colnames(df_act.coeff), minlength = 24), col = palette, margins=c(8,10), srtCol=45, main = "heatmap", density.info="none", trace="none")
 ```
 
-### Biofactors vs Sleep Quality
 
