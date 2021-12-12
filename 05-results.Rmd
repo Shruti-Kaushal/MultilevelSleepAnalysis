@@ -16,6 +16,7 @@ Formulating a metric requires an extensive analysis of the spread of the data an
 ```{r}
 library(Hmisc)
 library(corrplot)
+library(gplots)
 load("./data/RData/data_MMASH_cleaned.RData")
 sleep_data <- read.csv('data/raw/multilevel-monitoring-of-activity-and-sleep-in-healthy-people-1.0.0/main_sleep_transformed.csv')
 
@@ -34,7 +35,7 @@ mydata.rcorr = rcorr(as.matrix(mydata))
 mydata.coeff = mydata.rcorr$r
 mydata.p = mydata.rcorr$P
 palette = colorRampPalette(c("darkblue", "white", "darkred")) (20)
-heatmap(x = mydata.coeff, col = palette, symm = TRUE)
+heatmap.2(x = mydata.coeff, symm = TRUE, labRow = abbreviate(rownames(mydata.coeff), minlength = 24), labCol = abbreviate(colnames(mydata.coeff), minlength = 24), col = palette, margins=c(10,16), srtCol=45,main = "heatmap", density.info="none", trace="none")
 corrplot(mydata.coeff)
 ```
 

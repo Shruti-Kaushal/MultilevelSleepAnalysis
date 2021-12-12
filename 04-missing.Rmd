@@ -74,7 +74,8 @@ missingValuePlot <- function(df, mode = "count", title = 'Missing value patterns
       scale_x_discrete(labels = abbreviate) +
       theme_bw() + 
       theme(panel.grid.minor.x = element_blank(),
-            panel.grid.major.x = element_blank()) +
+            panel.grid.major.x = element_blank(), 
+            axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
       labs(title = title, x = " ", y = "num rows missing")
   }else{ # percentage
     p_col = col_count %>% ggplot(aes(x = reorder(col,-count), y = count)) + 
@@ -122,7 +123,7 @@ missingValuePlot <- function(df, mode = "count", title = 'Missing value patterns
     scale_x_discrete(labels = abbreviate) +
     scale_fill_manual(values = c('grey', 'purple')) +
     scale_alpha_manual(values = c(0.5,1)) +
-    theme(panel.background = element_blank() )+
+    theme(panel.background = element_blank(), axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))+
     ylab('missing pattern') +
     xlab('variable')
   
@@ -139,7 +140,7 @@ missingValuePlot <- function(df, mode = "count", title = 'Missing value patterns
 ```
 
 
-```{r, fig.width=10, fig.height=8}
+```{r}
 # load data from previous stage
 load("./data/RData/data_MMASH_cleaned.RData")
 # plot
