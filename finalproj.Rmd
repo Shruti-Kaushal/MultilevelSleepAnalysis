@@ -1,3 +1,84 @@
+--- 
+title: "MultilevelSleepAnalysis"
+author: "Shruti Kaushal & Clarissa Tai"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+---
+--- 
+title: "MultilevelSleepAnalysis"
+author: "Shruti Kaushal & Clarissa Tai"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+---
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+# Introduction
+
+This project is focused on characterizing the sleep quality of 20 healthy young adults using numerous variables like age, sex, sleep fragmentation index, mental state and heart rate to name a few. There are variables that seems to have a direct relationship with sleep, for example, sleep fragmentation index and the time spent in bed, but there are others that one wouldn't suspect being related, like height or weight of the user. Biologists may argue that they are indeed related through many different paths but as data scientists we would like to uncover those through the data.
+
+The first step is to formulate a metric for the quality of sleep using only the variables that we know are correlated to it. This would mean defining a metric over the set of variables in the sleep.csv file of every user. Preliminary analysis is done to prevent multicollinearity. 
+
+Once we have established an tested our metric, we will move on to looking into how other variables affect the distribution of the metric across users. This section will be aimed at answering questions about correlation and causality. Our ultimate goal is to identify any confounders if any and quantify their relationship with the metric we define. However, we are cognizant of the fact that the cohort size is extremely small and the results might be "overfitting" the data. That said, we were not able to find any other datasets with the same level of sampling measurements which is why we exercise caution when making all the conclusions in the upcoming sections.
+
+Note: Since we are dealing with continuous categorical data, we use scatterplots and linear regression models to establish correlations and/or causal effects
+
+<!--chapter:end:index.Rmd-->
+
+
+# Data sources
+
+Placeholder
+
+
+## Dataset Overview
+## Data Collection
+
+<!--chapter:end:02-data.Rmd-->
+
+
+# Data transformation
+
+Placeholder
+
+
+## Sleep
+## Actigraph
+### Definition and explanation of each column
+### Transformation process:
+## Activity
+### Definition and explanation of each column
+### Transformation process:
+## Saliva
+### Definition and explanation of each column
+### Transformation process
+## User info
+### Definition and explanation of each column
+
+<!--chapter:end:03-cleaning.Rmd-->
+
+
+# Missing values
+
+Placeholder
+
+
+## Missing Value Plot
+
+<!--chapter:end:04-missing.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
 # Results
 The results chapter is broadly divided into two sections - one for each of the goals of this project. The first section will document all preliminary findings related to the sleep measurements and the procedure of defining a metric for quantifying quality of sleep.
 
@@ -45,7 +126,7 @@ mydata['user'] <- c(1,2,3,4,5,6,7,8,9,10,12,13,14,15,16,17,18,19,20,21,22)
 ```
 
 ### Distribution of Variables
-The clustering of heatmap showed that there are 3 clear clusters (if we cut across the tree right below the highest line connecting efficiency and another cluser) which are consistent with the observations we made. To avoid multicollinearity, we decided to pick 1-2 variables from each of the clusters depending on the strength and statistical significance of the correlation coefficient. Let's denote our metric with M and is defined as a characterization of quality of sleep. Intuitively, M should be higher for users that are able to sleep through the night and do not have any trouble falling asleep. Expanding this thought process further and combining it with the correlation analysis, we came up with the following associations - 
+The clustering of heatmap showed that there are 3 clear clusters which are consistent with the observations we made. To avoid multicollinearity, we decided to pick 1-2 variables from each of the clusters depending on the strength and statistical significance of the correlation coefficient. Let's denote our metric with M and is defined as a characterization of quality of sleep. Intuitively, M should be higher for users that are able to sleep through the night and do not have any trouble falling asleep. Expanding this thought process further and combining it with the correlation analysis, we came up with the following associations - 
 
 (1) M $\alpha$ Total Sleep Time (TST)
 (2) M $\alpha$ $\frac{1}{SleepFragmentation Index}$
@@ -83,7 +164,7 @@ We define the sleep quality of a user as -
 M = (\frac{TST}{AverageTimeSpentAwake} + \frac{1}{SleepFragmentationIndex}).(\frac{1}{Latency + 1})
 \end{align*}
 
-The dummy term takes care of the case when Latency is 0. In the case that other variables are 0, we simply replace them by 1. We did not add a dummy terms as the none of the users in our cohort had no sleep (TST) or did not get woken up in the middle of their sleep (Number of Awakenings). Also, this metric can never be negative since all the variables involved are non-negative.
+The dummy term takes care of the case when Latency is 0. In the case that other variables are 0, we simply replace them by 1. We did not add a dummy terms as the none of the users in our cohort had no sleep (TST) or did not get woken up in the middle of their sleep (Number of Awakenings).
 
 ### Distribution of Sleep Quality Metric
 
@@ -134,14 +215,9 @@ From the scatterplot below, we concluded that in fact, bed time does not have an
 This conclusion can be justified logically as well - if anything should affect the sleep quality it most likely would be the amount of tiredness the participant feels and total time they slept the day before. Given these quantities, bed time shouldn't affect sleep at all. Since the dataset does not measure these quantities we can assume them to be latent variables. In the coming sections we will analyze the activity log of each user with respect to their sleep quality.
 
 ```{r}
-# formatting sleep_data
-sleep_data$`Out Bed Date`[sleep_data$`Out Bed Date` == 1] <- 2
-sleep_data$In.Bed.Time = string2time(sleep_data$`In Bed Time`, format = "%H:%M") + lubridate::days(sleep_data$`In Bed Date`)
-sleep_data$Out.Bed.Time = string2time(sleep_data$`Out Bed Time`, format = "%H:%M") + lubridate::days(sleep_data$`Out Bed Date`)
-sleep_data$M = mydata$M
+sleep %>% ggplot()+geom_point(aes(x = `In.Bed.Time`, y = `M`, color = 'in_bed')) + geom_point(aes(x = `Out.Bed.Time`, y = `M`, color = 'out_bed')) + theme_bw()
 
-
-sleep_data %>% ggplot()+geom_point(aes(x = `In.Bed.Time`, y = `M`, color = 'in_bed_time')) + geom_point(aes(x = `Out.Bed.Time`, y = `M`, color = 'out_bed_time')) + labs(title = "Sleep Quality vs Bed Time", x = "Time (hh:mm)", y = "Sleep Quality (M)") + theme_bw()
+sleep_data %>% ggplot()+geom_point(aes(x = `In Bed Time`, y = `Efficiency`, color = 'in_bed')) + geom_point(aes(x = `Out Bed Time`, y = `Efficiency`, color = 'out_bed')) +  scale_x_continuous(breaks = scales::pretty_breaks(n = 17)) + theme_bw()
 
 ```
 
@@ -207,3 +283,39 @@ ggplot(df_pos, aes(Inclinometer.Standing,M)) + geom_point() + labs(title = "Slee
 ggplot(df_pos, aes(Inclinometer.Sitting,M)) + geom_point() + labs(title = "Sleep Quality vs Time of standing") +theme_bw()
 ggplot(df_pos, aes(Inclinometer.Lying,M)) + geom_point() + labs(title = "Sleep Quality vs Time of standing") +theme_bw()
 ```
+
+<!--chapter:end:05-results.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Interactive component
+
+
+
+<!--chapter:end:06-interactive.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Conclusion
+
+## Discussion
+
+(1) Expand on imputing missing values for sleep csv of user 11
+(2) Another area of discussion, which is beyond the scope of this project is to learn a DAG using all the variables and perform causal inference to identify confounders. The sleep metric can then be defined using the minimum control set or the sufficient set for the variables in the sleep.cs file. This definition will implicitly apply at least some of the relationships we identified in our results section
+(3) Is it possible to use other kinds of plots to establish dependencies and correlations?
+(4) Include the files that have been excluded from the analysis like questionnaires
+(5) Given the relationships identified, can we predict the sleep quality of a new participant who joins the cohort?
+
+
+<!--chapter:end:07-conclusion.Rmd-->
+
