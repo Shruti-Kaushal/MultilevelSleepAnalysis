@@ -200,8 +200,7 @@ df_pos.p = df_pos.rcorr$P
 heatmap.2(x = df_pos.coeff, symm = TRUE, key = TRUE,labRow = abbreviate(rownames(df_pos.coeff), minlength = 15), labCol = abbreviate(colnames(df_pos.coeff), minlength = 15), col = palette, margins=c(8,10), srtCol=45, main = "heatmap", density.info="none", trace="none")
 ```
 
-```{r}
-par(mfrow=c(1,3))  
+```{r, fig.show="hold", out.width="50%"}
 ggplot(df_pos, aes(Inclinometer.Off,M)) + geom_point() + labs(title = "Sleep Quality vs Time of standing") +theme_bw()
 ggplot(df_pos, aes(Inclinometer.Standing,M)) + geom_point() + labs(title = "Sleep Quality vs Time of standing") +theme_bw()
 ggplot(df_pos, aes(Inclinometer.Sitting,M)) + geom_point() + labs(title = "Sleep Quality vs Time of standing") +theme_bw()
