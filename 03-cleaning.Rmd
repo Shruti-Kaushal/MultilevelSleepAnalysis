@@ -13,7 +13,7 @@ library(tidyverse)
 library(tidyr)
 # create function to transform string object to time object for further calculation
 string2time <- function(x, format = "%H:%M"){
-  return(as.POSIXct(x, format = format)) # times(sub(".*\\s+", "",  
+  return(as.POSIXct(x, format = format)) # times(sub(".*\\s+", "",
 }
 ```
 
@@ -63,6 +63,7 @@ sleep$Onset.Time = string2time(sleep$Onset.Time, format = "%H:%M") + lubridate::
 ```{r}
 library(lubridate)
 library(dplyr)
+actigraph[actigraph$day == -29,]$day = 2
 actigraph$time = string2time(actigraph$time, format = "%H:%M:%S") + lubridate::days(actigraph$day)
 # actigraph$duration = lead(actigraph$time) - actigraph$time
 # actigraph$duration.secs = as.numeric(actigraph$duration)

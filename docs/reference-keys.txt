@@ -28,3 +28,5 @@ does-your-build-affect-your-sleep
 interactive-component
 conclusion
 discussion
+correlation-with-other-factors
+activity-vs-sleep-quality
