@@ -83,7 +83,7 @@ We define the sleep quality of a user as -
 M = (\frac{TST}{AverageTimeSpentAwake} + \frac{1}{SleepFragmentationIndex}).(\frac{1}{Latency + 1})
 \end{align*}
 
-The dummy term takes care of the case when Latency is 0. In the case that other variables are 0, we simply replace them by 1. We did not add a dummy terms as the none of the users in our cohort had no sleep (TST) or did not get woken up in the middle of their sleep (Number of Awakenings).
+The dummy term takes care of the case when Latency is 0. In the case that other variables are 0, we simply replace them by 1. We did not add a dummy terms as the none of the users in our cohort had no sleep (TST) or did not get woken up in the middle of their sleep (Number of Awakenings). Also, this metric can never be negative since all the variables involved are non-negative.
 
 ### Distribution of Sleep Quality Metric
 
@@ -134,9 +134,14 @@ From the scatterplot below, we concluded that in fact, bed time does not have an
 This conclusion can be justified logically as well - if anything should affect the sleep quality it most likely would be the amount of tiredness the participant feels and total time they slept the day before. Given these quantities, bed time shouldn't affect sleep at all. Since the dataset does not measure these quantities we can assume them to be latent variables. In the coming sections we will analyze the activity log of each user with respect to their sleep quality.
 
 ```{r}
-sleep %>% ggplot()+geom_point(aes(x = `In.Bed.Time`, y = `M`, color = 'in_bed')) + geom_point(aes(x = `Out.Bed.Time`, y = `M`, color = 'out_bed')) + theme_bw()
+# formatting sleep_data
+sleep_data$`Out Bed Date`[sleep_data$`Out Bed Date` == 1] <- 2
+sleep_data$In.Bed.Time = string2time(sleep_data$`In Bed Time`, format = "%H:%M") + lubridate::days(sleep_data$`In Bed Date`)
+sleep_data$Out.Bed.Time = string2time(sleep_data$`Out Bed Time`, format = "%H:%M") + lubridate::days(sleep_data$`Out Bed Date`)
+sleep_data$M = mydata$M
 
-sleep_data %>% ggplot()+geom_point(aes(x = `In Bed Time`, y = `Efficiency`, color = 'in_bed')) + geom_point(aes(x = `Out Bed Time`, y = `Efficiency`, color = 'out_bed')) +  scale_x_continuous(breaks = scales::pretty_breaks(n = 17)) + theme_bw()
+
+sleep_data %>% ggplot()+geom_point(aes(x = `In.Bed.Time`, y = `M`, color = 'in_bed_time')) + geom_point(aes(x = `Out.Bed.Time`, y = `M`, color = 'out_bed_time')) + labs(title = "Sleep Quality vs Bed Time", x = "Time (hh:mm)", y = "Sleep Quality (M)") + theme_bw()
 
 ```
 
