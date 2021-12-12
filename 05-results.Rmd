@@ -45,7 +45,7 @@ mydata['user'] <- c(1,2,3,4,5,6,7,8,9,10,12,13,14,15,16,17,18,19,20,21,22)
 ```
 
 ### Distribution of Variables
-The clustering of heatmap showed that there are 3 clear clusters which are consistent with the observations we made. To avoid multicollinearity, we decided to pick 1-2 variables from each of the clusters depending on the strength and statistical significance of the correlation coefficient. Let's denote our metric with M and is defined as a characterization of quality of sleep. Intuitively, M should be higher for users that are able to sleep through the night and do not have any trouble falling asleep. Expanding this thought process further and combining it with the correlation analysis, we came up with the following associations - 
+The clustering of heatmap showed that there are 3 clear clusters (if we cut across the tree right below the highest line connecting efficiency and another cluser) which are consistent with the observations we made. To avoid multicollinearity, we decided to pick 1-2 variables from each of the clusters depending on the strength and statistical significance of the correlation coefficient. Let's denote our metric with M and is defined as a characterization of quality of sleep. Intuitively, M should be higher for users that are able to sleep through the night and do not have any trouble falling asleep. Expanding this thought process further and combining it with the correlation analysis, we came up with the following associations - 
 
 (1) M $\alpha$ Total Sleep Time (TST)
 (2) M $\alpha$ $\frac{1}{SleepFragmentation Index}$
