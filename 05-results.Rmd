@@ -83,7 +83,7 @@ We define the sleep quality of a user as -
 M = (\frac{TST}{AverageTimeSpentAwake} + \frac{1}{SleepFragmentationIndex}).(\frac{1}{Latency + 1})
 \end{align*}
 
-The dummy term takes care of the case when Latency is 0. 
+The dummy term takes care of the case when Latency is 0. In the case that other variables are 0, we simply replace them by 1. We did not add a dummy terms as the none of the users in our cohort had no sleep (TST) or did not get woken up in the middle of their sleep (Number of Awakenings).
 
 ### Distribution of Sleep Quality Metric
 
@@ -136,7 +136,7 @@ This conclusion can be justified logically as well - if anything should affect t
 ```{r}
 sleep %>% ggplot()+geom_point(aes(x = `In.Bed.Time`, y = `M`, color = 'in_bed')) + geom_point(aes(x = `Out.Bed.Time`, y = `M`, color = 'out_bed')) + theme_bw()
 
-sleep_data %>% ggplot()+geom_point(aes(x = `In Bed Time`, y = `Efficiency`, color = 'in_bed')) + geom_point(aes(x = `Out Bed Time`, y = `Efficiency`, color = 'out_bed')) + theme_bw()
+sleep_data %>% ggplot()+geom_point(aes(x = `In Bed Time`, y = `Efficiency`, color = 'in_bed')) + geom_point(aes(x = `Out Bed Time`, y = `Efficiency`, color = 'out_bed')) +  scale_x_continuous(breaks = scales::pretty_breaks(n = 17)) + theme_bw()
 
 ```
 
@@ -168,6 +168,7 @@ ggplot(user_info_temp, aes(`Gender`,`M`)) + geom_point() + labs(title = "Sleep Q
 ```{r}
 df_act = activity_duration [-2] %>% pivot_wider(names_from = category, values_from = total, values_fill = 0)
 df_act['user'] = lapply(df_act['user'],function(x) as.numeric(str_remove(x, "user_")))
+
 # filter out user 11
 df_act = df_act %>% arrange(user) %>% filter(user!=11)
 df_act['M'] = mydata$M
@@ -193,3 +194,5 @@ df_pos.p = df_pos.rcorr$P
 
 heatmap.2(x = df_pos.coeff, symm = TRUE, key = TRUE,labRow = abbreviate(rownames(df_pos.coeff), minlength = 15), labCol = abbreviate(colnames(df_pos.coeff), minlength = 15), col = palette, margins=c(8,10), srtCol=45, main = "heatmap", density.info="none", trace="none")
 ```
+
+

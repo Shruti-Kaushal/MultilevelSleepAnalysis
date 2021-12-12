@@ -167,7 +167,7 @@ activity_duration = activity_duration %>% left_join(ID_activity, by = c('Activit
 
 
 activity_duration %>% ggplot(aes(x = factor(user, levels = paste0("user_",c(1:22)), labels = c(1:22)), y = factor(category), alpha = total)) +
-  geom_tile(color = 'white', lwd = 0.4, linetype = 1) +
+  geom_tile(color = 'black', lwd = 0.4, linetype = 1) +
   scale_x_discrete(labels = abbreviate) +
   theme(panel.background = element_blank() ) + 
   xlab("User ID") + 
