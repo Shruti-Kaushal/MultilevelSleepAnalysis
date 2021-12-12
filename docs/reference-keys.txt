@@ -26,3 +26,4 @@ preliminary-observations
 distribution-of-variables
 interactive-component
 conclusion
+distribution-of-sleep-quality-metric
