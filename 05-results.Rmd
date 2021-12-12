@@ -121,6 +121,7 @@ summary(model)
 ```
 
 
+<<<<<<< Updated upstream
 ## Establishing Direct & Indirect Effects on Sleep Quality
 Having established a metric and quantified its distribution, we want to identify variables that have a direct or indirect relationship with sleep quality. These relationships might not necessarily be causal in nature as correlation does not imply causation. 
 
@@ -162,3 +163,17 @@ ggplot(user_info_temp, aes(`Height`,`M`)) + geom_point() + labs(title = "Sleep Q
 ggplot(user_info_temp, aes(`Weight`,`M`)) + geom_point() + labs(title = "Sleep Quality vs Weight of Participants",y = "Sleep Qualtiy") + theme_bw()
 ggplot(user_info_temp, aes(`Gender`,`M`)) + geom_point() + labs(title = "Sleep Quality vs Gender of Participants") +theme_bw()
 ```
+=======
+
+## Correlation with Other Factors
+
+In this part, we will explore other possible factors that affected sleeping quality, using the metric defined above. 
+
+### Activity vs Sleep Quality
+```{r}
+activity_duration
+difference
+```
+
+### Biofactors vs Sleep Quality
+>>>>>>> Stashed changes
