@@ -134,15 +134,18 @@ From the scatterplot below, we concluded that in fact, bed time does not have an
 This conclusion can be justified logically as well - if anything should affect the sleep quality it most likely would be the amount of tiredness the participant feels and total time they slept the day before. Given these quantities, bed time shouldn't affect sleep at all. Since the dataset does not measure these quantities we can assume them to be latent variables. In the coming sections we will analyze the activity log of each user with respect to their sleep quality.
 
 ```{r}
-sleep %>% ggplot()+geom_point(aes(x = `In.Bed.Time`, y = `M`, color = 'in_bed')) + geom_point(aes(x = `Out.Bed.Time`, y = `M`, color = 'out_bed'))
+sleep %>% ggplot()+geom_point(aes(x = `In.Bed.Time`, y = `M`, color = 'in_bed')) + geom_point(aes(x = `Out.Bed.Time`, y = `M`, color = 'out_bed')) + theme_bw()
 
-sleep_data %>% ggplot()+geom_point(aes(x = `In Bed Time`, y = `Efficiency`, color = 'in_bed')) + geom_point(aes(x = `Out Bed Time`, y = `Efficiency`, color = 'out_bed')) 
+sleep_data %>% ggplot()+geom_point(aes(x = `In Bed Time`, y = `Efficiency`, color = 'in_bed')) + geom_point(aes(x = `Out Bed Time`, y = `Efficiency`, color = 'out_bed')) + theme_bw()
 
 ```
 
 
 ### Does Your Build Affect Your Sleep?
 
+It has been seen that as a person ages their quality of sleep deteriorates. This is attributed to many things pertaining to the process of aging that results the gradual death of many cells including neurons in the brain. To test this hypothesis, we decided to analyze the relationship between age and our sleep quality metric. It is surprising to see a general trend appear, excluding certain outliers. Sleep quality seems to be linearly correlated to age till a threshold of 30 years. We see a sharp decline in sleep quality for participants who are older than 30 years. Moreover, sleep quality seems to remain more or less constant beyond that threshold. 
+
+Does that mean we can conclude that as a person ages their sleep quality deteriorates? Not entirely, as the cohort sample age is extremely skewed towards the left hand side i.e. we have more participants that are young adults in comparison to those who are middle aged. Again, we make this conclusion bearing in mind that it might fail with the addition of participants that are middle aged. 
 
 
 ```{r, figures-side, fig.show="hold", out.width="50%"}
