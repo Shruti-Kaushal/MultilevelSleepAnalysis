@@ -84,12 +84,13 @@ The dummy term takes care of the case when Latency is 0.
 ### Distribution of Sleep Quality Metric
 
 We calculated the sleep quality metric for each of the users and visualized the results as a boxplot to be able to discern its distribution. The lowest value is 0.5902 corresponding to user 12 and the largest is 16.33 corresponding to user 12, who is also an outlier. We are particularly interested in investigating users that fall below the lower hinge and above the upper hinge. The former group includes users 2, 3, 8, 10 and 16. While the group with M > 6.6874 includes users 1, 12, 14, 20 and 21. The rest lie within the 25th and 75th percentile of the metric data.
+
 ```{r}
 library(tidyverse)
 # calculating the metric
 mydata['M'] = ((mydata$`Total Sleep Time (TST)`/mydata$`Average Time Awake`)+(1/mydata$`Sleep Fragmentation Index`))*(1/(mydata$Latency + 1))
 
-ggplot(mydata, aes(mydata$user, mydata$M)) + geom_point() + scale_x_continuous(breaks = scales::pretty_breaks(n = 17)) + labs(x = "User ID", y = "Units (per minute)", title = "Sleep Quality of each User") + theme_bw()
+# ggplot(mydata, aes(`user`, `M`)) + geom_point() + scale_x_continuous(breaks = scales::pretty_breaks(n = 17)) + labs(x = "User ID", y = "Units (per minute)", title = "Sleep Quality of each User") + theme_bw()
 
 ggplot(stack(dplyr::select(mydata, c('M'))), aes(x = ind, y = values))  + geom_boxplot() + geom_jitter() +labs(x = "Sleep Quality", y = "Units (per minute)", title = "Distribution of Sleep Quality") 
 
@@ -100,10 +101,12 @@ fivenum(l) %>% set_names(fivenumnames)
 
 Having defined the metric, we wanted to do a sanity check that it indeed is capturing the quality of sleep. The only way to do that was to compare the values of Efficiency variable to M. Efficiency is defined as the percentage of Total Sleep Time upon total sleep in bed. The reader might think that the metric defined above could have been made way simpler if Efficiency was included but we had motivation to not include it altogether. One of the things that pops out is the Efficiency is not strongly correlated to both of the variables TST and Total Minutes in Bed. This seems absurd and since we couldn't explain why this was happening we ultimately decided to remove efficiency from the equation and instead use it as a sanity check. It is only logical to think Efficiency and sleep quality should be positively correlated.  
 
-
-
+It can be concluded from the log-log plot of Efficiency vs Sleep Quality below
 
 ```{r}
-ggplot(mydata, aes(x = log(`M`, 10), y = log(`Efficiency`, 10))) + geom_point() + geom_smooth(method="lm") + labs(title = "Efficiency vs Sleep Quality (log10 scale)")
+library(ggpubr)
+ggplot(mydata, aes(x = log(`M`, 10), y = log(`Efficiency`, 10))) + geom_point() + geom_smooth(method="lm") + labs(title = "Efficiency vs Sleep Quality (log10 scale)") + stat_regline_equation(label.x=-0.3, label.y=1.99) + stat_cor(aes(label=..rr.label..), label.x=-0.3, label.y=1.98)
 
+model <- lm(log(mydata$Efficiency, 10)~log(mydata$M, 10), header = T)
+summary(model)
 ```
