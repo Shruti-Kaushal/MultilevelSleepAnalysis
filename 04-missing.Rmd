@@ -1,13 +1,16 @@
 # Missing values
 
-file information missing: user_11 is missing sleep.csv information
+Missing information includes - 
 
-No clock genes and hormones concentrations data was provided for User_21 due to problem in the salivary samples that do not permit to analyse it.
+(1) file information missing: user_11 is missing sleep.csv information
 
-missing age for user_18 in user_info
+(2) No clock genes and hormones concentrations data was provided for User_21 due to problem in the salivary samples that do not permit to analyse it.
 
-user_13 is missing questionnaire
+(3) missing age for user_18 in user_info
 
+(4) user_13 is missing questionnaire
+
+Since the aim of our project is to define a metric for sleep quality and identify variables with that affect it, user 11 was excluded from all the analysis performed. 
 
 ## Missing Value Plot
 
