@@ -135,38 +135,40 @@
 <h2><span class="header-section-number">5.1</span> Metric Formulation</h2>
 <div id="preliminary-observations" class="section level3" number="5.1.1">
 <h3><span class="header-section-number">5.1.1</span> Preliminary Observations</h3>
-<p>Formulating a metric requires an extensive analysis of the spread of the data and each variable in it. It is also important to determine correlated variables to avoid duplication and/or multicollinearity while defining the metric. Below is a heatmap we generated for variables that do not have the format of a time stamp (for example hh:mm). We made the following observations -</p>
+<p>Formulating a metric requires an extensive analysis of the data to identify correlated variables. This is to avoid multicollinearity while defining the metric. Below is a correlation heatmap we generated for variables that do not have the format of a time stamp (for example hh:mm). We made the following observations -</p>
 <ol style="list-style-type: decimal">
 <li>Latency, defined as the time taken for the user to fall asleep after he gets into bed, does not seem to be correlated with anything</li>
-<li>Total sleep time is not correlated with neither Number of Awakenings and Average Awakening Length. One would suspect the former to be negatively correlated to latter two but that is not the case. Also, all coefficients are statistically significant with a default critical value of 0.05</li>
-<li>Movement, Fragmentation and Sleep Fragmentation index are highly correlated and this relationship is statistically significant. It is not surprising as sleep fragmentation index is defined as the ratio of movement index and fragmentation index</li>
-<li>Wake After Sleep Onset (WASO) is strongly correlated to almost every variable with the direction being positive except for Efficiency</li>
+<li>Total sleep time (TST) is not correlated with neither Number of Awakenings and Average Awakening Length. One would expect TST to be negatively correlated to both but that is not true</li>
+<li>Movement, Fragmentation and Sleep Fragmentation index are highly correlated. It is not surprising as sleep fragmentation index is defined as the ratio of the two</li>
+<li>Wake After Sleep Onset (WASO) is strongly positively correlated to almost every variable except for Efficiency</li>
 </ol>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p>Note: all coefficients are statistically significant with a default critical value of 0.05
+<img src="finalproj_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 </div>
 <div id="distribution-of-variables" class="section level3" number="5.1.2">
 <h3><span class="header-section-number">5.1.2</span> Distribution of Variables</h3>
-<p>The clustering of heatmap showed that there are 3 clear clusters (if we cut across the tree right below the highest line connecting efficiency and another cluser) which are consistent with the observations we made. To avoid multicollinearity, we decided to pick 1-2 variables from each of the clusters depending on the strength and statistical significance of the correlation coefficient. Let’s denote our metric with M and is defined as a characterization of quality of sleep. Intuitively, M should be higher for users that are able to sleep through the night and do not have any trouble falling asleep. Expanding this thought process further and combining it with the correlation analysis, we came up with the following associations -</p>
+<p>There are 3 clusters in the heatmap (if we cut across the tree right below the highest line connecting efficiency and another cluster) which are consistent with the observations we made. To avoid multicollinearity, we decided to pick variables from each of the clusters depending on the strength and significance of the correlation coefficient. We denote our metric by M. Intuitively, it should be higher for users who are able to sleep through the night and do not have any trouble falling asleep. Keeping this in mind, we came up with the following associations -</p>
 <ol style="list-style-type: decimal">
 <li>M <span class="math inline">\(\alpha\)</span> Total Sleep Time (TST)</li>
 <li>M <span class="math inline">\(\alpha\)</span> <span class="math inline">\(\frac{1}{SleepFragmentation Index}\)</span></li>
 <li>M <span class="math inline">\(\alpha\)</span> <span class="math inline">\(\frac{1}{Latency}\)</span></li>
 <li>M <span class="math inline">\(\alpha\)</span> <span class="math inline">\(\frac{1}{AverageTimeSpentAwake}\)</span></li>
 </ol>
-<p>Note that (2) is a ratio while others have units “hh:mm”. So, keeping that in mind we combined all the above relationship as -</p>
+<p>We combined the above associations as follows -</p>
 <p><span class="math display">\[\begin{align*}
 M \alpha (\frac{TST}{AverageTimeSpentAwake} + \frac{1}{SleepFragmentationIndex}).\frac{1}{Latency}
 \end{align*}\]</span></p>
-<p>The units of the right hand side are “per hh:mm” (because of addition of latency). Since this expression was constructed using just the correlation, to establish a stronger relationship i.e. equality, it is important to look at the distribution of each of these variables. It might happen that even though intuitively one might think that a variable should have an effect on the sleep quality but if in reality the distribution of that variable turns out to be narrow then including it would not be a good idea. We would like to stress that the number of samples available to us are very less to do this sort of analysis without any selection bias i.e. inferences might hold for this small cohort but not necessarily for a bigger cohort.</p>
-<p>We defined sleep ratio to be the ratio of TST and Average Time Spent Awake. The latter was calculated by simply multiplying Number of Awakengings with the Average Awakening Length. The box plot below shows the distribution of the Sleep Ratio and Sleep Fragmentation Index. Indeed both ratios seem to have a positive variance.
+<p>The units of the right hand side are “per hh:mm” (because of addition of latency). Average Time Spent Awake is the product of Number of Awakenings and Average Awakening Length. Let the ratio of TST and Average Time Spent Awake be called sleep ratio.</p>
+<p>The next step was to quantify the distribution of the variables that are used to define M. We wanted to include variables that are informative instead of variables that remain constant across the cohort. Due to the small sample size, any analysis of such sort (constructing a metric) will have a selection bias and so the conclusions made throughiut this section may not hold for a bigger cohort.</p>
+<p>The box plot below shows the distribution of the Sleep Ratio and Sleep Fragmentation Index. The values for both ratios seems well distributed with no outliers.
 <img src="finalproj_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
-<p>Since Latency is the time taken by the user to fall asleep once he gets into the bed, we wanted to visualize it separately. We noticed that a lot of the users had a latency time of 0 mins. This seems a little absurd given its definition so we assumed that any user that fell asleep within a minute had a latency of 0. This creates a problem since the metric is inversely proportional to latency and if it has a value of zero, it would mean the absolute value of M would be infinity. Clearly, this isn’t possible and so when replacing proportionality with equality, we add a dummy term to latency.</p>
+<p>Since Latency is the time taken by the user to fall asleep once he gets into the bed, we wanted to visualize it separately. We noticed that a lot of the users had a latency time of 0 mins. This creates a problem since the metric is inversely proportional to latency and a value of infinity wouldn’t make sense. So, we add a dummy term to latency and replaced proportionality with equality.</p>
 <p><img src="finalproj_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 <p>We define the sleep quality of a user as -</p>
 <p><span class="math display">\[\begin{align*}
 M = (\frac{TST}{AverageTimeSpentAwake} + \frac{1}{SleepFragmentationIndex}).(\frac{1}{Latency + 1})
 \end{align*}\]</span></p>
-<p>The dummy term takes care of the case when Latency is 0. In the case that other variables are 0, we simply replace them by 1. We did not add a dummy terms as the none of the users in our cohort had no sleep (TST) or did not get woken up in the middle of their sleep (Number of Awakenings). Also, this metric can never be negative since all the variables involved are non-negative.</p>
+<p>In the case that other variables are 0, we simply replace them by 1. We did not add a dummy terms as the none of the users in our cohort <span class="math inline">\(TST = 0\)</span> or <span class="math inline">\(Number of Awakenings = 0\)</span>. This metric is always positive since all the variables involved are non-negative.</p>
 </div>
 <div id="distribution-of-sleep-quality-metric" class="section level3" number="5.1.3">
 <h3><span class="header-section-number">5.1.3</span> Distribution of Sleep Quality Metric</h3>
@@ -178,25 +180,6 @@ M = (\frac{TST}{AverageTimeSpentAwake} + \frac{1}{SleepFragmentationIndex}).(\fr
 <p>To test the relationship, we generated a log-log scale plot. The motivation behind using a log10 scale over the normal scale was first to normalize the values and second to see how the magnitudes of the two variables are related. The regression model is statistically significant with a p-value of 3.681e-05 and the positive slope indicates that as the sleep quality increases, so does the efficiency. However, caution needs to be exercised while making this conclusion as the adjusted R square value is 0.6 which means that the model captures less than 70% of the variance.</p>
 <p>In summary, the metric defined by the formula above seems to be capturing the information that directly affects the sleep quality of a user. Moreover, the statistical significance combined with the positive slope of the regression model and line prove to be a sanity check for our metric.</p>
 <p><img src="finalproj_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
-<pre><code>## 
-## Call:
-## lm(formula = log(mydata$Efficiency, 10) ~ log(mydata$M, 10), 
-##     header = T)
-## 
-## Residuals:
-##       Min        1Q    Median        3Q       Max 
-## -0.045376 -0.009651 -0.000173  0.011218  0.041089 
-## 
-## Coefficients:
-##                   Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)       1.893661   0.007163 264.372  &lt; 2e-16 ***
-## log(mydata$M, 10) 0.058744   0.010986   5.347 3.68e-05 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 0.02298 on 19 degrees of freedom
-## Multiple R-squared:  0.6008, Adjusted R-squared:  0.5798 
-## F-statistic: 28.59 on 1 and 19 DF,  p-value: 3.681e-05</code></pre>
 </div>
 </div>
 <div id="establishing-direct-indirect-effects-on-sleep-quality" class="section level2" number="5.2">
