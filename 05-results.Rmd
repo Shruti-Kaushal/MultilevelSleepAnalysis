@@ -123,16 +123,16 @@ ggplot(mydata, aes(x = log(`M`, 10), y = log(`Efficiency`, 10))) + geom_point() 
 
 
 ## Establishing Direct & Indirect Effects on Sleep Quality
-Having established a metric and quantified its distribution, we want to identify variables that have a direct or indirect relationship with sleep quality. These relationships might not necessarily be causal in nature as correlation does not imply causation. 
+In this section, we tried to identify variables that are correlated to sleep quality in some way. The relationships identified cannot be interpreted to be causal as correlation doesn't imply causation.
 
-This section is divided further into subsections for each of the 7 files in the dataset. Since some of the data is redundant, we decided to analyze only 5 out of the 7 - sleep records, user information, actigraph measurements, activities performed and the saliva samples.
+This section is divided further into subsections for each file in the dataset. Due to redundancy in data, we analyzed only 4 out of the 7 files - sleep records, user information, activities performed and saliva samples.
 
-### Can Going to Bed Early Improve Sleep Quality?
-Time and again the society and many cultures have encouraged the practice going to bed early and rising early for a healthy life and better sleep. We wanted to test this hypothesis and see if bed time does have an effect on the quality of sleep. 
+### Bed Time Does Not Affect Sleep Quality
+The practice going to bed early and rising early is encouraged for better sleep and health. We wanted to test this hypothesis using our metric. 
 
-From the scatterplot below, we concluded that in fact, bed time does not have any impact on the sleep quality. There is no linear relationship; some participants who went to bed later than "usual" have a higher sleep quality than most participants who went to bed early. Similar conclusion can be made for the time a participant got out of bed. The data has high variance and so we cannot conclude that a relationship between bed times and sleep quality exists.
+We generated a scatterplot and concluded that in fact, bed time does not have affect sleep quality. There is no linear relationship; some participants who went to bed later than "usual" have a higher sleep quality than most participants who went to bed early. Similar conclusion can be made for the time a participant got out of bed. The data has high variance and so we cannot conclude that bed times and sleep quality are related.
 
-This conclusion can be justified logically as well - if anything should affect the sleep quality it most likely would be the amount of tiredness the participant feels and total time they slept the day before. Given these quantities, bed time shouldn't affect sleep at all. Since the dataset does not measure these quantities we can assume them to be latent variables. In the coming sections we will analyze the activity log of each user with respect to their sleep quality.
+This can be justified as - sleep quality is most likely to be affected by how tired the user feels and total time they slept the day before. 
 
 ```{r}
 # formatting sleep_data
