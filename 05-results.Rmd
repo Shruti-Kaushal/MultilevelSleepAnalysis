@@ -174,7 +174,21 @@ ggplot(user_info_temp, aes(`Gender`,`M`)) + geom_point() + labs(title = "Sleep Q
 ```
 
 
-### How do Different Activities Affect Sleep Quality?
+### How Do Different Activities Affect Sleep Quality?
+
+From the `Activity.csv`, we explored the correlation between the sleep quality metric we defined and the total time each user spent on each activity throughout the day. Referring to the graph below, we decided to discuss the common factors, such as heavy activities, screen usage. Initially, we were also curious about the alcohol and caffeine consumption. However, the data was not enough to perform such analysis.
+
+```{r}
+activity_duration %>% ggplot(aes(x = factor(user, levels = paste0("user_",c(1:22)), labels = c(1:22)), y = factor(category), alpha = total)) +
+  geom_tile(color = 'black', lwd = 0.4, linetype = 1) +
+  scale_x_discrete(labels = abbreviate) +
+  theme(panel.background = element_blank() ) + 
+  xlab("User ID") + 
+  ylab("Activity") +
+  ggtitle("Time spent on each activity")
+```
+The correlation between the total time each user spent on each activity and the sleep quality metric is shown below. Here, we only cared about how the factors affect sleep quality. From the heat map, it is clear there are no significant correlation factors.
+
 ```{r}
 df_act = activity_duration [-2] %>% pivot_wider(names_from = category, values_from = total, values_fill = 0)
 df_act['user'] = lapply(df_act['user'],function(x) as.numeric(str_remove(x, "user_")))
@@ -189,7 +203,7 @@ df_act.p = df_act.rcorr$P
 heatmap.2(x = df_act.coeff, symm = TRUE, key = TRUE,labRow = abbreviate(rownames(df_act.coeff), minlength = 24), labCol = abbreviate(colnames(df_act.coeff), minlength = 24), col = palette, margins=c(8,10), srtCol=45, main = "heatmap", density.info="none", trace="none")
 ```
 
-Screen Usage
+Next, we tried to group the factors and took `time` factor into consideration. Will using screen before sleeping affect users' sleep quality? We first explored `small screen usage` and `large screen usage` individually. Overall, it is less likely that using small screen device more than 4 hours before sleep will affect sleep quality.
 
 ```{r, fig.show="hold", out.width="50%"}
 # get the latest time using screen before sleep outset time
@@ -272,16 +286,16 @@ ggplot(scrn_usg_time, aes(c[1]*small.scr.before.sleep+c[2]*large.scr.before.slee
 ```
 
 
-Heavy activity
+<!-- Heavy activity -->
 
 
-```{r, out.width="50%"}
-ggplot(df_act, aes(heavy,M)) + 
-  geom_point() + 
-  labs(title = "Sleep Quality vs Heavy Activity") +
-  theme_bw()+ 
-  geom_smooth(method=lm) 
-```
+<!-- ```{r, out.width="50%"} -->
+<!-- ggplot(df_act, aes(heavy,M)) +  -->
+<!--   geom_point() +  -->
+<!--   labs(title = "Sleep Quality vs Heavy Activity") + -->
+<!--   theme_bw()+  -->
+<!--   geom_smooth(method=lm)  -->
+<!-- ``` -->
 
 
 

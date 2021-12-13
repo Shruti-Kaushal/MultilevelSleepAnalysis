@@ -114,7 +114,7 @@
 <ul>
 <li class="chapter" data-level="5.2.1" data-path="results.html"><a href="results.html#can-going-to-bed-early-improve-sleep-quality"><i class="fa fa-check"></i><b>5.2.1</b> Can Going to Bed Early Improve Sleep Quality?</a></li>
 <li class="chapter" data-level="5.2.2" data-path="results.html"><a href="results.html#does-your-build-affect-your-sleep"><i class="fa fa-check"></i><b>5.2.2</b> Does Your Build Affect Your Sleep?</a></li>
-<li class="chapter" data-level="5.2.3" data-path="results.html"><a href="results.html#how-do-different-activities-affect-sleep-quality"><i class="fa fa-check"></i><b>5.2.3</b> How do Different Activities Affect Sleep Quality?</a></li>
+<li class="chapter" data-level="5.2.3" data-path="results.html"><a href="results.html#how-do-different-activities-affect-sleep-quality"><i class="fa fa-check"></i><b>5.2.3</b> How Do Different Activities Affect Sleep Quality?</a></li>
 <li class="chapter" data-level="5.2.4" data-path="results.html"><a href="results.html#how-do-biomarkers-affect-sleep-quality"><i class="fa fa-check"></i><b>5.2.4</b> How do Biomarkers Affect Sleep Quality?</a></li>
 </ul></li>
 </ul></li>
@@ -235,12 +235,21 @@ M = (\frac{TST}{AverageTimeSpentAwake} + \frac{1}{SleepFragmentationIndex}).(\fr
 <p><img src="finalproj_files/figure-html/figures-side-1.png" width="50%" /><img src="finalproj_files/figure-html/figures-side-2.png" width="50%" /><img src="finalproj_files/figure-html/figures-side-3.png" width="50%" /><img src="finalproj_files/figure-html/figures-side-4.png" width="50%" /></p>
 </div>
 <div id="how-do-different-activities-affect-sleep-quality" class="section level3" number="5.2.3">
-<h3><span class="header-section-number">5.2.3</span> How do Different Activities Affect Sleep Quality?</h3>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<p>Screen Usage</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-12-1.png" width="50%" /><img src="finalproj_files/figure-html/unnamed-chunk-12-2.png" width="50%" /><img src="finalproj_files/figure-html/unnamed-chunk-12-3.png" width="50%" /><img src="finalproj_files/figure-html/unnamed-chunk-12-4.png" width="50%" /></p>
-<p>Heavy activity</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-13-1.png" width="50%" /></p>
+<h3><span class="header-section-number">5.2.3</span> How Do Different Activities Affect Sleep Quality?</h3>
+<p>From the <code>Activity.csv</code>, we explored the correlation between the sleep quality metric we defined and the total time each user spent on each activity throughout the day. Referring to the graph below, we decided to discuss the common factors, such as heavy activities, screen usage. Initially, we were also curious about the alcohol and caffeine consumption. However, the data was not enough to perform such analysis.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+The correlation between the total time each user spent on each activity and the sleep quality metric is shown below. Here, we only cared about how the factors affect sleep quality. From the heat map, it is clear there are no significant correlation factors.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>Next, we tried to group the factors and took <code>time</code> factor into consideration. Will using screen before sleeping affect users’ sleep quality? We first explored <code>small screen usage</code> and <code>large screen usage</code> individually. Overall, it is less likely that using small screen device more than 4 hours before sleep will affect sleep quality.</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-13-1.png" width="50%" /><img src="finalproj_files/figure-html/unnamed-chunk-13-2.png" width="50%" /><img src="finalproj_files/figure-html/unnamed-chunk-13-3.png" width="50%" /><img src="finalproj_files/figure-html/unnamed-chunk-13-4.png" width="50%" /></p>
+<!-- Heavy activity -->
+<!-- ```{r, out.width="50%"} -->
+<!-- ggplot(df_act, aes(heavy,M)) +  -->
+<!--   geom_point() +  -->
+<!--   labs(title = "Sleep Quality vs Heavy Activity") + -->
+<!--   theme_bw()+  -->
+<!--   geom_smooth(method=lm)  -->
+<!-- ``` -->
 <p><img src="finalproj_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 <p><img src="finalproj_files/figure-html/unnamed-chunk-15-1.png" width="50%" /><img src="finalproj_files/figure-html/unnamed-chunk-15-2.png" width="50%" /><img src="finalproj_files/figure-html/unnamed-chunk-15-3.png" width="50%" /></p>
 </div>
