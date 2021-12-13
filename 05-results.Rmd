@@ -59,7 +59,7 @@ M \alpha (\frac{TST}{AverageTimeSpentAwake} + \frac{1}{SleepFragmentationIndex})
 
 The units of the right hand side are "per hh:mm" (because of addition of latency). Average Time Spent Awake is the product of Number of Awakenings and Average Awakening Length. Let the ratio of TST and Average Time Spent Awake be called sleep ratio.
 
-Next, we quantified the distribution of variables involved in defining M. We wanted to include variables that are informative instead of variables that remain constant across the cohort. Due to the small sample size, any analysis of such sort (constructing a metric) will have a selection bias and so the conclusions made throughout this section may not hold for a bigger cohort.
+Next, we quantified the distribution of variables involved in defining M. We wanted to include informative variables instead of the ones that remain constant across the cohort. Due to the small sample size, any analysis of such sort (constructing a metric) will have a selection bias and so the conclusions made throughout this section may not hold for a bigger cohort.
 
 The box plot below shows the distribution of the Sleep Ratio and Sleep Fragmentation Index. The values for both ratios seems well distributed with no outliers.
 ```{r}
@@ -130,7 +130,7 @@ This section is divided further into subsections for each file in the dataset. D
 ### Bed Time Does Not Affect Sleep Quality
 The practice going to bed early and rising early is encouraged for better sleep and health. We wanted to test this hypothesis using our metric. 
 
-We generated a scatterplot and concluded that in fact, bed time does not have affect sleep quality. There is no linear relationship; some participants who went to bed later than "usual" have a higher sleep quality than most participants who went to bed early. Similar conclusion can be made for the time a participant got out of bed. The data has high variance and so we cannot conclude that bed times and sleep quality are related.
+We generated a scatterplot and concluded that bed time does not have affect sleep quality. There is no linear relationship; some participants who went to bed later than "usual" have a higher sleep quality than most participants who went to bed early. Similar conclusion can be made for the time a participant got out of bed. The data has high variance and so we cannot conclude that bed times and sleep quality are related.
 
 This can be justified as sleep quality is most likely to be affected by how tired the user feels and total time they slept the day before. 
 
