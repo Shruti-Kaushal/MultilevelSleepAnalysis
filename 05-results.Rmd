@@ -126,7 +126,7 @@ Having established a metric and quantified its distribution, we want to identify
 
 This section is divided further into subsections for each of the 7 files in the dataset. Since some of the data is redundant, we decided to analyze only 5 out of the 7 - sleep records, user information, actigraph measurements, activities performed and the saliva samples.
 
-### Bed Time Does Not Affect Sleep Quality
+### Can Going to Bed Early Improve Sleep Quality?
 Time and again the society and many cultures have encouraged the practice going to bed early and rising early for a healthy life and better sleep. We wanted to test this hypothesis and see if bed time does have an effect on the quality of sleep. 
 
 From the scatterplot below, we concluded that in fact, bed time does not have any impact on the sleep quality. There is no linear relationship; some participants who went to bed later than "usual" have a higher sleep quality than most participants who went to bed early. Similar conclusion can be made for the time a participant got out of bed. The data has high variance and so we cannot conclude that a relationship between bed times and sleep quality exists.
@@ -279,10 +279,13 @@ ggplot(df_pos, aes(Inclinometer.Lying,M)) + geom_point() + labs(title = "Sleep Q
 ### How do Biomarkers Affect Sleep Quality?
 Research has shown that cortisol and melatonin are hormones produced by our body that regulate circadian rhythm and our internal body clock. We wanted to see how our metric performs against these biomarkers that are proven to be indicators of sleep quality in some way or another. This discussion of how these hormones actually control sleep would require getting into the depths of the mechanisms they are involved, which is beyond the scope of this project.
 
-Before we start with the analysis, it is important to understand how to interpret the concentration levels of these two hormones. In layman terms, melatonin eases you into sleep and helps you stay asleep. The production of melatonin is triggered by darkness and is inhibitted by light. This means that people who sleep well are expected to have a high concentration of melatonin before going to sleep and much lesser when they wake up. Cortisol is used for something completely opposite: it helps you get up and keeps you awake. It is also related the amount of stress someone has. So, in conclusion, to be able to sleep well you should have low levels of cortisol before sleeping and high levels after you wake up.
+Before we start with the analysis, it is important to understand how to interpret the concentration levels of these two hormones. In layman terms, melatonin eases you into sleep and helps you stay asleep. The production of melatonin is triggered by darkness and is inhibitted by light. This means that people who sleep well are expected to have a high concentration of melatonin before going to sleep and much lesser when they wake up. Cortisol is used for something completely opposite: it helps you get up and keeps you awake. It is also related the amount of stress someone has. So, in conclusion, to be able to sleep well you should have low levels of cortisol before sleeping and high levels after you wake up as cortisol and melatonin have opposing rhythms.
 
-We plotted a bar graph of differences in concentration (before sleep - after sleep) for each of the hormones and participants to try and discern if a similar pattern, as the one explained above, emerges. It is important to note that the actual concentrations of melatonin run in $10^{-9}$ and so the differences are really not small and range from -10 to 10, given the scale. Ideally, we would want the difference to be as negative as possible for cortisol and positive as possible for melatonin. What we see if definitely not ideal; infact only three users/participants have negative cortisol difference levels
+We plotted a bar graph of differences in concentration (before sleep - after sleep) for each of the hormones and participants to try and discern if a similar pattern, as the one explained above, emerges. It is important to note that the actual concentrations of melatonin run in $10^{-9}$ and so the differences are really not small and range from -10 to 10, given the scale. Ideally, we would want the difference to be as negative as possible for cortisol and positive as possible for melatonin. What we see in the bar graphs is definitely not ideal; infact only three users/participants have negative cortisol difference levels.
 
+To better understand if our metric catches the affect these hormones might have on sleep quality, we generated a bar graph of M. When investigating further, using facted scatteplots, we saw that there wasn't any "obvious" relationship between our metric and the two hormones. However, our metric does seem to catch the anomalies like user 2 and 12 that fall on the two extremes. User 2 scored the lowest on sleep quality and has the highest differnece in cortisol levels among the cohort. The presence of more melatonin indicates that there is a possibility that the circadian rhythm of user 2 is messed up. In case of user 12, it is the only participant that has an ideal combination of differences in concentration levels and interestingly enough scored the highest on sleep metric. Note that user 11 is another participant that exhibits a similar behaviour but unfortunately we excluded him from our analysis due to missing sleep measurements.
+
+It seems that our metric is definitely capturing some of what is being regulated by both the hormones but not everything. A way forward would be sampling more individuals and see how the metric performs on a bigger, more diverse cohort.
 ```{r}
 # get the difference of chemicals per participant
 before_sleep = saliva %>% 
@@ -303,12 +306,13 @@ difference %>% ggplot(aes(x = factor(user,  levels = paste0("user_",c(1:22)), la
   facet_grid(rows = vars(Chemicals), scales = "free") + 
   xlab("User ID") +
   ylab("Concentration") +
-  ggtitle("Concentration difference per participant") +
+  ggtitle("Concentration Difference per User") +
   theme_bw()
 
 mydata %>% ggplot(aes(x = user, y = M)) +
   geom_col(fill = 'lightblue', color = 'black') + 
   scale_x_continuous(breaks = c(1:22), labels = c(1:22)) +
+  labs(x = "User ID", y = "Sleep Quality(M)", title = "Sleep Quality of each User") + 
   theme_bw()
 ```
 
@@ -316,11 +320,11 @@ mydata %>% ggplot(aes(x = user, y = M)) +
 
 
 ```{r}
-difference['user.id'] = lapply(difference['user'], function(x) as.numeric(str_remove(x,"user_")))
-difference_temp <- difference[difference$user.id!=11,]
-difference_temp <- difference_temp[order(difference_temp$user.id),]
-sleep_quality_metric = mydata$M[mydata$user != 21]
-difference_temp$M <- unlist(lapply(sleep_quality_metric, function(x) c(rep(c(x),2))))
-
-difference_temp %>% ggplot(aes(`difference`,`M`)) + geom_point() + facet_wrap(~Chemicals, scales = "free") + labs(x = "Difference in Concentration Before and After Sleep", y = "Sleep Quality (M)")
+# difference['user.id'] = lapply(difference['user'], function(x) as.numeric(str_remove(x,"user_")))
+# difference_temp <- difference[difference$user.id!=11,]
+# difference_temp <- difference_temp[order(difference_temp$user.id),]
+# sleep_quality_metric = mydata$M[mydata$user != 21]
+# difference_temp$M <- unlist(lapply(sleep_quality_metric, function(x) c(rep(c(x),2))))
+# 
+# difference_temp %>% ggplot(aes(`difference`,`M`)) + geom_point() + facet_wrap(~Chemicals, scales = "free") + labs(x = "Difference in Concentration Before and After Sleep", y = "Sleep Quality (M)")
 ```
