@@ -37,20 +37,20 @@ sleep$Onset.Time = string2time(sleep$Onset.Time, format = "%H:%M") + lubridate::
 
 `Actigraph.csv` contained accelerometer and inclinometer data recorded throughout the day. Overall, it tracked users' movement data, such as steps, direction, acceleration, positions, etc. 
 
-### Definition and explanation of each column
+<!-- ### Definition and explanation of each column -->
 
-1. Axis1: Raw Acceleration data of the X-axis expressed in Newton-meter.
-2. Axis2: Raw Acceleration data of the Y-axis expressed in Newton-meter.
-3. Axis3: Raw Acceleration data of the Z-axis expressed in Newton-meter.
-4. Steps: number of steps per second.
-5. HR: beats per minutes (bpm).
-6. Inclinometer Off: values equal to 1 refer to no activation of the inclinometer. The values are reported per second.
-7. Inclinometer Standing: values equal to 1 refer to the standing position of the user, while 0 refers to other user positions. Values are reported per second.
-8. Inclinometer Sitting: values equal to 1 refer to the sitting position of the user, while 0 refers to other user positions. Values are reported per second.
-9. Inclinometer Lying: values equal to 1 refer to the lying position of the user, while 0 refers to other user positions. Values are reported per second.
-10. Vector Magnitude: vector movement derived from raw acceleration data expressed in Newton-meter.
-11. day: 1 and 2 refer to the first and second day of data recording, respectively.
-12. time: day time when the heartbeat happened (hours:minutes:seconds)
+<!-- 1. Axis1: Raw Acceleration data of the X-axis expressed in Newton-meter. -->
+<!-- 2. Axis2: Raw Acceleration data of the Y-axis expressed in Newton-meter. -->
+<!-- 3. Axis3: Raw Acceleration data of the Z-axis expressed in Newton-meter. -->
+<!-- 4. Steps: number of steps per second. -->
+<!-- 5. HR: beats per minutes (bpm). -->
+<!-- 6. Inclinometer Off: values equal to 1 refer to no activation of the inclinometer. The values are reported per second. -->
+<!-- 7. Inclinometer Standing: values equal to 1 refer to the standing position of the user, while 0 refers to other user positions. Values are reported per second. -->
+<!-- 8. Inclinometer Sitting: values equal to 1 refer to the sitting position of the user, while 0 refers to other user positions. Values are reported per second. -->
+<!-- 9. Inclinometer Lying: values equal to 1 refer to the lying position of the user, while 0 refers to other user positions. Values are reported per second. -->
+<!-- 10. Vector Magnitude: vector movement derived from raw acceleration data expressed in Newton-meter. -->
+<!-- 11. day: 1 and 2 refer to the first and second day of data recording, respectively. -->
+<!-- 12. time: day time when the heartbeat happened (hours:minutes:seconds) -->
 
 ### Transformation process:
 
@@ -237,16 +237,8 @@ Saliva samples were collected twice - once before sleep and once after waking up
 
 ## User info
 
-missing age for user_18. Otherwise, nothing need to be transformed or cleaned in this dataset. All male participants.
+This file contains anthropocentric characteristics of the participant which include the gender, height in centimeters, weight in kgs and age in years. The data is pretty standard and did not require any sort of transformation
 
-### Definition and explanation of each column
-
-user_info.csv - anthropocentric characteristics of the participant:
-
-1. gender: M and F refer to Male and Female, respectively.
-2. height is expressed in centimetre (cm).
-3. weight is expressed in kilograms (kg).
-4. age is expressed in years.
 
 ```{r}
 # BMI
