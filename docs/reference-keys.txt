@@ -22,4 +22,3 @@ how-do-different-activities-affect-sleep-quality
 how-do-biomarkers-affect-sleep-quality
 interactive-component
 conclusion
-discussion
