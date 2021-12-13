@@ -141,13 +141,14 @@
 <li>Total sleep time (TST) is not correlated with neither Number of Awakenings and Average Awakening Length. One would expect TST to be negatively correlated to both but that is not true</li>
 <li>Movement, Fragmentation and Sleep Fragmentation index are highly correlated. It is not surprising as sleep fragmentation index is defined as the ratio of the two</li>
 <li>Wake After Sleep Onset (WASO) is strongly positively correlated to almost every variable except for Efficiency</li>
+<li>Efficiency, defined as percentage of sleep time on total sleep in bed, surprisingly is not correlated to Total Minutes in Bed</li>
 </ol>
 <p>Note: all coefficients are statistically significant with a default critical value of 0.05
 <img src="finalproj_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 </div>
 <div id="distribution-of-variables" class="section level3" number="5.1.2">
 <h3><span class="header-section-number">5.1.2</span> Distribution of Variables</h3>
-<p>There are 3 clusters in the heatmap (if we cut across the tree right below the highest line connecting efficiency and another cluster) which are consistent with the observations we made. To avoid multicollinearity, we decided to pick variables from each of the clusters depending on the strength and significance of the correlation coefficient. We denote our metric by M. Intuitively, it should be higher for users who are able to sleep through the night and do not have any trouble falling asleep. Keeping this in mind, we came up with the following associations -</p>
+<p>There are 3 clusters in the heatmap (if we cut across the tree right below the highest line connecting efficiency and another cluster) which are consistent with the observations we made. To avoid multicollinearity, we picked variables from each of the clusters depending on the strength and significance of the correlation coefficient. We denote our metric by M. Intuitively, it should be higher for users who are able to sleep through the night and do not have any trouble falling asleep. Keeping this in mind, we came up with the following associations -</p>
 <ol style="list-style-type: decimal">
 <li>M <span class="math inline">\(\alpha\)</span> Total Sleep Time (TST)</li>
 <li>M <span class="math inline">\(\alpha\)</span> <span class="math inline">\(\frac{1}{SleepFragmentation Index}\)</span></li>
@@ -159,25 +160,25 @@
 M \alpha (\frac{TST}{AverageTimeSpentAwake} + \frac{1}{SleepFragmentationIndex}).\frac{1}{Latency}
 \end{align*}\]</span></p>
 <p>The units of the right hand side are “per hh:mm” (because of addition of latency). Average Time Spent Awake is the product of Number of Awakenings and Average Awakening Length. Let the ratio of TST and Average Time Spent Awake be called sleep ratio.</p>
-<p>The next step was to quantify the distribution of the variables that are used to define M. We wanted to include variables that are informative instead of variables that remain constant across the cohort. Due to the small sample size, any analysis of such sort (constructing a metric) will have a selection bias and so the conclusions made throughiut this section may not hold for a bigger cohort.</p>
+<p>The next step was to quantify the distribution of the variables that are used to define M. We wanted to include variables that are informative instead of variables that remain constant across the cohort. Due to the small sample size, any analysis of such sort (constructing a metric) will have a selection bias and so the conclusions made throughout this section may not hold for a bigger cohort.</p>
 <p>The box plot below shows the distribution of the Sleep Ratio and Sleep Fragmentation Index. The values for both ratios seems well distributed with no outliers.
 <img src="finalproj_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
-<p>Since Latency is the time taken by the user to fall asleep once he gets into the bed, we wanted to visualize it separately. We noticed that a lot of the users had a latency time of 0 mins. This creates a problem since the metric is inversely proportional to latency and a value of infinity wouldn’t make sense. So, we add a dummy term to latency and replaced proportionality with equality.</p>
+<p>Since Latency is not a ratio, we visualized it separately. There are a lot users with latency time of 0 mins which is a problem since M is inversely proportional to latency. So, we added a dummy term to latency and replaced proportionality with equality.</p>
 <p><img src="finalproj_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 <p>We define the sleep quality of a user as -</p>
 <p><span class="math display">\[\begin{align*}
 M = (\frac{TST}{AverageTimeSpentAwake} + \frac{1}{SleepFragmentationIndex}).(\frac{1}{Latency + 1})
 \end{align*}\]</span></p>
-<p>In the case that other variables are 0, we simply replace them by 1. We did not add a dummy terms as the none of the users in our cohort <span class="math inline">\(TST = 0\)</span> or <span class="math inline">\(Number of Awakenings = 0\)</span>. This metric is always positive since all the variables involved are non-negative.</p>
+<p>In the case that other variables are 0, we simply replace them by 1. We did not add dummy terms as the none of the users in our cohort have <span class="math inline">\(TST = 0\)</span> or <span class="math inline">\(Number of Awakenings = 0\)</span>. M is always positive as all the variables involved are non-negative.</p>
 </div>
 <div id="distribution-of-sleep-quality-metric" class="section level3" number="5.1.3">
 <h3><span class="header-section-number">5.1.3</span> Distribution of Sleep Quality Metric</h3>
-<p>We calculated the sleep quality metric for each of the users and visualized the results as a boxplot to be able to discern its distribution. The lowest value is 0.5902 corresponding to user 2 and the largest is 16.33 corresponding to user 12, who is also an outlier. We are particularly interested in investigating users that fall below the lower hinge and above the upper hinge. The former group includes users 2, 3, 8, 10 and 16. While the group with M &gt; 6.6874 includes users 1, 12, 14, 20 and 21. The rest lie within the 25th and 75th percentile of the metric data.</p>
+<p>We calculated the sleep quality metric for all users and visualized the results as a boxplot. The lowest value is 0.5902 corresponding to user 2 and the largest is 16.33 corresponding to user 12, who is also an outlier. We are interested in investigating users that fall below the lower hinge (users 2, 3, 8, 10, 16) and above the upper hinge (users 1, 12, 14, 20, 21).</p>
 <p><img src="finalproj_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <pre><code>##         min lower-hinge      median upper-hinge         max 
 ##   0.5902389   1.2815906   3.0779926   6.6873567  16.3742315</code></pre>
-<p>Having defined the metric, we wanted to do a sanity check that it indeed is capturing the quality of sleep. The only way to do that was to compare the values of Efficiency variable to M. Efficiency is defined as the percentage of Total Sleep Time upon total sleep in bed. The reader might think that the metric defined above could have been made way simpler if Efficiency was included but we had motivation to not include it altogether. One of the things that pops out is the Efficiency is not strongly correlated to both of the variables TST and Total Minutes in Bed. This seems absurd and since we couldn’t explain why this was happening we ultimately decided to remove efficiency from the equation and instead use it as a sanity check. It is only logical to think Efficiency and sleep quality should be positively correlated.</p>
-<p>To test the relationship, we generated a log-log scale plot. The motivation behind using a log10 scale over the normal scale was first to normalize the values and second to see how the magnitudes of the two variables are related. The regression model is statistically significant with a p-value of 3.681e-05 and the positive slope indicates that as the sleep quality increases, so does the efficiency. However, caution needs to be exercised while making this conclusion as the adjusted R square value is 0.6 which means that the model captures less than 70% of the variance.</p>
+<p>Having defined M, we wanted to do a sanity check that it indeed is capturing the quality of sleep. We used <code>Efficiency</code> to evaluate its accuracy. Given the definition of Efficiency, it should be positively correlated to M.</p>
+<p>To test the relationship, we generated a log-log scale plot. We used a log10 scale to normalize the values and to see how the magnitudes of the two variables are related. The regression model is statistically significant with a p-value of 3.681e-05. Positive slope suggests that as M increases, the efficiency also increases. However, the adjusted R square value is 0.6 which means that the model captures less than 70% of the variance.</p>
 <p>In summary, the metric defined by the formula above seems to be capturing the information that directly affects the sleep quality of a user. Moreover, the statistical significance combined with the positive slope of the regression model and line prove to be a sanity check for our metric.</p>
 <p><img src="finalproj_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 </div>
