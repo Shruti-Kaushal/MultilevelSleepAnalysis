@@ -191,6 +191,7 @@ heatmap.2(x = df_act.coeff, symm = TRUE, key = TRUE,labRow = abbreviate(rownames
 
 Screen Usage
 
+```{r, fig.show="hold", out.width="50%"}
 # get the latest time using screen before sleep outset time
 temp = sleep %>% select(Onset.Time, user) %>% group_by(user) %>% top_n(1, desc(Onset.Time)) 
 scrn_usg_time = activity %>% 
