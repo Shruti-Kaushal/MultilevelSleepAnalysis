@@ -22,3 +22,5 @@ how-do-different-activities-affect-sleep-quality
 how-do-biomarkers-affect-sleep-quality
 interactive-component
 conclusion
+does-age-and-build-affect-sleep-quality
+which-activities-are-deterimental-to-sleep-quality

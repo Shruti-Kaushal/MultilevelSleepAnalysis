@@ -203,9 +203,7 @@ activity_duration %>% ggplot(aes(x = factor(user, levels = paste0("user_",c(1:22
   scale_x_discrete(labels = abbreviate) +
   theme(panel.background = element_blank() ) + 
   scale_fill_distiller(palette = "Blues", direction = 1) +
-  xlab("User ID") + 
-  ylab("Activity") +
-  ggtitle("Time spent on each activity")
+  labs(title = "Time spent on each activity", x= "User ID", y = "Activity", fill = "Seconds Spent\non Activity")
 ```
 The correlation between the total time each user spent on each activity and the sleep quality metric is shown below. Here, we only cared about how the factors affect sleep quality. From the heat map, it is clear there are no significant correlation factors.
 
