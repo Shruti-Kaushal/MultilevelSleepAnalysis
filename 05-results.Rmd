@@ -242,15 +242,16 @@ difference %>% ggplot(aes(x = factor(user,  levels = paste0("user_",c(1:22)), la
   ggtitle("Concentration difference per participant") +
   theme_bw()
 
+mydata %>% ggplot(aes(x = user, y = M)) +
+  geom_col(fill = 'lightblue', color = 'black') + 
+  scale_x_continuous(breaks = c(1:22), labels = c(1:22)) +
+  theme_bw()
 ```
 
 
 
 
 ```{r}
-
-ggplot(mydata, aes(`user`,`M`), labels = c(1:22)) + geom_col(fill = 'lightblue', color = 'black') + theme_bw()
-
 difference['user.id'] = lapply(difference['user'], function(x) as.numeric(str_remove(x,"user_")))
 difference_temp <- difference[difference$user.id!=11,]
 difference_temp <- difference_temp[order(difference_temp$user.id),]
