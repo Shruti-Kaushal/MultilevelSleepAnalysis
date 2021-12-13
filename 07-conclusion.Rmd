@@ -1,7 +1,7 @@
 # Conclusion
 We successfully defined a metric quantifying the sleep quality of participants in `MMASH` dataset. We saw that bed time does not affect sleep quality but age and height does, although the relationship isn't very strong. It was interesting to see that our metric captured sleep regulation by cortisol and melatonin in the case of some users.
 
-The biggest limitation we faced was the small sample size and low diversity in the cohort. Due to these limitations the conclusions made are to be believed keep the possibility of over-fitting in mind. We believe that future work can expand on the following - 
+The biggest limitation we faced was due to the small sample size and low diversity in the cohort. Due to these limitations the conclusions made are to be believed keep the possibility of over-fitting in mind. We believe that future work can expand on the following - 
  
 (1) Increasing sample size by combining datasets with similar depth of sampling and variables
 (2) Imputing sleep quality value for user 11 having established all causal relationships
