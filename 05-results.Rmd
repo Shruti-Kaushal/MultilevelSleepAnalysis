@@ -107,9 +107,9 @@ l <- mydata$M
 fivenum(l) %>% set_names(fivenumnames)
 ```
 
-Having defined M, we wanted to do a sanity check that it indeed is capturing the quality of sleep. We used `Efficiency` to evaluate its accuracy. Given the definition of Efficiency, it should be positively correlated to M.
+Having defined M, we wanted to see if it is capturing the quality of sleep. We used `Efficiency` to evaluate its accuracy. Given the definition of Efficiency, it should be positively correlated to M.
 
-To test the relationship, we generated a log-log scale plot. We used a log10 scale to normalize the values and to see how the magnitudes of the two variables are related. The regression model is statistically significant with a p-value of 3.681e-05. Positive slope suggests that as M increases, the efficiency also increases. However, the adjusted R square value is 0.6 which means that the model captures less than 70% of the variance. 
+To test the relationship, we generated a log-log scale plot. We used a log10 scale to normalize the values and to see how the magnitudes of the two variables are related. The regression model is statistically significant with a p-value of 3.681e-05. Positive slope suggests that as M increases, efficiency also increases. However, the adjusted R square value is 0.6 which means that the model captures less than 70% of the variance. 
 
 In summary, the metric defined by the formula above seems to be capturing the information that directly affects the sleep quality of a user. Moreover, the statistical significance combined with the positive slope of the regression model and line prove to be a sanity check for our metric.
 
