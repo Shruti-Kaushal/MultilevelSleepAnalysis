@@ -3,12 +3,9 @@
 Missing information includes - 
 
 (1) file information missing: user_11 is missing sleep.csv information
-
 (2) No clock genes and hormones concentrations data was provided for User_21 due to problem in the salivary samples that do not permit to analyse it.
-
-(3) missing age for user_18 in user_info
-
-(4) user_13 is missing questionnaire
+(3) Missing age for user_18 in user_info
+(4) Only user_13 has missing values in questionnaire record
 
 Since the aim of our project is to define a metric for sleep quality and identify variables with that affect it, user 11 was excluded from all the analysis performed. 
 
@@ -159,7 +156,7 @@ missingValuePlot(activity, title = 'Missing value patterns for activity')
 ```
 
 
-We generated this plot after removing user 13 so as to not distort the actual missing value patterns for users that have a record for `questionnaire`. Similar to `activity`, this file category has only two patterns - complete cases and two missing values that correspond to the levels of a variable "PANAS". PANAS is defined as the positive and negative affect schedule. It gives a score rating between 5 and 50 for both positive and negative emotions and higher the value, the higher is the perceived emotion. There are only one rows that are not complete.
+Similar to `activity`, this file category has only two patterns - complete cases and two missing values that correspond to the levels of a variable "PANAS". PANAS is defined as the positive and negative affect schedule. It gives a score rating between 5 and 50 for both positive and negative emotions and higher the value, the higher is the perceived emotion. There is only one row that is not complete and is present in the records of user 13.
 
 ```{r}
 missingValuePlot(questionnaire, title = 'Missing value patterns for questionnaire')
