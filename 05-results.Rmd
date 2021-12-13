@@ -188,8 +188,8 @@ df_act.p = df_act.rcorr$P
 
 heatmap.2(x = df_act.coeff, symm = TRUE, key = TRUE,labRow = abbreviate(rownames(df_act.coeff), minlength = 24), labCol = abbreviate(colnames(df_act.coeff), minlength = 24), col = palette, margins=c(8,10), srtCol=45, main = "heatmap", density.info="none", trace="none")
 ```
+
 Screen Usage
-```{r}
 
 # get the latest time using screen before sleep outset time
 temp = sleep %>% select(Onset.Time, user) %>% group_by(user) %>% top_n(1, desc(Onset.Time)) 
@@ -218,19 +218,20 @@ scrn_usg_time['small.scr.before.sleep'] = lapply(scrn_usg_time['Onset.Time'] - s
 
 scrn_usg_time['scr.before.sleep'] = lapply(scrn_usg_time['Onset.Time'] - scrn_usg_time['scr.usg'], function(x) as.double.difftime(x))
 
-ggplot(scrn_usg_time, aes(`large scr.usg`, M)) + geom_point() + labs(title = "Sleep Quality vs Screen Usage") +theme_bw()
-ggplot(scrn_usg_time, aes(`small scr.usg`, M)) + geom_point() + labs(title = "Sleep Quality vs Screen Usage") +theme_bw()
+# ggplot(scrn_usg_time, aes(`large scr.usg`, M)) + geom_point() + labs(title = "Sleep Quality vs Screen Usage") +theme_bw()
+# ggplot(scrn_usg_time, aes(`small scr.usg`, M)) + geom_point() + labs(title = "Sleep Quality vs Screen Usage") +theme_bw()
+# ggplot(scrn_usg_time, aes(`scr.usg`, M)) + geom_point() + labs(title = "Sleep Quality vs Screen Usage") +theme_bw()
 
 ggplot(scrn_usg_time, aes(large.scr.before.sleep, M)) + 
   geom_point() + 
-  labs(title = "Sleep Quality vs Screen Usage") +
+  labs(title = "Sleep Quality vs Large Screen Usage") +
   theme_bw() + 
   # scale_x_continuous(trans='log2') + 
   geom_smooth(method=lm) 
 
 ggplot(scrn_usg_time, aes(small.scr.before.sleep, M)) + 
   geom_point() + 
-  labs(title = "Sleep Quality vs Screen Usage") +
+  labs(title = "Sleep Quality vs Small Screen Usage") +
   theme_bw() +
   # scale_x_continuous(trans='log2')+
   geom_smooth(method=lm) 
@@ -248,8 +249,11 @@ ggplot(scrn_usg_time, aes(c[1]*small.scr.before.sleep+c[2]*large.scr.before.slee
 
 Heavy activity
 ```{r}
-ggplot(df_act, aes(heavy,M)) + geom_point() + labs(title = "Sleep Quality vs Time of standing") +theme_bw()
-
+ggplot(df_act, aes(heavy,M)) + 
+  geom_point() + 
+  labs(title = "Sleep Quality vs Heavy Activity") +
+  theme_bw()+ 
+  geom_smooth(method=lm) 
 ```
 
 ```{r}
@@ -268,12 +272,14 @@ df_pos.p = df_pos.rcorr$P
 heatmap.2(x = df_pos.coeff, symm = TRUE, key = TRUE,labRow = abbreviate(rownames(df_pos.coeff), minlength = 15), labCol = abbreviate(colnames(df_pos.coeff), minlength = 15), col = palette, margins=c(8,10), srtCol=45, main = "heatmap", density.info="none", trace="none")
 ```
 
+
 ```{r, fig.show="hold", out.width="50%"}
-ggplot(df_pos, aes(Inclinometer.Off,M)) + geom_point() + labs(title = "Sleep Quality vs Time of standing") +theme_bw()
-ggplot(df_pos, aes(Inclinometer.Standing,M)) + geom_point() + labs(title = "Sleep Quality vs Time of standing") +theme_bw()
-ggplot(df_pos, aes(Inclinometer.Sitting,M)) + geom_point() + labs(title = "Sleep Quality vs Time of standing") +theme_bw()
-ggplot(df_pos, aes(Inclinometer.Lying,M)) + geom_point() + labs(title = "Sleep Quality vs Time of standing") +theme_bw()
+# ggplot(df_pos, aes(Inclinometer.Off,M)) + geom_point() + labs(title = "Sleep Quality vs Time off") +theme_bw()
+ggplot(df_pos, aes(Inclinometer.Standing,M)) + geom_point() + labs(title = "Sleep Quality vs Time of Standing") +theme_bw()
+ggplot(df_pos, aes(Inclinometer.Sitting,M)) + geom_point() + labs(title = "Sleep Quality vs Time of Sitting") +theme_bw()
+ggplot(df_pos, aes(Inclinometer.Lying,M)) + geom_point() + labs(title = "Sleep Quality vs Time of Lying") +theme_bw()
 ```
+
 
 
 ### How do Biomarkers Affect Sleep Quality?
@@ -312,7 +318,6 @@ difference %>% ggplot(aes(x = factor(user,  levels = paste0("user_",c(1:22)), la
 
 
 ```{r}
-
 ggplot(mydata, aes(`user`,`M`), labels = c(1:22)) + geom_col(fill = 'lightblue', color = 'black') + theme_bw()
 
 difference['user.id'] = lapply(difference['user'], function(x) as.numeric(str_remove(x,"user_")))
@@ -323,3 +328,4 @@ difference_temp$M <- unlist(lapply(sleep_quality_metric, function(x) c(rep(c(x),
 
 difference_temp %>% ggplot(aes(`difference`,`M`)) + geom_point() + facet_wrap(~Chemicals, scales = "free") + labs(x = "Difference in Concentration Before and After Sleep", y = "Sleep Quality (M)")
 ```
+
