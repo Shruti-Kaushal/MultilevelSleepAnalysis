@@ -201,7 +201,7 @@ df_act.p = df_act.rcorr$P
 heatmap.2(x = df_act.coeff, symm = TRUE, key = TRUE,labRow = abbreviate(rownames(df_act.coeff), minlength = 24), labCol = abbreviate(colnames(df_act.coeff), minlength = 24), col = palette, margins=c(8,10), srtCol=45, main = "heatmap", density.info="none", trace="none")
 ```
 
-Next, we tried to group the factors and took `time` factor into consideration. Will using screen before sleeping affect users' sleep quality? We first explored `small screen usage` and `large screen usage` individually. Overall, it is less likely that using small screen device more than 4 hours before sleep will affect sleep quality.
+Next, we tried to group the factors and took `time` factor into consideration. Will using screen before sleeping affect users' sleep quality? We first explored `small screen usage` and `large screen usage` individually. Overall, it is less likely that using small screen device 4 hours before sleep will affect sleep quality. 
 
 ```{r, fig.show="hold", out.width="50%"}
 # get the latest time using screen before sleep outset time
@@ -225,7 +225,7 @@ scrn_usg_time[is.na(scrn_usg_time)] = as.POSIXct('2021-12-13 00:00:00')
 
 scrn_usg_time['scr.usg'] = pmax( scrn_usg_time$`small scr.usg`, scrn_usg_time$`large scr.usg`)
 
-scrn_usg_time['large.scr.before.sleep'] = lapply(scrn_usg_time['Onset.Time'] - scrn_usg_time['large scr.usg'], function(x) as.double.difftime(x))
+scrn_usg_time['large.scr.before.sleep'] = lapply(scrn_usg_time['Onset.Time'] - scrn_usg_time['large scr.usg'], function(x) as.double.difftime(x)*60)
 
 scrn_usg_time['small.scr.before.sleep'] = lapply(scrn_usg_time['Onset.Time'] - scrn_usg_time['small scr.usg'], function(x) as.double.difftime(x))
 
@@ -234,28 +234,50 @@ scrn_usg_time['scr.before.sleep'] = lapply(scrn_usg_time['Onset.Time'] - scrn_us
 # ggplot(scrn_usg_time, aes(`large scr.usg`, M)) + geom_point() + labs(title = "Sleep Quality vs Screen Usage") +theme_bw()
 # ggplot(scrn_usg_time, aes(`small scr.usg`, M)) + geom_point() + labs(title = "Sleep Quality vs Screen Usage") +theme_bw()
 # ggplot(scrn_usg_time, aes(`scr.usg`, M)) + geom_point() + labs(title = "Sleep Quality vs Screen Usage") +theme_bw()
+ggplot(scrn_usg_time, aes(scr.before.sleep, M)) + 
+  geom_point() + 
+  labs(title = "Sleep Quality vs Screen Usage") +
+  theme_bw() +
+  xlab("Off-screen Mimute Before Sleep") + 
+  ylab("Sleep Quality(M)") + 
+  # scale_x_continuous(trans='log2')+
+  geom_smooth(method=lm) 
 
 ggplot(scrn_usg_time, aes(large.scr.before.sleep, M)) + 
   geom_point() + 
   labs(title = "Sleep Quality vs Large Screen Usage") +
   theme_bw() + 
+  xlab("Off-screen Mimute Before Sleep") + 
+  ylab("Sleep Quality(M)") +  
   # scale_x_continuous(trans='log2') + 
   geom_smooth(method=lm) 
 
 ggplot(scrn_usg_time, aes(small.scr.before.sleep, M)) + 
   geom_point() + 
   labs(title = "Sleep Quality vs Small Screen Usage") +
+  xlab("Off-screen Mimute Before Sleep") + 
+  ylab("Sleep Quality(M)") + 
   theme_bw() +
   # scale_x_continuous(trans='log2')+
   geom_smooth(method=lm) 
 
-c = c(1, 1)
-ggplot(scrn_usg_time, aes(c[1]*small.scr.before.sleep+c[2]*large.scr.before.sleep, M)) + 
+ggplot(scrn_usg_time, aes(small.scr.before.sleep, M)) + 
   geom_point() + 
-  labs(title = "Sleep Quality vs Screen Usage") +
-  theme_bw()  + 
-  # scale_x_continuous(trans='log2') + 
-  geom_smooth(method=lm) 
+  labs(title = "Sleep Quality vs Small Screen Usage") +
+  theme_bw() +
+  xlab("Off-screen Mimute Before Sleep") + 
+  ylab("Sleep Quality(M)") + 
+  # scale_x_continuous(trans='log2')+
+  geom_smooth(method=lm) +
+  xlim(0,60)
+
+# c = c(1, 1)
+# ggplot(scrn_usg_time, aes(c[1]*small.scr.before.sleep+c[2]*large.scr.before.sleep, M)) + 
+#   geom_point() + 
+#   labs(title = "Sleep Quality vs Screen Usage") +
+#   theme_bw()  + 
+#   # scale_x_continuous(trans='log2') + 
+#   geom_smooth(method=lm) 
 
 ```
 
