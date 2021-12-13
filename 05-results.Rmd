@@ -152,6 +152,11 @@ It has been seen that as a person ages their quality of sleep deteriorates. This
 
 Does that mean we can conclude that as a person ages their sleep quality deteriorates? Not entirely, as the cohort sample age is extremely skewed towards the left hand side i.e. we have more participants that are young adults in comparison to those who are middle aged. Again, we make this conclusion bearing in mind that it might fail with the addition of participants that are middle aged. 
 
+The next question was - what about height? Do taller people sleep better? The trend that emerges from the scatterplot says probably not. We use the word probably because we have to keep in mind the limitation of the small size of the dataset and also the left skewness of the dataset when it comes to height. However, we still see close to a linear relationship between M and height where the increase in latter leads to a decrease in former. This could be for many reasons one of which could be that it is easier for short people to get comfortable in bed which helps with how well they sleep. It is important to keep in mind that the aim of this project is not to determine a DAG (directed acyclic graph) of all variables that are possibly correlated but to see if a varaible has any effect on our metric. So, the reasons supplied here is an attempt to understand why something could be happening without really having any measurements and hence should be taken lightly. 
+
+We then moved on to asking the same questions but for weight of participants. As expected, there seems to be no direct relationship with sleep quality and weight. This can be seen by the scatterplot below and from the spread of the data. 
+
+Since the authors of the data only studied males, we cannot comment on if one gender is inclined to have a better sleep quality universally than another gender. We refrained from adding more level in the last of the scatterplots as we know that gender system is non-binary.
 
 ```{r, figures-side, fig.show="hold", out.width="50%"}
 user_info$user.id <- as.numeric(unlist(map(strsplit(user_info$user, split = "_"), 2)))
