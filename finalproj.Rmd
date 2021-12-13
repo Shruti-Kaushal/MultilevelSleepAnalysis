@@ -1,3 +1,77 @@
+--- 
+title: "MultilevelSleepAnalysis"
+author: "Shruti Kaushal & Clarissa Tai"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+---
+--- 
+title: "MultilevelSleepAnalysis"
+author: "Shruti Kaushal & Clarissa Tai"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+---
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+# Introduction
+
+This project is focused on characterizing the sleep quality of 20 healthy young adults using numerous variables like age, sex, sleep fragmentation index, mental state and heart rate to name a few. There are variables that seems to have a direct relationship with sleep, for example, sleep fragmentation index and the time spent in bed, but there are others that one wouldn't suspect being related, like height or weight of the user. Biologists may argue that they are indeed related through many different paths but as data scientists we would like to uncover those through the data.
+
+The first step is to formulate a metric for the quality of sleep using only the variables that we know are correlated to it. This would mean defining a metric over the set of variables in the sleep.csv file of every user. Preliminary analysis is done to prevent multicollinearity. 
+
+Once we have established an tested our metric, we will move on to looking into how other variables affect the distribution of the metric across users. This section will be aimed at answering questions about correlation and causality. Our ultimate goal is to identify any confounders if any and quantify their relationship with the metric we define. However, we are cognizant of the fact that the cohort size is extremely small and the results might be "overfitting" the data. That said, we were not able to find any other datasets with the same level of sampling measurements which is why we exercise caution when making all the conclusions in the upcoming sections.
+
+Note: Since we are dealing with continuous categorical data, we use scatterplots and linear regression models to establish correlations and/or causal effects
+
+<!--chapter:end:index.Rmd-->
+
+
+# Data sources
+
+Placeholder
+
+
+## Dataset Overview
+## Data Collection
+
+<!--chapter:end:02-data.Rmd-->
+
+
+# Data transformation
+
+Placeholder
+
+
+## Sleep
+## Actigraph
+## Activity
+## Saliva
+## User info
+
+<!--chapter:end:03-cleaning.Rmd-->
+
+
+# Missing values
+
+Placeholder
+
+
+## Missing Value Plot
+
+<!--chapter:end:04-missing.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
 # Results
 The results chapter is broadly divided into two sections - one for each of the goals of this project. The first section will document all preliminary findings related to the sleep measurements and the procedure of defining a metric for quantifying quality of sleep.
 
@@ -73,7 +147,7 @@ df <- dplyr::select(mydata,c('Sleep Ratio','Sleep Fragmentation Index'))
 ggplot(stack(df), aes(x = ind, y = values)) + geom_boxplot() +labs(x = "", y = "Ratio Values", title = "Distribution of Sleep Ratio and Sleep Fragmentation Index in Cohort") 
 ```
 
-Since Latency is not a ratio, we visualized it separately as a Cleveland dot plot. There are a lot users with latency time of 0 mins which is a problem since M is inversely proportional to latency. So, we added a dummy term to latency and replaced proportionality with equality (we assume proportionality constants to be 1 - discussed in Conclusions chapter)
+Since Latency is not a ratio, we visualized it separately. There are a lot users with latency time of 0 mins which is a problem since M is inversely proportional to latency. So, we added a dummy term to latency and replaced proportionality with equality.
 
 
 ```{r}
@@ -167,13 +241,13 @@ temp %>%
 ```
 
 
-### Does Age and Build Affect Sleep Quality?
+### Does Build Affect Sleep?
 
-It has been seen that as a person ages their quality of sleep deteriorates. We analyzed the relationship between age and our sleep quality metric to see if such a pattern emerges. A general trend appeared in the scatterplot, excluding certain outliers. M seems to be linearly related to age till a threshold of 30 years. We saw a sharp decline in sleep quality for users older than 30 years. Moreover, sleep quality remained more or less constant beyond the threshold and is much lower compared to young adults. It is important to keep in mind that sample ages are extremely skewed and so similar pattern might not emerge with the addition of more middle aged users. 
+It has been seen that as a person ages their quality of sleep deteriorates. We analyzed the relationship between age and our sleep quality metric to see if such a pattern emerges. It was surprising to see a general trend appear, excluding certain outliers. Sleep quality seemed to be linearly correlated to age till a threshold of 30 years. We saw a sharp decline in sleep quality for users older than 30 years. Moreover, M seems to remain more or less constant beyond the threshold and is much lower compared to young adults. It is important to keep in mind that sample ages are extremely skewed and so similar pattern might not emerge with the addition of more middle aged users. 
 
-Next, we wanted to see if taller people sleep better or not. Similar to the ages, height of users is also skewed. However, we still see close to a linear relationship with a negative slope between M and height till 190 cm. One reason could be, it is easier for short people to get comfortable in bed and that helps them sleep better. We did not categorize users as outliers due to small sample size and low diversity.
+Next, we wanted to see if taller people are able to sleep better or not. Similar to the ages, height of users is also skewed. However, we still see close to a linear relationship with a negative slope between M and height till 190 cm. One reason could be, it is easier for short people to get comfortable in bed that helps them sleep better. We refrained from charaterizing users as outliers due to the small sample size and low diversity.
 
-We then moved on to see if weight affects sleep quality. As expected, there seems to be no direct relationship between the two. The scatterplot shows the spread of the data which doesn't have any discernible pattern. Users with weight 70 kg and 80 kg have a range of values for sleep quality.
+We then moved on to see if weight affects sleep quality. As expected, there seems to be no direct relationship between the two. The scatterplot shows the spread of the data which doesn't have any discernible pattern.
 
 Since the authors of the data only studied males, we cannot conclude if one gender is inclined to have better sleep quality than another. We refrained from adding more geneder levels in the plot to be politically correct.
 
@@ -193,7 +267,7 @@ ggplot(user_info_temp, aes(`Gender`,`M`)) + geom_point() + labs(title = "Sleep Q
 ```
 
 
-### Which Activities are Deterimental to Sleep Quality?
+### How Do Different Activities Affect Sleep Quality?
 
 From the `Activity.csv`, we explored the correlation between the sleep quality metric we defined and the total time each user spent on each activity throughout the day. Referring to the graph below, we decided to discuss the common factors, such as heavy activities, screen usage. Initially, we were also curious about the alcohol and caffeine consumption. However, the data was not enough to perform such analysis.
 
@@ -397,3 +471,50 @@ mydata %>% ggplot(aes(x = user, y = M)) +
 # difference_temp %>% ggplot(aes(`difference`,`M`)) + geom_point() + facet_wrap(~Chemicals, scales = "free") + labs(x = "Difference in Concentration Before and After Sleep", y = "Sleep Quality (M)")
 
 ```
+
+<!--chapter:end:05-results.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Interactive component
+
+
+
+<!--chapter:end:06-interactive.Rmd-->
+
+```{r include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+# Conclusion
+We successfully defined a metric quantifying the sleep quality of participants in `MMASH` dataset. We saw that bed time does not affect sleep quality but age and height does, although the relationship isn't very strong. It was interesting to see that our metric captured sleep regulation by cortisol and melatonin in the case of some users.
+
+The biggest limitation was the small sample size and low diversity in the cohort. Due to these limitations the conclusions made are to be believed keep the possibility of over-fitting in mind. We believe that future work can expand on the following - 
+ 
+(1) Increasing sample size by combining datasets with similar depth of sampling and variables
+(2) Imputing sleep quality value for user 11 having established all causal relationships
+(3) Include data corresponding to subjective matters like mental health, stress and anxiety in analysis to better quantify sleep quality
+(4)
+
+<!-- ## Discussion -->
+
+<!-- (1) Expand on imputing missing values for sleep csv of user 11 -  -->
+
+<!-- Having calculated the sleep quality for 21 users, it would be easy to treat user 11 as a missing value and apply different algorithms for imputing the value. However, this comes with a caveat - because the users are in themselves continuous categories and probably have their own distribution, looking at the entire sample space would mean that underlying distribution is multivariate. So, to effectively impute the value, we  first need to estimate the distribution parameters (even if assume that the distribution of each user is normal). This is beyond the scope of this project but we do plan to try it out if time permits. -->
+
+<!-- (2) Another area of discussion, which is beyond the scope of this project is to learn a DAG using all the variables and perform causal inference to identify confounders. The sleep metric can then be defined using the minimum control set or the sufficient set for the variables in the sleep.cs file. This definition will implicitly apply at least some of the relationships we identified in our results section -->
+<!-- (3) Is it possible to use other kinds of plots to establish dependencies and correlations? -->
+<!-- (4) Include the files that have been excluded from the analysis like questionnaires -->
+<!-- (5) Given the relationships identified, can we predict the sleep quality of a new participant who joins the cohort? -->
+
+
+<!--chapter:end:07-conclusion.Rmd-->
+
