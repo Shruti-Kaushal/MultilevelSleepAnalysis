@@ -341,9 +341,7 @@ ggplot(scrn_usg_time, aes(small.scr.before.sleep, M)) +
 
 
 ### How do Biomarkers Affect Sleep Quality?
-Research has shown that cortisol and melatonin are hormones produced by the body that regulate circadian rhythm and internal body clock.  
-
-Melatonin eases you into sleep and helps you stay asleep. The production of melatonin is triggered by darkness and is inhibitted by light. Cortisol helps you get up and keeps you awake. In conclusion, cortisol and melatonin have opposing rhythms. The prerequisites of a good sleep include having low cortisol and high melatonin levels before going to sleep and low melatonin and high cortisol levels after waking up.
+Research has shown that cortisol and melatonin are hormones produced by the body that regulate circadian rhythm and internal body clock. Melatonin eases you into sleep and helps you stay asleep. Its production is triggered by darkness and inhibitted by light. Cortisol helps you get up and keeps you awake. In summary, cortisol and melatonin have opposing rhythms. The prerequisites of a good sleep include having low cortisol and high melatonin levels before going to sleep and low melatonin and high cortisol levels after waking up.
 
 We wanted to see if our metric is able to capture the presence of prerequisites or not. We plotted a bar graph of differences in concentration (before sleep - after sleep) for each of the hormones and users. Concentrations of melatonin run in $10^{-9}$ and so the differences are not small, given the scale. We saw that only three users have negative cortisol difference levels.
 
