@@ -4,7 +4,7 @@
 
 ## Dataset Overview
 
-There are 22 folders in the MMASH dataset corresponding to the 22 healthy male young adults that were monitored for two consecutive days. A myriad of variables were measured for each of the samples or "users" (what the authors of the dataset calls them) including mental state, heart rate, level of clock genes in saliva, amount of sleep to the different activities that the user does throughout the days. These measurements are organized into 7 folders i.e. for each of the 22 users we have the following 7 folders:
+There are 22 folders in the MMASH dataset corresponding to the 22 healthy male young adults that were monitored for two consecutive days. A myriad of variables were measured for each of the samples or "users" including mental state, heart rate, level of clock genes in saliva, amount of sleep to the different activities that the user does throughout the days. These measurements are organized into 7 folders i.e. for each of the 22 users we have the following 7 folders:
 
 1. `Actigraph.csv`: accelerometer and inclinometer data recorded throughout the day.
 2. `Activity.csv`: list of the activity categories throughout the day.
