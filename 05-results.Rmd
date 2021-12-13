@@ -73,7 +73,7 @@ df <- dplyr::select(mydata,c('Sleep Ratio','Sleep Fragmentation Index'))
 ggplot(stack(df), aes(x = ind, y = values)) + geom_boxplot() +labs(x = "", y = "Ratio Values", title = "Distribution of Sleep Ratio and Sleep Fragmentation Index in Cohort") 
 ```
 
-Since Latency is not a ratio, we visualized it separately. There are a lot users with latency time of 0 mins which is a problem since M is inversely proportional to latency. So, we added a dummy term to latency and replaced proportionality with equality (we assume proportionality constants to be 1 - discussed in Conclusions chapter)
+Since Latency is not a ratio, we visualized it separately as a Cleveland dot plot. There are a lot users with latency time of 0 mins which is a problem since M is inversely proportional to latency. So, we added a dummy term to latency and replaced proportionality with equality (we assume proportionality constants to be 1 - discussed in Conclusions chapter)
 
 
 ```{r}
