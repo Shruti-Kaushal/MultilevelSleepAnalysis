@@ -313,6 +313,10 @@ difference %>% ggplot(aes(x = factor(user,  levels = paste0("user_",c(1:22)), la
   ggtitle("Concentration difference per participant") +
   theme_bw()
 
+mydata %>% ggplot(aes(x = user, y = M)) +
+  geom_col(fill = 'lightblue', color = 'black') + 
+  scale_x_continuous(breaks = c(1:22), labels = c(1:22)) +
+  theme_bw()
 ```
 
 
