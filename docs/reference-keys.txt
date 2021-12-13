@@ -17,10 +17,8 @@ distribution-of-variables
 distribution-of-sleep-quality-metric
 establishing-direct-indirect-effects-on-sleep-quality
 bed-time-does-not-affect-sleep-quality
-does-build-affect-sleep
-how-do-different-activities-affect-sleep-quality
+does-age-and-build-affect-sleep-quality
+which-activities-are-deterimental-to-sleep-quality
 how-do-biomarkers-affect-sleep-quality
 interactive-component
 conclusion
-does-age-and-build-affect-sleep-quality
-which-activities-are-deterimental-to-sleep-quality
