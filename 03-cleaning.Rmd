@@ -20,7 +20,7 @@ string2time <- function(x, format = "%H:%M"){
 ## Sleep
 The sleep file includes measurements like the time the user gets into bed to total minutes spent in bed, total sleep time, number of times the user wakes up etc. 
 
-Every user once in bed (to sleep) doesn't get out of bed till morning except one. Sleep records of user 1 showed that he got out of bed at 3:31 AM and went back to sleep at 3:57 AM. For simplification of our analysis, we treated the time interval that the user was out of bed as an "awakening" i.e. when a user awaken from his sleep and remains awake for some time. This required updating the rest of the variables and depending on the definition of the variables, we either took the average or maximum or summed the two quantities corresponding to each of the "sleep sessions". For example, "Total Sleep Time" was now the sum of the sleep time in both sessions, while "Sleep Fragmentation Index" was averaged across sessions.
+Every user once in bed (to sleep) doesn't get out of bed till morning except one. Sleep records of user 1 showed that he got out of bed at 3:31 AM and went back to sleep at 3:57 AM. For simplification, we treated the time interval that the user was out of bed as an "awakening" i.e. when a user awaken from his sleep and remains awake for some time. This required updating the rest of the variables and depending on the definition , we either took the average or maximum or summed the two quantities corresponding to each of the "sleep sessions". For example, "Total Sleep Time" was now the sum of the sleep time in both sessions, while "Sleep Fragmentation Index" was averaged across sessions.
 
 ![Sleep Measurements of User 1](./img/Sleep Measurements_User1.png){width=30%}
 

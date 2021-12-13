@@ -1,13 +1,21 @@
 # Conclusion
+We successfully defined a metric quantifying the sleep quality of participants in `MMASH` dataset. We saw that bed time does not affect sleep quality but age and height does, although the relationship isn't very strong. It was interesting to see that our metric captured sleep regulation by cortisol and melatonin in the case of some users.
 
-## Discussion
+The biggest limitation we faced was the small sample size and low diversity in the cohort. Due to these limitations the conclusions made are to be believed keep the possibility of over-fitting in mind. We believe that future work can expand on the following - 
+ 
+(1) Increasing sample size by combining datasets with similar depth of sampling and variables
+(2) Imputing sleep quality value for user 11 having established all causal relationships
+(3) Include data corresponding to subjective matters like mental health, stress and anxiety in analysis to better quantify sleep quality
+(4)
 
-(1) Expand on imputing missing values for sleep csv of user 11 - 
+<!-- ## Discussion -->
 
-Having calculated the sleep quality for 21 users, it would be easy to treat user 11 as a missing value and apply different algorithms for imputing the value. However, this comes with a caveat - because the users are in themselves continuous categories and probably have their own distribution, looking at the entire sample space would mean that underlying distribution is multivariate. So, to effectively impute the value, we  first need to estimate the distribution parameters (even if assume that the distribution of each user is normal). This is beyond the scope of this project but we do plan to try it out if time permits.
+<!-- (1) Expand on imputing missing values for sleep csv of user 11 -  -->
 
-(2) Another area of discussion, which is beyond the scope of this project is to learn a DAG using all the variables and perform causal inference to identify confounders. The sleep metric can then be defined using the minimum control set or the sufficient set for the variables in the sleep.cs file. This definition will implicitly apply at least some of the relationships we identified in our results section
-(3) Is it possible to use other kinds of plots to establish dependencies and correlations?
-(4) Include the files that have been excluded from the analysis like questionnaires
-(5) Given the relationships identified, can we predict the sleep quality of a new participant who joins the cohort?
+<!-- Having calculated the sleep quality for 21 users, it would be easy to treat user 11 as a missing value and apply different algorithms for imputing the value. However, this comes with a caveat - because the users are in themselves continuous categories and probably have their own distribution, looking at the entire sample space would mean that underlying distribution is multivariate. So, to effectively impute the value, we  first need to estimate the distribution parameters (even if assume that the distribution of each user is normal). This is beyond the scope of this project but we do plan to try it out if time permits. -->
+
+<!-- (2) Another area of discussion, which is beyond the scope of this project is to learn a DAG using all the variables and perform causal inference to identify confounders. The sleep metric can then be defined using the minimum control set or the sufficient set for the variables in the sleep.cs file. This definition will implicitly apply at least some of the relationships we identified in our results section -->
+<!-- (3) Is it possible to use other kinds of plots to establish dependencies and correlations? -->
+<!-- (4) Include the files that have been excluded from the analysis like questionnaires -->
+<!-- (5) Given the relationships identified, can we predict the sleep quality of a new participant who joins the cohort? -->
 
