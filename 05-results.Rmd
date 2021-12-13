@@ -332,4 +332,5 @@ sleep_quality_metric = mydata$M[mydata$user != 21]
 difference_temp$M <- unlist(lapply(sleep_quality_metric, function(x) c(rep(c(x),2))))
 
 difference_temp %>% ggplot(aes(`difference`,`M`)) + geom_point() + facet_wrap(~Chemicals, scales = "free") + labs(x = "Difference in Concentration Before and After Sleep", y = "Sleep Quality (M)")
+
 ```
