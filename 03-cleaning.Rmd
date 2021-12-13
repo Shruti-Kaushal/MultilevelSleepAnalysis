@@ -1,8 +1,8 @@
 # Data transformation
 
-As mentioned in the introduction, for each sample or "user" many variables were sampled over the course of two days. These measurements are organized into 7 different file or categories like sleep, activity, actigraph, saliva samples etc. In this section we will focus on transforming each of the files that we used to perform any kind of analysis.
+As mentioned in the introduction, for each sample or "user" many variables were sampled over the course of two days. These measurements are organized into 7 different files and in this section we will focus on how we transformed the data in each of the files for analysis.
 
-In conclusion, we worked on all the datetime columns and transformed them into the format `YYYY-MM-DD HH:MM:SS` due to analysis convenience. We decided to not include `RR.csv` in our discussion, since the heartbeat information is also included in the `actigraph.csv`. We considered it redundant and were more interested in relating heartbeat data to activities. 
+In conclusion, we worked on all the datetime columns and transformed them into the format `YYYY-MM-DD HH:MM:SS` due to analysis convenience. We decided to not include `RR.csv` in our discussion, since the heartbeat information is also included in the `actigraph.csv`.  
 
 ```{r}
 # define function
@@ -18,13 +18,11 @@ string2time <- function(x, format = "%H:%M"){
 ```
 
 ## Sleep
-The sleep file includes measurements ranging from the time the user gets into bed to the time that he gets out of bed. This file also includes measurements for total minutes spent in bed, total sleep time, number of times the user wakes up etc. 
+The sleep file includes measurements like the time the user gets into bed to total minutes spent in bed, total sleep time, number of times the user wakes up etc. 
 
 Every user once in bed (to sleep) doesn't get out of bed till morning except one. Sleep records of user 1 showed that he got out of bed at 3:31 AM and went back to sleep at 3:57 AM. For simplification of our analysis, we treated the time interval that the user was out of bed as an "awakening" i.e. when a user awaken from his sleep and remains awake for some time. This required updating the rest of the variables and depending on the definition of the variables, we either took the average or maximum or summed the two quantities corresponding to each of the "sleep sessions". For example, "Total Sleep Time" was now the sum of the sleep time in both sessions, while "Sleep Fragmentation Index" was averaged across sessions.
 
 ![Sleep Measurements of User 1](./img/Sleep Measurements_User1.png){width=30%}
-
-We will define variables wherever needed but the reader is encouraged to go through the documentation of the dataset (link in chapter 2), to understand the variables in depth. 
 
 ```{r}
 # colnames(sleep)
@@ -165,13 +163,13 @@ ID_activity <- data.frame(ID = 0:12, category = c(
 activity_duration = activity_duration %>% left_join(ID_activity, by = c('Activity' = "ID"))
 
 
-activity_duration %>% ggplot(aes(x = factor(user, levels = paste0("user_",c(1:22)), labels = c(1:22)), y = factor(category), alpha = total)) +
-  geom_tile(color = 'black', lwd = 0.4, linetype = 1) +
-  scale_x_discrete(labels = abbreviate) +
-  theme(panel.background = element_blank() ) + 
-  xlab("User ID") + 
-  ylab("Activity") +
-  ggtitle("Time spent on each activity")
+# activity_duration %>% ggplot(aes(x = factor(user, levels = paste0("user_",c(1:22)), labels = c(1:22)), y = factor(category), alpha = total)) +
+#   geom_tile(color = 'black', lwd = 0.4, linetype = 1) +
+#   scale_x_discrete(labels = abbreviate) +
+#   theme(panel.background = element_blank() ) + 
+#   xlab("User ID") + 
+#   ylab("Activity") +
+#   ggtitle("Time spent on each activity")
 ```
 
 
@@ -228,10 +226,7 @@ activity_duration %>% ggplot(aes(x = factor(user, levels = paste0("user_",c(1:22
 
 
 ## Saliva
-`Saliva.csv` collected `Melatonin` and `Cortisol` concentrations in the saliva for each participants before going to bed and after waking up. However, no data was provided for User_21 due to problem in the salivary samples that were collected.
-
-Saliva samples were collected twice - once before sleep and once after waking up. From each of the samples, the concentration of cortisol and melatonin were calculated. Melatonin levels are reported in μg per μg of protein while cortisol levels are reported in μg per 100 μg of protein. The data contains the normalized concentrations of both hormones and so no transformation or normalization is needed to use this data.
-
+`Saliva.csv` collected `Melatonin` and `Cortisol` concentrations in the saliva for each participants before going to bed and after waking up. From each of the two samples, the concentration of cortisol and melatonin were calculated. Melatonin levels are reported in μg per μg of protein while cortisol levels are reported in μg per 100 μg of protein. The data contains the normalized concentrations of both hormones and so no transformation or normalization was needed to use this data.
 
 
 ## User info
