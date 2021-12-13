@@ -159,7 +159,7 @@ missingValuePlot(activity, title = 'Missing value patterns for activity')
 ```
 
 
-We generated this plot after removing user 13 so as to not distort the actual missing value patterns for users that have a record for `questionnaire`. Similar to `activity`, this file category has only two patterns - complete cases and two missing values that correspond to the levels of a variable "PANAS". PANAS is defined as the positive and negative affect schedule. It gives a score rating between 5 and 50 for both positive and negative emotions and higher the value, the higher is the perceived emotion.
+We generated this plot after removing user 13 so as to not distort the actual missing value patterns for users that have a record for `questionnaire`. Similar to `activity`, this file category has only two patterns - complete cases and two missing values that correspond to the levels of a variable "PANAS". PANAS is defined as the positive and negative affect schedule. It gives a score rating between 5 and 50 for both positive and negative emotions and higher the value, the higher is the perceived emotion. There are only two rows that are not complete.
 
 ```{r}
 missingValuePlot(questionnaire, title = 'Missing value patterns for questionnaire')
