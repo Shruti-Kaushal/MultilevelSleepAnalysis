@@ -14,7 +14,8 @@ Since the aim of our project is to define a metric for sleep quality and identif
 
 ## Missing Value Plot
 
-Here we revise the function we created in problem set 4 to plot the missing patterns. Very less missing value is in the dataset. As shown in the plots, only one row with missing values exist in `activity` and `questionnaire`, respectively.
+Here we revise the function we created in problem set 4 to plot the missing patterns. The number of missing values are very few (mentioned above). We generated missing value plots only for `questionnaire` and `activity` as they seemed to exhibit some pattern.
+As shown in the plots, only one row with missing values exist in `activity` and `questionnaire`, respectively.
 ```{r}
 # missing value plot function from problem set 4
 library(dplyr)
@@ -142,6 +143,7 @@ missingValuePlot <- function(df, mode = "count", title = 'Missing value patterns
 }
 ```
 
+There is only one missing value in "End" variable which is defined as the time of the day when the event or activity concluded. For example, if a user smoked from 10:30 AM to 10:40 AM then `End` would be set to 10:40 AM. Except this one missing value, all others are complete cases.
 
 ```{r}
 # load data from previous stage
@@ -149,7 +151,7 @@ load("./data/RData/data_MMASH_cleaned.RData")
 # plot
 # missingValuePlot(actigraph, title = 'Missing value patterns for actigraph')
 missingValuePlot(activity, title = 'Missing value patterns for activity')
-missingValuePlot(questionnaire, title = 'Missing value patterns for questionnaire')
+
 # missingValuePlot(RR, title = 'Missing value patterns for RR')
 # missingValuePlot(saliva, title = 'Missing value patterns for saliva')
 # missingValuePlot(sleep, title = 'Missing value patterns for sleep')
@@ -157,4 +159,8 @@ missingValuePlot(questionnaire, title = 'Missing value patterns for questionnair
 ```
 
 
+We generated this plot after removing user 13 so as to not distort the actual missing value patterns for users that have a record for `questionnaire`. Similar to `activity`, this file category has only two patterns - complete cases and two missing values that correspond to the levels of a variable "PANAS". PANAS is defined as the positive and negative affect schedule. It gives a score rating between 5 and 50 for both positive and negative emotions and higher the value, the higher is the perceived emotion.
 
+```{r}
+missingValuePlot(questionnaire, title = 'Missing value patterns for questionnaire')
+```
