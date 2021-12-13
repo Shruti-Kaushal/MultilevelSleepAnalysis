@@ -22,7 +22,7 @@ The sleep file includes measurements ranging from the time the user gets into be
 
 Every user once in bed (to sleep) doesn't get out of bed till morning except one. Sleep records of user 1 showed that he got out of bed at 3:31 AM and went back to sleep at 3:57 AM. For simplification of our analysis, we treated the time interval that the user was out of bed as an "awakening" i.e. when a user awaken from his sleep and remains awake for some time. This required updating the rest of the variables and depending on the definition of the variables, we either took the average or maximum or summed the two quantities corresponding to each of the "sleep sessions". For example, "Total Sleep Time" was now the sum of the sleep time in both sessions, while "Sleep Fragmentation Index" was averaged across sessions.
 
-![Sleep Measurements of User 1](./img/Sleep Measurements_User1.png)
+![Sleep Measurements of User 1](./img/Sleep Measurements_User1.png){width=30%}
 
 We will define variables wherever needed but the reader is encouraged to go through the documentation of the dataset (link in chapter 2), to understand the variables in depth. 
 
@@ -52,7 +52,7 @@ sleep$Onset.Time = string2time(sleep$Onset.Time, format = "%H:%M") + lubridate::
 <!-- 11. day: 1 and 2 refer to the first and second day of data recording, respectively. -->
 <!-- 12. time: day time when the heartbeat happened (hours:minutes:seconds) -->
 
-### Transformation process:
+We transformed the data as follows - 
 
 1. Datetime format: We transform the `time` column into datetime type in R. Also, since initial `time` column doesn't contain date information, we add days according to the `day` column to create a relative time stamp for each record in order to facilitate future calculation.
 
@@ -91,30 +91,29 @@ position = actigraph %>%
 ```
 
 ## Activity
+This file contained information on 13 different categories of activities measured throughout the day and the time (of event happening) recorded. 
+<!-- 'Start' and 'end' columns refer to the time of the day (hours:minutes) when the event happened, while 'day' columns refers to the day when it happened (1 and 2 refer to the first and second day of data recording, respectively). -->
 
-### Definition and explanation of each column
-'Start' and 'end' columns refer to the time of the day (hours:minutes) when the event happened, while 'day' columns refers to the day when it happened (1 and 2 refer to the first and second day of data recording, respectively).
-
-### Transformation process:
+We transformed the data as follows - 
 
 1. Datetime format: Here we substitute "00:00" to "24:00" in column `End` to avoid calculating between wrong dates, and then transformed into the format as we did for `Actigraph.csv`.
 
 2. Relabel the activities: The document labeled the activity categories from 1 to 12. However, an extra category, labeled as `0`, also included in the dataset. In this project, we will assume that the `0` represented undetermined activities. Here, we also had to deal with several minor mistakes in the dataset manually.
 
-+ 13 Categories of activity:
-  - undefined: all other unlabeled activity will count here.
-  - sleeping
-  - laying down
-  - sitting: e.g. studying and driving
-  - light mvmnt: e.g. slow/medium walk, chores and work.
-  - medium: e.g. fast walk and bike
-  - heavy: e.g. gym, running.
-  - eating
-  - small scr.usg: e.g. smartphone and computer.
-  - large scr.usg: e.g. TV and cinema.
-  - caff. consump.: caffeinated drink consumption, e.g. coffee or coke.
-  - smoking
-  - alc. consump.: alcohol assumption.
+<!-- + 13 Categories of activity: -->
+<!--   - undefined: all other unlabeled activity will count here. -->
+<!--   - sleeping -->
+<!--   - laying down -->
+<!--   - sitting: e.g. studying and driving -->
+<!--   - light mvmnt: e.g. slow/medium walk, chores and work. -->
+<!--   - medium: e.g. fast walk and bike -->
+<!--   - heavy: e.g. gym, running. -->
+<!--   - eating -->
+<!--   - small scr.usg: e.g. smartphone and computer. -->
+<!--   - large scr.usg: e.g. TV and cinema. -->
+<!--   - caff. consump.: caffeinated drink consumption, e.g. coffee or coke. -->
+<!--   - smoking -->
+<!--   - alc. consump.: alcohol assumption. -->
 
 3. Calculate duration for each activity: To figure the total time each user spent on each activity, we calculate time intervals (`End` - `Start`) between different activities in seconds.
 
