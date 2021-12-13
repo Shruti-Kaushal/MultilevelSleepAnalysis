@@ -43,22 +43,24 @@ mydata['user'] <- c(1,2,3,4,5,6,7,8,9,10,12,13,14,15,16,17,18,19,20,21,22)
 ```
 
 ### Distribution of Variables
-The clustering of heatmap showed that there are 3 clear clusters (if we cut across the tree right below the highest line connecting efficiency and another cluser) which are consistent with the observations we made. To avoid multicollinearity, we decided to pick 1-2 variables from each of the clusters depending on the strength and statistical significance of the correlation coefficient. We denote our metric by M and intuitively, it should be higher for users that are able to sleep through the night and do not have any trouble falling asleep. Keeping this in mind, we came up with the following associations - 
+There are 3 clusters in the heatmap (if we cut across the tree right below the highest line connecting efficiency and another cluster) which are consistent with the observations we made. To avoid multicollinearity, we decided to pick variables from each of the clusters depending on the strength and significance of the correlation coefficient. We denote our metric by M. Intuitively, it should be higher for users who are able to sleep through the night and do not have any trouble falling asleep. Keeping this in mind, we came up with the following associations - 
 
 (1) M $\alpha$ Total Sleep Time (TST)
 (2) M $\alpha$ $\frac{1}{SleepFragmentation Index}$
 (3) M $\alpha$ $\frac{1}{Latency}$
 (4) M $\alpha$ $\frac{1}{AverageTimeSpentAwake}$
 
-Note that (2) is a ratio while others have units "hh:mm". So, keeping that in mind we combined all the above relationship as - 
+We combined the above associations as follows - 
 
 \begin{align*}
 M \alpha (\frac{TST}{AverageTimeSpentAwake} + \frac{1}{SleepFragmentationIndex}).\frac{1}{Latency}
 \end{align*}
 
-The units of the right hand side are "per hh:mm" (because of addition of latency). Since this expression was constructed using just the correlation, to establish a stronger relationship i.e. equality, it is important to look at the distribution of each of these variables. It might happen that even though intuitively one might think that a variable should have an effect on the sleep quality but if in reality the distribution of that variable turns out to be narrow then including it would not be a good idea. We would like to stress that the number of samples available to us are very less to do this sort of analysis without any selection bias i.e. inferences might hold for this small cohort but not necessarily for a bigger cohort.
+The units of the right hand side are "per hh:mm" (because of addition of latency). Average Time Spent Awake is the product of Number of Awakenings and Average Awakening Length. Let the ratio of TST and Average Time Spent Awake be called sleep ratio.
 
-We defined sleep ratio to be the ratio of TST and Average Time Spent Awake. The latter was calculated by simply multiplying Number of Awakengings with the Average Awakening Length. The box plot below shows the distribution of the Sleep Ratio and Sleep Fragmentation Index. Indeed both ratios seem to have a positive variance. 
+The next step was to quantify the distribution of the variables that are used to define M. We wanted to include variables that are informative instead of variables that remain constant across the cohort. Due to the small sample size, any analysis of such sort (constructing a metric) will have a selection bias and so the conclusions made throughiut this section may not hold for a bigger cohort.
+
+The box plot below shows the distribution of the Sleep Ratio and Sleep Fragmentation Index. The values for both ratios seems well distributed with no outliers.
 ```{r}
 library(dplyr)
 mydata['Average Time Awake'] = mydata$`Number of Awakenings`*mydata$`Average Awakening Length`
@@ -68,7 +70,7 @@ df <- dplyr::select(mydata,c('Sleep Ratio','Sleep Fragmentation Index'))
 ggplot(stack(df), aes(x = ind, y = values)) + geom_boxplot() +labs(x = "", y = "Ratio Values", title = "Distribution of Sleep Ratio and Sleep Fragmentation Index in Cohort") 
 ```
 
-Since Latency is the time taken by the user to fall asleep once he gets into the bed, we wanted to visualize it separately. We noticed that a lot of the users had a latency time of 0 mins. This seems a little absurd given its definition so we assumed that any user that fell asleep within a minute had a latency of 0. This creates a problem since the metric is inversely proportional to latency and if it has a value of zero, it would mean the absolute value of M would be infinity. Clearly, this isn't possible and so when replacing proportionality with equality, we add a dummy term to latency. 
+Since Latency is the time taken by the user to fall asleep once he gets into the bed, we wanted to visualize it separately. We noticed that a lot of the users had a latency time of 0 mins. This creates a problem since the metric is inversely proportional to latency and a value of infinity wouldn't make sense. So, we add a dummy term to latency and replaced proportionality with equality.
 
 
 ```{r}
@@ -81,7 +83,7 @@ We define the sleep quality of a user as -
 M = (\frac{TST}{AverageTimeSpentAwake} + \frac{1}{SleepFragmentationIndex}).(\frac{1}{Latency + 1})
 \end{align*}
 
-The dummy term takes care of the case when Latency is 0. In the case that other variables are 0, we simply replace them by 1. We did not add a dummy terms as the none of the users in our cohort had no sleep (TST) or did not get woken up in the middle of their sleep (Number of Awakenings). Also, this metric can never be negative since all the variables involved are non-negative.
+In the case that other variables are 0, we simply replace them by 1. We did not add a dummy terms as the none of the users in our cohort $TST = 0$ or $Number of Awakenings = 0$. This metric is always positive since all the variables involved are non-negative.
 
 ### Distribution of Sleep Quality Metric
 
