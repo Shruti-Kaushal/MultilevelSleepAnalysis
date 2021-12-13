@@ -30,3 +30,5 @@ how-do-biomarkers-affect-sleep-quality
 interactive-component
 conclusion
 discussion
+can-going-to-bed-early-improve-sleep-quality
+how-do-different-activities-affect-sleep-quality
