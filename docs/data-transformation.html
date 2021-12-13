@@ -84,19 +84,15 @@
 <li class="chapter" data-level="3.1" data-path="data-transformation.html"><a href="data-transformation.html#sleep"><i class="fa fa-check"></i><b>3.1</b> Sleep</a></li>
 <li class="chapter" data-level="3.2" data-path="data-transformation.html"><a href="data-transformation.html#actigraph"><i class="fa fa-check"></i><b>3.2</b> Actigraph</a>
 <ul>
-<li class="chapter" data-level="3.2.1" data-path="data-transformation.html"><a href="data-transformation.html#definition-and-explanation-of-each-column"><i class="fa fa-check"></i><b>3.2.1</b> Definition and explanation of each column</a></li>
-<li class="chapter" data-level="3.2.2" data-path="data-transformation.html"><a href="data-transformation.html#transformation-process"><i class="fa fa-check"></i><b>3.2.2</b> Transformation process:</a></li>
+<li class="chapter" data-level="3.2.1" data-path="data-transformation.html"><a href="data-transformation.html#transformation-process"><i class="fa fa-check"></i><b>3.2.1</b> Transformation process:</a></li>
 </ul></li>
 <li class="chapter" data-level="3.3" data-path="data-transformation.html"><a href="data-transformation.html#activity"><i class="fa fa-check"></i><b>3.3</b> Activity</a>
 <ul>
-<li class="chapter" data-level="3.3.1" data-path="data-transformation.html"><a href="data-transformation.html#definition-and-explanation-of-each-column-1"><i class="fa fa-check"></i><b>3.3.1</b> Definition and explanation of each column</a></li>
+<li class="chapter" data-level="3.3.1" data-path="data-transformation.html"><a href="data-transformation.html#definition-and-explanation-of-each-column"><i class="fa fa-check"></i><b>3.3.1</b> Definition and explanation of each column</a></li>
 <li class="chapter" data-level="3.3.2" data-path="data-transformation.html"><a href="data-transformation.html#transformation-process-1"><i class="fa fa-check"></i><b>3.3.2</b> Transformation process:</a></li>
 </ul></li>
 <li class="chapter" data-level="3.4" data-path="data-transformation.html"><a href="data-transformation.html#saliva"><i class="fa fa-check"></i><b>3.4</b> Saliva</a></li>
-<li class="chapter" data-level="3.5" data-path="data-transformation.html"><a href="data-transformation.html#user-info"><i class="fa fa-check"></i><b>3.5</b> User info</a>
-<ul>
-<li class="chapter" data-level="3.5.1" data-path="data-transformation.html"><a href="data-transformation.html#definition-and-explanation-of-each-column-2"><i class="fa fa-check"></i><b>3.5.1</b> Definition and explanation of each column</a></li>
-</ul></li>
+<li class="chapter" data-level="3.5" data-path="data-transformation.html"><a href="data-transformation.html#user-info"><i class="fa fa-check"></i><b>3.5</b> User info</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="missing-values.html"><a href="missing-values.html"><i class="fa fa-check"></i><b>4</b> Missing values</a>
 <ul>
@@ -114,7 +110,7 @@
 <ul>
 <li class="chapter" data-level="5.2.1" data-path="results.html"><a href="results.html#can-going-to-bed-early-improve-sleep-quality"><i class="fa fa-check"></i><b>5.2.1</b> Can Going to Bed Early Improve Sleep Quality?</a></li>
 <li class="chapter" data-level="5.2.2" data-path="results.html"><a href="results.html#does-your-build-affect-your-sleep"><i class="fa fa-check"></i><b>5.2.2</b> Does Your Build Affect Your Sleep?</a></li>
-<li class="chapter" data-level="5.2.3" data-path="results.html"><a href="results.html#how-do-different-activities-affect-sleep-quality"><i class="fa fa-check"></i><b>5.2.3</b> How do Different Activities Affect Sleep Quality?</a></li>
+<li class="chapter" data-level="5.2.3" data-path="results.html"><a href="results.html#how-do-different-activities-affect-sleep-quality"><i class="fa fa-check"></i><b>5.2.3</b> How Do Different Activities Affect Sleep Quality?</a></li>
 <li class="chapter" data-level="5.2.4" data-path="results.html"><a href="results.html#how-do-biomarkers-affect-sleep-quality"><i class="fa fa-check"></i><b>5.2.4</b> How do Biomarkers Affect Sleep Quality?</a></li>
 </ul></li>
 </ul></li>
@@ -148,33 +144,32 @@
 <p>In conclusion, we worked on all the datetime columns and transformed them into the format <code>YYYY-MM-DD HH:MM:SS</code> due to analysis convenience. We decided to not include <code>RR.csv</code> in our discussion, since the heartbeat information is also included in the <code>actigraph.csv</code>. We considered it redundant and were more interested in relating heartbeat data to activities.</p>
 <div id="sleep" class="section level2" number="3.1">
 <h2><span class="header-section-number">3.1</span> Sleep</h2>
-<p>The sleep file includes measurements ranging from the time the user gets into bed to the time that he gets out of bed. The measurements can be broadly grouped into two categories - one that actually relates to the quality of sleep, for example, sleep fragmentation index and the average awakening length, and other category includes time measurements, for example, the time it took for the user to fall asleep and the time he was in bed after waking up. Variables that fall in the second category have a lot of information but can be combined together to transform time measurements to duration. “Durations” can be easily compared across users in a succinct manner. However, there are some variables, like in-bed and out-bed time, that we used as is because transforming them would actually lead to a loss in information.</p>
-<p>There was only one user without any sleep records. Since the aim of our project is to define a metric for sleep quality and identify variables with direct or indirect effects, user 11 was excluded from all the analysis we performed. Having calculated the sleep quality for 21 users, it would be easy to treat user 11 as a missing value and apply different algorithms for imputing the value. However, this comes with a caveat - because the users are in themselves continuous categories and probably have their own distribution, looking at the entire sample space would mean that underlying distribution is multivariate. So, to effectively impute the value, we first need to estimate the distribution parameters (even if assume that the distribution of each user is normal). This is beyond the scope of this project but we do plan to try it out if time permits.</p>
-<p>We also discovered a pattern that every user once in bed (to sleep) doesn’t get out of bed till morning except one. Sleep records of user 1 showed that he got out of bed at 3:31 AM and went back to sleep at 3:57 AM. It is hard to tell what activities did he engage in after getting out of bed briefly as the activities file (described below) does not have time stamps. For simplification of our analysis, we treated the time interval that the user was out of bed as an “awakening” i.e. when a user awaken from his sleep and remains awake for some time. This required updating the rest of the variables such as “Average Awakening Length”,“Sleep Fragmentation Index” etc. Depending on the definition of the variables, we either took the average or maximum or summed the two quantities corresponding to each of the “sleep sessions”. For example, “Total Sleep Time” was now the sum of the sleep time in both sessions, while “Sleep Fragmentation Index” was averaged across sessions.</p>
+<p>The sleep file includes measurements ranging from the time the user gets into bed to the time that he gets out of bed. This file also includes measurements for total minutes spent in bed, total sleep time, number of times the user wakes up etc.</p>
+<p>Every user once in bed (to sleep) doesn’t get out of bed till morning except one. Sleep records of user 1 showed that he got out of bed at 3:31 AM and went back to sleep at 3:57 AM. For simplification of our analysis, we treated the time interval that the user was out of bed as an “awakening” i.e. when a user awaken from his sleep and remains awake for some time. This required updating the rest of the variables and depending on the definition of the variables, we either took the average or maximum or summed the two quantities corresponding to each of the “sleep sessions”. For example, “Total Sleep Time” was now the sum of the sleep time in both sessions, while “Sleep Fragmentation Index” was averaged across sessions.</p>
+<div class="figure">
+<img src="img/Sleep%20Measurements_User1.png" alt="" />
+<p class="caption">Sleep Measurements of User 1</p>
+</div>
 <p>We will define variables wherever needed but the reader is encouraged to go through the documentation of the dataset (link in chapter 2), to understand the variables in depth.</p>
 </div>
 <div id="actigraph" class="section level2" number="3.2">
 <h2><span class="header-section-number">3.2</span> Actigraph</h2>
 <p><code>Actigraph.csv</code> contained accelerometer and inclinometer data recorded throughout the day. Overall, it tracked users’ movement data, such as steps, direction, acceleration, positions, etc.</p>
-<div id="definition-and-explanation-of-each-column" class="section level3" number="3.2.1">
-<h3><span class="header-section-number">3.2.1</span> Definition and explanation of each column</h3>
-<ol style="list-style-type: decimal">
-<li>Axis1: Raw Acceleration data of the X-axis expressed in Newton-meter.</li>
-<li>Axis2: Raw Acceleration data of the Y-axis expressed in Newton-meter.</li>
-<li>Axis3: Raw Acceleration data of the Z-axis expressed in Newton-meter.</li>
-<li>Steps: number of steps per second.</li>
-<li>HR: beats per minutes (bpm).</li>
-<li>Inclinometer Off: values equal to 1 refer to no activation of the inclinometer. The values are reported per second.</li>
-<li>Inclinometer Standing: values equal to 1 refer to the standing position of the user, while 0 refers to other user positions. Values are reported per second.</li>
-<li>Inclinometer Sitting: values equal to 1 refer to the sitting position of the user, while 0 refers to other user positions. Values are reported per second.</li>
-<li>Inclinometer Lying: values equal to 1 refer to the lying position of the user, while 0 refers to other user positions. Values are reported per second.</li>
-<li>Vector Magnitude: vector movement derived from raw acceleration data expressed in Newton-meter.</li>
-<li>day: 1 and 2 refer to the first and second day of data recording, respectively.</li>
-<li>time: day time when the heartbeat happened (hours:minutes:seconds)</li>
-</ol>
-</div>
-<div id="transformation-process" class="section level3" number="3.2.2">
-<h3><span class="header-section-number">3.2.2</span> Transformation process:</h3>
+<!-- ### Definition and explanation of each column -->
+<!-- 1. Axis1: Raw Acceleration data of the X-axis expressed in Newton-meter. -->
+<!-- 2. Axis2: Raw Acceleration data of the Y-axis expressed in Newton-meter. -->
+<!-- 3. Axis3: Raw Acceleration data of the Z-axis expressed in Newton-meter. -->
+<!-- 4. Steps: number of steps per second. -->
+<!-- 5. HR: beats per minutes (bpm). -->
+<!-- 6. Inclinometer Off: values equal to 1 refer to no activation of the inclinometer. The values are reported per second. -->
+<!-- 7. Inclinometer Standing: values equal to 1 refer to the standing position of the user, while 0 refers to other user positions. Values are reported per second. -->
+<!-- 8. Inclinometer Sitting: values equal to 1 refer to the sitting position of the user, while 0 refers to other user positions. Values are reported per second. -->
+<!-- 9. Inclinometer Lying: values equal to 1 refer to the lying position of the user, while 0 refers to other user positions. Values are reported per second. -->
+<!-- 10. Vector Magnitude: vector movement derived from raw acceleration data expressed in Newton-meter. -->
+<!-- 11. day: 1 and 2 refer to the first and second day of data recording, respectively. -->
+<!-- 12. time: day time when the heartbeat happened (hours:minutes:seconds) -->
+<div id="transformation-process" class="section level3" number="3.2.1">
+<h3><span class="header-section-number">3.2.1</span> Transformation process:</h3>
 <ol style="list-style-type: decimal">
 <li><p>Datetime format: We transform the <code>time</code> column into datetime type in R. Also, since initial <code>time</code> column doesn’t contain date information, we add days according to the <code>day</code> column to create a relative time stamp for each record in order to facilitate future calculation.</p></li>
 <li><p>Create category <code>Position</code>: Here we gathered columns with inclinometer information, which were <code>Inclinometer.Off</code>, <code>Inclinometer.Standing</code>, <code>Inclinometer.Sitting</code>, <code>Inclinometer.Lying</code>, transformed them into categorical column <code>Position</code>. By doing so, we can explore data correlations under groups of position throughout the day.</p></li>
@@ -183,7 +178,7 @@
 </div>
 <div id="activity" class="section level2" number="3.3">
 <h2><span class="header-section-number">3.3</span> Activity</h2>
-<div id="definition-and-explanation-of-each-column-1" class="section level3" number="3.3.1">
+<div id="definition-and-explanation-of-each-column" class="section level3" number="3.3.1">
 <h3><span class="header-section-number">3.3.1</span> Definition and explanation of each column</h3>
 <p>‘Start’ and ‘end’ columns refer to the time of the day (hours:minutes) when the event happened, while ‘day’ columns refers to the day when it happened (1 and 2 refer to the first and second day of data recording, respectively).</p>
 </div>
@@ -215,7 +210,7 @@
 <li><p>Calculate duration for each activity: To figure the total time each user spent on each activity, we calculate time intervals (<code>End</code> - <code>Start</code>) between different activities in seconds.</p></li>
 <li><p>Plotting: We explored the dataset using <code>geom_tile</code> in ggplot2 package. From the plot below, we noticed that user 21 was laying down for quite a long time.</p></li>
 </ol>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-9-1.png" width="960" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-6-1.png" width="960" /></p>
 <!-- ## Questionnaire -->
 <!-- For this part, the dataset contains the answer of a total of 7 questionnaires for each user. The questionnaires examined users' anxiety, sleep quality, stress, emotion, etc, in order to understand the users' behavior. -->
 <!-- No data cleaning is needed for this part. -->
@@ -253,18 +248,8 @@
 </div>
 <div id="user-info" class="section level2" number="3.5">
 <h2><span class="header-section-number">3.5</span> User info</h2>
-<p>missing age for user_18. Otherwise, nothing need to be transformed or cleaned in this dataset. All male participants.</p>
-<div id="definition-and-explanation-of-each-column-2" class="section level3" number="3.5.1">
-<h3><span class="header-section-number">3.5.1</span> Definition and explanation of each column</h3>
-<p>user_info.csv - anthropocentric characteristics of the participant:</p>
-<ol style="list-style-type: decimal">
-<li>gender: M and F refer to Male and Female, respectively.</li>
-<li>height is expressed in centimetre (cm).</li>
-<li>weight is expressed in kilograms (kg).</li>
-<li>age is expressed in years.</li>
-</ol>
+<p>This file contains anthropocentric characteristics of the participant which include the gender, height in centimeters, weight in kgs and age in years. The data is pretty standard and did not require any sort of transformation</p>
 
-</div>
 </div>
 </div>
             </section>
@@ -327,20 +312,6 @@ gitbook.start({
 });
 </script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:")
-      if (/^https?:/.test(src))
-        src = src.replace(/^https?:/, '');
-    script.src = src;
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 </body>
 
 </html>
