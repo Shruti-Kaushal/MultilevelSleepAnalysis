@@ -211,3 +211,44 @@ ggplot(df_pos, aes(Inclinometer.Standing,M)) + geom_point() + labs(title = "Slee
 ggplot(df_pos, aes(Inclinometer.Sitting,M)) + geom_point() + labs(title = "Sleep Quality vs Time of standing") +theme_bw()
 ggplot(df_pos, aes(Inclinometer.Lying,M)) + geom_point() + labs(title = "Sleep Quality vs Time of standing") +theme_bw()
 ```
+
+### How do Biomarkers Affect Sleep Quality?
+
+
+```{r}
+# get the difference of chemicals per participant
+before_sleep = saliva %>% 
+  gather("Chemicals","Concentration", 3:4) %>% 
+  filter(SAMPLES == "before sleep") %>% 
+  arrange(user, Chemicals)
+
+after_sleep = saliva %>% 
+  gather("Chemicals","Concentration", 3:4) %>% 
+  filter(SAMPLES == "wake up") %>% 
+  arrange(user, Chemicals)
+
+difference = data.frame(user = before_sleep$user, Chemicals = before_sleep$Chemicals, difference = after_sleep$Concentration - before_sleep$Concentration)
+
+difference %>% ggplot(aes(x = factor(user,  levels = paste0("user_",c(1:22)), labels = c(1:22)), y = difference)) +
+  geom_col(fill = 'lightblue', color = 'black') +
+  scale_x_discrete(labels = abbreviate)+
+  facet_grid(rows = vars(Chemicals), scales = "free") + 
+  xlab("User ID") +
+  ylab("Concentration") +
+  ggtitle("Concentration difference per participant") +
+  theme_bw()
+
+```
+
+
+
+
+```{r}
+difference['user'] = lapply(difference['user'], function(x) as.numeric(str_remove(x,"user_")))
+difference_temp <- difference[difference$user!=11,]
+difference_temp <- difference_temp[order(difference_temp$user),]
+sleep_quality_metric = mydata$M[mydata$user != 21]
+difference_temp$M <- unlist(lapply(sleep_quality_metric, function(x) c(rep(c(x),2))))
+
+difference_temp %>% ggplot(aes(`difference`,`M`)) + geom_point() + facet_wrap(~Chemicals, scales = "free") + labs(x = "Difference in Concentration Before and After Sleep", y = "Sleep Quality (M)")
+```
