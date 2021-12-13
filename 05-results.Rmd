@@ -135,7 +135,7 @@ In this section, we tried to identify variables that are correlated to sleep qua
 
 This section is divided further into subsections for each file in the dataset. Due to redundancy in data, we analyzed only 4 out of the 7 files - sleep records, user information, activities performed and saliva samples.
 
-### Bed Time Does Not Affect Sleep Quality
+### Does Bed Time Affect Sleep Quality?
 The practice going to bed early and rising early is encouraged for better sleep and health. We wanted to test this hypothesis using our metric. 
 
 We generated a scatterplot and concluded that bed time does not have affect sleep quality. There is no linear relationship; some participants who went to bed later than "usual" have a higher sleep quality than most participants who went to bed early. Similar conclusion can be made for the time a participant got out of bed. The data has high variance and so we cannot conclude that bed times and sleep quality are related.
@@ -341,13 +341,13 @@ ggplot(scrn_usg_time, aes(small.scr.before.sleep, M)) +
 
 
 ### How do Biomarkers Affect Sleep Quality?
-Research has shown that cortisol and melatonin are hormones produced by our body that regulate circadian rhythm and our internal body clock.  
+Research has shown that cortisol and melatonin are hormones produced by the body that regulate circadian rhythm and internal body clock.  
 
-Melatonin eases you into sleep and helps you stay asleep. The production of melatonin is triggered by darkness and is inhibitted by light. This means that people who sleep well are expected to have a high concentration of melatonin before going to sleep and much lesser when they wake up. Cortisol helps you get up and keeps you awake. So, in conclusion, to be able to sleep well you should have low levels of cortisol before sleeping and high levels after you wake up as cortisol and melatonin have opposing rhythms.
+Melatonin eases you into sleep and helps you stay asleep. The production of melatonin is triggered by darkness and is inhibitted by light. Cortisol helps you get up and keeps you awake. In conclusion, cortisol and melatonin have opposing rhythms. The prerequisites of a good sleep include having low cortisol and high melatonin levels before going to sleep and low melatonin and high cortisol levels after waking up.
 
-We wanted to see how our metric performs against these biomarkers and plotted a bar graph of differences in concentration (before sleep - after sleep) for each of the hormones and participants. Since the actual concentrations of melatonin run in $10^{-9}$ the differences are really not small and range from -10 to 10, given the scale. We saw that only three users/participants have negative cortisol difference levels.
+We wanted to see if our metric is able to capture the presence of prerequisites or not. We plotted a bar graph of differences in concentration (before sleep - after sleep) for each of the hormones and users. Concentrations of melatonin run in $10^{-9}$ and so the differences are not small, given the scale. We saw that only three users have negative cortisol difference levels.
 
-To better understand if our metric catches the affects of these hormones on sleep quality, we generated a bar graph of M. There isn't any "obvious" relationship between our metric and the hormones. However, our metric does seem to catch the anomalies like user 2 and 12 that fall on the two extremes. User 2 scored the lowest on sleep quality and has the highest differnece in cortisol levels among the cohort. The presence of more melatonin indicates a possibility of circadian rhythm of user 2 being messed up. In case of user 12, he is the only participant with an ideal combination of differences in concentration levels and also has the highest sleep quality among all.
+To simulateneously compare the differences with M, we generated a bar graph for sleep quality of all users. There isn't any "obvious" relationship between our metric and the hormones. However, our metric does seem to catch users like user 2 and 12 that fall on the two extremes. User 2 scored the lowest on sleep quality and has the highest positive differnece in cortisol levels in the cohort and the rhythm of melatonin is the same as cortisol's. User 12 is the only participant with opposing rhythms and also has the highest sleep quality among all.
 
 There are users that don't follow a trend like user 1. One would think that user 1 would have low sleep quality given the differences but in fact ranks second in sleep quality. 
 
