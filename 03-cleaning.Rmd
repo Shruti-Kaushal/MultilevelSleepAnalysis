@@ -24,6 +24,8 @@ There was only one user without any sleep records. Since the aim of our project 
 
 We also discovered a pattern that every user once in bed (to sleep) doesn't get out of bed till morning except one. Sleep records of user 1 showed that he got out of bed at 3:31 AM and went back to sleep at 3:57 AM. It is hard to tell what activities did he engage in after getting out of bed briefly as the activities file (described below) does not have time stamps. For simplification of our analysis, we treated the time interval that the user was out of bed as an "awakening" i.e. when a user awaken from his sleep and remains awake for some time. This required updating the rest of the variables such as "Average Awakening Length","Sleep Fragmentation Index" etc. Depending on the definition of the variables, we either took the average or maximum or summed the two quantities corresponding to each of the "sleep sessions". For example, "Total Sleep Time" was now the sum of the sleep time in both sessions, while "Sleep Fragmentation Index" was averaged across sessions.
 
+![Sleep Measurements of User 1](./img/Sleep Measurements_User1.png)
+
 We will define variables wherever needed but the reader is encouraged to go through the documentation of the dataset (link in chapter 2), to understand the variables in depth. 
 
 ```{r}
