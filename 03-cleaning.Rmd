@@ -229,16 +229,10 @@ activity_duration %>% ggplot(aes(x = factor(user, levels = paste0("user_",c(1:22
 
 
 ## Saliva
-`Saliva.csv` collected `Melatonin` and `Cortisol` concentrations in the saliva for each participants before going to bed and after waking up. However, no data was provided for User_21 due to problem in the salivary samples that do not permit to analyse it.
+`Saliva.csv` collected `Melatonin` and `Cortisol` concentrations in the saliva for each participants before going to bed and after waking up. However, no data was provided for User_21 due to problem in the salivary samples that were collected.
 
-### Definition and explanation of each column
+Saliva samples were collected twice - once before sleep and once after waking up. From each of the samples, the concentration of cortisol and melatonin were calculated. Melatonin levels are reported in μg per μg of protein while cortisol levels are reported in μg per 100 μg of protein. The data contains the normalized concentrations of both hormones and so no transformation or normalization is needed to use this data.
 
-1. Sample: Two samples per participant are included, one before sleep and one after waking up.
-2. Melatonin levels are reported in μg of melatonin per μg of protein.
-3. Cortisol levels are in μg of cortisol per 100 μg of protein. 
-
-### Transformation process
-We calculated the difference in chemical concentration between sample collected before sleep and after waking up per each participant. 
 
 
 ## User info

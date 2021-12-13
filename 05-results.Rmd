@@ -213,7 +213,11 @@ ggplot(df_pos, aes(Inclinometer.Lying,M)) + geom_point() + labs(title = "Sleep Q
 ```
 
 ### How do Biomarkers Affect Sleep Quality?
+Research has shown that cortisol and melatonin are hormones produced by our body that regulate circadian rhythm and our internal body clock. We wanted to see how our metric performs against these biomarkers that are proven to be indicators of sleep quality in some way or another. This discussion of how these hormones actually control sleep would require getting into the depths of the mechanisms they are involved, which is beyond the scope of this project.
 
+Before we start with the analysis, it is important to understand how to interpret the concentration levels of these two hormones. In layman terms, melatonin eases you into sleep and helps you stay asleep. The production of melatonin is triggered by darkness and is inhibitted by light. This means that people who sleep well are expected to have a high concentration of melatonin before going to sleep and much lesser when they wake up. Cortisol is used for something completely opposite: it helps you get up and keeps you awake. It is also related the amount of stress someone has. So, in conclusion, to be able to sleep well you should have low levels of cortisol before sleeping and high levels after you wake up.
+
+We plotted a bar graph of differences in concentration (before sleep - after sleep) for each of the hormones and participants to try and discern if a similar pattern, as the one explained above, emerges. It is important to note that the actual concentrations of melatonin run in $10^{-9}$ and so the differences are really not small and range from -10 to 10, given the scale. Ideally, we would want the difference to be as negative as possible for cortisol and positive as possible for melatonin. What we see if definitely not ideal; infact only three users/participants have negative cortisol difference levels
 
 ```{r}
 # get the difference of chemicals per participant
@@ -244,9 +248,12 @@ difference %>% ggplot(aes(x = factor(user,  levels = paste0("user_",c(1:22)), la
 
 
 ```{r}
-difference['user'] = lapply(difference['user'], function(x) as.numeric(str_remove(x,"user_")))
-difference_temp <- difference[difference$user!=11,]
-difference_temp <- difference_temp[order(difference_temp$user),]
+
+ggplot(mydata, aes(`user`,`M`), labels = c(1:22)) + geom_col(fill = 'lightblue', color = 'black') + theme_bw()
+
+difference['user.id'] = lapply(difference['user'], function(x) as.numeric(str_remove(x,"user_")))
+difference_temp <- difference[difference$user.id!=11,]
+difference_temp <- difference_temp[order(difference_temp$user.id),]
 sleep_quality_metric = mydata$M[mydata$user != 21]
 difference_temp$M <- unlist(lapply(sleep_quality_metric, function(x) c(rep(c(x),2))))
 
