@@ -2,7 +2,7 @@
 
 As mentioned in the introduction, for each sample or "user" many variables were sampled over the course of two days. These measurements are organized into 7 different files and in this section we will focus on how we transformed the data in each of the files for analysis.
 
-In conclusion, we worked on all the datetime columns and transformed them into the format `YYYY-MM-DD HH:MM:SS` for convenience. We decided to not include `RR.csv` in our discussion, since the heartbeat information is also included in the `actigraph.csv`.  
+We worked on all the datetime columns and transformed them into the format `YYYY-MM-DD HH:MM:SS` for convenience. We decided to not include `RR.csv` in our discussion, since the heartbeat information is also included in the `actigraph.csv`.  
 
 ```{r}
 # define function
@@ -53,7 +53,6 @@ sleep$Onset.Time = string2time(sleep$Onset.Time, format = "%H:%M") + lubridate::
 We transformed the data as follows - 
 
 1. Datetime format: We transform the `time` column into datetime type in R. Also, since initial `time` column doesn't contain date information, we add days according to the `day` column to create a relative time stamp for each record in order to facilitate future calculation.
-
 2. Create category `Position`: Here we gathered columns with inclinometer information, which were `Inclinometer.Off`, `Inclinometer.Standing`, `Inclinometer.Sitting`, `Inclinometer.Lying`, transformed them into categorical column `Position`. By doing so, we can explore data correlations under groups of position throughout the day.
 
 
@@ -95,9 +94,7 @@ This file contained information on 13 different categories of activities measure
 We transformed the data as follows - 
 
 1. Datetime format: Here we substitute "00:00" to "24:00" in column `End` to avoid calculating between wrong dates, and then transformed into the format as we did for `Actigraph.csv`.
-
 2. Relabel the activities: The document labeled the activity categories from 1 to 12. However, an extra category, labeled as `0`, also included in the dataset. In this project, we will assume that the `0` represented undetermined activities. Here, we also had to deal with several minor mistakes in the dataset manually.
-
 <!-- + 13 Categories of activity: -->
 <!--   - undefined: all other unlabeled activity will count here. -->
 <!--   - sleeping -->
@@ -112,11 +109,9 @@ We transformed the data as follows -
 <!--   - caff. consump.: caffeinated drink consumption, e.g. coffee or coke. -->
 <!--   - smoking -->
 <!--   - alc. consump.: alcohol assumption. -->
-
 3. Calculate duration for each activity: To figure the total time each user spent on each activity, we calculate time intervals (`End` - `Start`) between different activities in seconds.
 
-4. Plotting: We explored the dataset using `geom_tile` in ggplot2 package. From the plot below, we noticed that user 21 was laying down for quite a long time.
-
+<!-- 4. Plotting: We explored the dataset using `geom_tile` in ggplot2 package. From the plot below, we noticed that user 21 was laying down for quite a long time. -->
 
 ```{r, fig.width=10}
 library(ggplot2)
