@@ -133,17 +133,16 @@
             <section class="normal" id="section-">
 <div id="data-transformation" class="section level1" number="3">
 <h1><span class="header-section-number">Chapter 3</span> Data transformation</h1>
-<p>As mentioned in the introduction, for each sample or “user” many variables were sampled over the course of two days. These measurements are organized into 7 different file or categories like sleep, activity, actigraph, saliva samples etc. In this section we will focus on transforming each of the files that we used to perform any kind of analysis.</p>
-<p>In conclusion, we worked on all the datetime columns and transformed them into the format <code>YYYY-MM-DD HH:MM:SS</code> due to analysis convenience. We decided to not include <code>RR.csv</code> in our discussion, since the heartbeat information is also included in the <code>actigraph.csv</code>. We considered it redundant and were more interested in relating heartbeat data to activities.</p>
+<p>As mentioned in the introduction, for each sample or “user” many variables were sampled over the course of two days. These measurements are organized into 7 different files and in this section we will focus on how we transformed the data in each of the files for analysis.</p>
+<p>In conclusion, we worked on all the datetime columns and transformed them into the format <code>YYYY-MM-DD HH:MM:SS</code> due to analysis convenience. We decided to not include <code>RR.csv</code> in our discussion, since the heartbeat information is also included in the <code>actigraph.csv</code>.</p>
 <div id="sleep" class="section level2" number="3.1">
 <h2><span class="header-section-number">3.1</span> Sleep</h2>
-<p>The sleep file includes measurements ranging from the time the user gets into bed to the time that he gets out of bed. This file also includes measurements for total minutes spent in bed, total sleep time, number of times the user wakes up etc.</p>
+<p>The sleep file includes measurements like the time the user gets into bed to total minutes spent in bed, total sleep time, number of times the user wakes up etc.</p>
 <p>Every user once in bed (to sleep) doesn’t get out of bed till morning except one. Sleep records of user 1 showed that he got out of bed at 3:31 AM and went back to sleep at 3:57 AM. For simplification of our analysis, we treated the time interval that the user was out of bed as an “awakening” i.e. when a user awaken from his sleep and remains awake for some time. This required updating the rest of the variables and depending on the definition of the variables, we either took the average or maximum or summed the two quantities corresponding to each of the “sleep sessions”. For example, “Total Sleep Time” was now the sum of the sleep time in both sessions, while “Sleep Fragmentation Index” was averaged across sessions.</p>
 <div class="figure">
 <img src="img/Sleep%20Measurements_User1.png" style="width:30.0%" alt="" />
 <p class="caption">Sleep Measurements of User 1</p>
 </div>
-<p>We will define variables wherever needed but the reader is encouraged to go through the documentation of the dataset (link in chapter 2), to understand the variables in depth.</p>
 </div>
 <div id="actigraph" class="section level2" number="3.2">
 <h2><span class="header-section-number">3.2</span> Actigraph</h2>
@@ -194,7 +193,6 @@
 <li><p>Calculate duration for each activity: To figure the total time each user spent on each activity, we calculate time intervals (<code>End</code> - <code>Start</code>) between different activities in seconds.</p></li>
 <li><p>Plotting: We explored the dataset using <code>geom_tile</code> in ggplot2 package. From the plot below, we noticed that user 21 was laying down for quite a long time.</p></li>
 </ol>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-9-1.png" width="960" /></p>
 <!-- ## Questionnaire -->
 <!-- For this part, the dataset contains the answer of a total of 7 questionnaires for each user. The questionnaires examined users' anxiety, sleep quality, stress, emotion, etc, in order to understand the users' behavior. -->
 <!-- No data cleaning is needed for this part. -->
@@ -226,8 +224,7 @@
 </div>
 <div id="saliva" class="section level2" number="3.4">
 <h2><span class="header-section-number">3.4</span> Saliva</h2>
-<p><code>Saliva.csv</code> collected <code>Melatonin</code> and <code>Cortisol</code> concentrations in the saliva for each participants before going to bed and after waking up. However, no data was provided for User_21 due to problem in the salivary samples that were collected.</p>
-<p>Saliva samples were collected twice - once before sleep and once after waking up. From each of the samples, the concentration of cortisol and melatonin were calculated. Melatonin levels are reported in μg per μg of protein while cortisol levels are reported in μg per 100 μg of protein. The data contains the normalized concentrations of both hormones and so no transformation or normalization is needed to use this data.</p>
+<p><code>Saliva.csv</code> collected <code>Melatonin</code> and <code>Cortisol</code> concentrations in the saliva for each participants before going to bed and after waking up. From each of the two samples, the concentration of cortisol and melatonin were calculated. Melatonin levels are reported in μg per μg of protein while cortisol levels are reported in μg per 100 μg of protein. The data contains the normalized concentrations of both hormones and so no transformation or normalization was needed to use this data.</p>
 </div>
 <div id="user-info" class="section level2" number="3.5">
 <h2><span class="header-section-number">3.5</span> User info</h2>
