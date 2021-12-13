@@ -81,9 +81,9 @@ ggplot(df, aes(mydata$Latency, reorder(mydata$user, mydata$Latency))) +
   geom_point() + 
   # scale_x_continuous(breaks = scales::pretty_breaks(n = 17)) +
   labs(y = "User ID", x = "Time in Mintues", title = "Latency per User") +
-  theme_bw() +
-  geom_segment(aes(yend = reorder(mydata$user, mydata$Latency)), xend = 0, colour = "grey50") +
-  theme(panel.grid.major.y = element_blank())
+  # geom_segment(aes(yend = reorder(mydata$user, mydata$Latency)), xend = 0, colour = "grey50") +
+  # theme(panel.grid.major.y = element_blank())
+ theme_linedraw()
 ```
 
 We define the sleep quality of a user as - 
