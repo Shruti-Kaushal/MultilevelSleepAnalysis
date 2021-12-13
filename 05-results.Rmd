@@ -273,27 +273,27 @@ ggplot(scrn_usg_time, aes(c[1]*small.scr.before.sleep+c[2]*large.scr.before.slee
 
 
 ```{r}
-df_pos = position %>% spread(position, total)
-df_pos['user'] = lapply(df_pos['user'],function(x) as.numeric(str_remove(x, "user_")))
-df_pos = df_pos %>% filter(user!=11) %>% arrange(user)
-df_pos['M'] = mydata$M
-df_pos$Inclinometer.Lying = as.numeric(df_pos$Inclinometer.Lying)
-df_pos$Inclinometer.Off = as.numeric(df_pos$Inclinometer.Off)
-df_pos$Inclinometer.Sitting = as.numeric(df_pos$Inclinometer.Sitting)
-df_pos$Inclinometer.Standing = as.numeric(df_pos$Inclinometer.Standing)
-df_pos.rcorr = rcorr(as.matrix(df_pos[-1]))
-df_pos.coeff = df_pos.rcorr$r
-df_pos.p = df_pos.rcorr$P
-
-heatmap.2(x = df_pos.coeff, symm = TRUE, key = TRUE,labRow = abbreviate(rownames(df_pos.coeff), minlength = 15), labCol = abbreviate(colnames(df_pos.coeff), minlength = 15), col = palette, margins=c(8,10), srtCol=45, main = "heatmap", density.info="none", trace="none")
+# df_pos = position %>% spread(position, total)
+# df_pos['user'] = lapply(df_pos['user'],function(x) as.numeric(str_remove(x, "user_")))
+# df_pos = df_pos %>% filter(user!=11) %>% arrange(user)
+# df_pos['M'] = mydata$M
+# df_pos$Inclinometer.Lying = as.numeric(df_pos$Inclinometer.Lying)
+# df_pos$Inclinometer.Off = as.numeric(df_pos$Inclinometer.Off)
+# df_pos$Inclinometer.Sitting = as.numeric(df_pos$Inclinometer.Sitting)
+# df_pos$Inclinometer.Standing = as.numeric(df_pos$Inclinometer.Standing)
+# df_pos.rcorr = rcorr(as.matrix(df_pos[-1]))
+# df_pos.coeff = df_pos.rcorr$r
+# df_pos.p = df_pos.rcorr$P
+# 
+# heatmap.2(x = df_pos.coeff, symm = TRUE, key = TRUE,labRow = abbreviate(rownames(df_pos.coeff), minlength = 15), labCol = abbreviate(colnames(df_pos.coeff), minlength = 15), col = palette, margins=c(8,10), srtCol=45, main = "heatmap", density.info="none", trace="none")
 ```
 
 
 ```{r, fig.show="hold", out.width="50%"}
 # ggplot(df_pos, aes(Inclinometer.Off,M)) + geom_point() + labs(title = "Sleep Quality vs Time off") +theme_bw()
-ggplot(df_pos, aes(Inclinometer.Standing,M)) + geom_point() + labs(title = "Sleep Quality vs Time of Standing") +theme_bw()
-ggplot(df_pos, aes(Inclinometer.Sitting,M)) + geom_point() + labs(title = "Sleep Quality vs Time of Sitting") +theme_bw()
-ggplot(df_pos, aes(Inclinometer.Lying,M)) + geom_point() + labs(title = "Sleep Quality vs Time of Lying") +theme_bw()
+# ggplot(df_pos, aes(Inclinometer.Standing,M)) + geom_point() + labs(title = "Sleep Quality vs Time of Standing") +theme_bw()
+# ggplot(df_pos, aes(Inclinometer.Sitting,M)) + geom_point() + labs(title = "Sleep Quality vs Time of Sitting") +theme_bw()
+# ggplot(df_pos, aes(Inclinometer.Lying,M)) + geom_point() + labs(title = "Sleep Quality vs Time of Lying") +theme_bw()
 ```
 
 
