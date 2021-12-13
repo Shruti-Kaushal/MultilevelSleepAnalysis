@@ -87,7 +87,7 @@ The dummy term takes care of the case when Latency is 0. In the case that other 
 
 ### Distribution of Sleep Quality Metric
 
-We calculated the sleep quality metric for each of the users and visualized the results as a boxplot to be able to discern its distribution. The lowest value is 0.5902 corresponding to user 12 and the largest is 16.33 corresponding to user 12, who is also an outlier. We are particularly interested in investigating users that fall below the lower hinge and above the upper hinge. The former group includes users 2, 3, 8, 10 and 16. While the group with M > 6.6874 includes users 1, 12, 14, 20 and 21. The rest lie within the 25th and 75th percentile of the metric data.
+We calculated the sleep quality metric for each of the users and visualized the results as a boxplot to be able to discern its distribution. The lowest value is 0.5902 corresponding to user 2 and the largest is 16.33 corresponding to user 12, who is also an outlier. We are particularly interested in investigating users that fall below the lower hinge and above the upper hinge. The former group includes users 2, 3, 8, 10 and 16. While the group with M > 6.6874 includes users 1, 12, 14, 20 and 21. The rest lie within the 25th and 75th percentile of the metric data.
 
 ```{r}
 library(tidyverse)
@@ -152,6 +152,11 @@ It has been seen that as a person ages their quality of sleep deteriorates. This
 
 Does that mean we can conclude that as a person ages their sleep quality deteriorates? Not entirely, as the cohort sample age is extremely skewed towards the left hand side i.e. we have more participants that are young adults in comparison to those who are middle aged. Again, we make this conclusion bearing in mind that it might fail with the addition of participants that are middle aged. 
 
+The next question was - what about height? Do taller people sleep better? The trend that emerges from the scatterplot says probably not. We use the word probably because we have to keep in mind the limitation of the small size of the dataset and also the left skewness of the dataset when it comes to height. However, we still see close to a linear relationship between M and height where the increase in latter leads to a decrease in former. This could be for many reasons one of which could be that it is easier for short people to get comfortable in bed which helps with how well they sleep. It is important to keep in mind that the aim of this project is not to determine a DAG (directed acyclic graph) of all variables that are possibly correlated but to see if a varaible has any effect on our metric. So, the reasons supplied here is an attempt to understand why something could be happening without really having any measurements and hence should be taken lightly. 
+
+We then moved on to asking the same questions but for weight of participants. As expected, there seems to be no direct relationship with sleep quality and weight. This can be seen by the scatterplot below and from the spread of the data. 
+
+Since the authors of the data only studied males, we cannot comment on if one gender is inclined to have a better sleep quality universally than another gender. We refrained from adding more level in the last of the scatterplots as we know that gender system is non-binary.
 
 ```{r, figures-side, fig.show="hold", out.width="50%"}
 user_info$user.id <- as.numeric(unlist(map(strsplit(user_info$user, split = "_"), 2)))
@@ -205,4 +210,45 @@ ggplot(df_pos, aes(Inclinometer.Off,M)) + geom_point() + labs(title = "Sleep Qua
 ggplot(df_pos, aes(Inclinometer.Standing,M)) + geom_point() + labs(title = "Sleep Quality vs Time of standing") +theme_bw()
 ggplot(df_pos, aes(Inclinometer.Sitting,M)) + geom_point() + labs(title = "Sleep Quality vs Time of standing") +theme_bw()
 ggplot(df_pos, aes(Inclinometer.Lying,M)) + geom_point() + labs(title = "Sleep Quality vs Time of standing") +theme_bw()
+```
+
+### How do Biomarkers Affect Sleep Quality?
+
+
+```{r}
+# get the difference of chemicals per participant
+before_sleep = saliva %>% 
+  gather("Chemicals","Concentration", 3:4) %>% 
+  filter(SAMPLES == "before sleep") %>% 
+  arrange(user, Chemicals)
+
+after_sleep = saliva %>% 
+  gather("Chemicals","Concentration", 3:4) %>% 
+  filter(SAMPLES == "wake up") %>% 
+  arrange(user, Chemicals)
+
+difference = data.frame(user = before_sleep$user, Chemicals = before_sleep$Chemicals, difference = after_sleep$Concentration - before_sleep$Concentration)
+
+difference %>% ggplot(aes(x = factor(user,  levels = paste0("user_",c(1:22)), labels = c(1:22)), y = difference)) +
+  geom_col(fill = 'lightblue', color = 'black') +
+  scale_x_discrete(labels = abbreviate)+
+  facet_grid(rows = vars(Chemicals), scales = "free") + 
+  xlab("User ID") +
+  ylab("Concentration") +
+  ggtitle("Concentration difference per participant") +
+  theme_bw()
+
+```
+
+
+
+
+```{r}
+difference['user'] = lapply(difference['user'], function(x) as.numeric(str_remove(x,"user_")))
+difference_temp <- difference[difference$user!=11,]
+difference_temp <- difference_temp[order(difference_temp$user),]
+sleep_quality_metric = mydata$M[mydata$user != 21]
+difference_temp$M <- unlist(lapply(sleep_quality_metric, function(x) c(rep(c(x),2))))
+
+difference_temp %>% ggplot(aes(`difference`,`M`)) + geom_point() + facet_wrap(~Chemicals, scales = "free") + labs(x = "Difference in Concentration Before and After Sleep", y = "Sleep Quality (M)")
 ```
