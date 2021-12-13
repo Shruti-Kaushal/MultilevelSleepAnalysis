@@ -101,7 +101,7 @@
 </ul></li>
 <li class="chapter" data-level="5.2" data-path="results.html"><a href="results.html#establishing-direct-indirect-effects-on-sleep-quality"><i class="fa fa-check"></i><b>5.2</b> Establishing Direct &amp; Indirect Effects on Sleep Quality</a>
 <ul>
-<li class="chapter" data-level="5.2.1" data-path="results.html"><a href="results.html#can-going-to-bed-early-improve-sleep-quality"><i class="fa fa-check"></i><b>5.2.1</b> Can Going to Bed Early Improve Sleep Quality?</a></li>
+<li class="chapter" data-level="5.2.1" data-path="results.html"><a href="results.html#bed-time-does-not-affect-sleep-quality"><i class="fa fa-check"></i><b>5.2.1</b> Bed Time Does Not Affect Sleep Quality</a></li>
 <li class="chapter" data-level="5.2.2" data-path="results.html"><a href="results.html#does-your-build-affect-your-sleep"><i class="fa fa-check"></i><b>5.2.2</b> Does Your Build Affect Your Sleep?</a></li>
 <li class="chapter" data-level="5.2.3" data-path="results.html"><a href="results.html#how-do-different-activities-affect-sleep-quality"><i class="fa fa-check"></i><b>5.2.3</b> How Do Different Activities Affect Sleep Quality?</a></li>
 <li class="chapter" data-level="5.2.4" data-path="results.html"><a href="results.html#how-do-biomarkers-affect-sleep-quality"><i class="fa fa-check"></i><b>5.2.4</b> How do Biomarkers Affect Sleep Quality?</a></li>
@@ -131,7 +131,7 @@
 <div id="data-transformation" class="section level1" number="3">
 <h1><span class="header-section-number">Chapter 3</span> Data transformation</h1>
 <p>As mentioned in the introduction, for each sample or “user” many variables were sampled over the course of two days. These measurements are organized into 7 different files and in this section we will focus on how we transformed the data in each of the files for analysis.</p>
-<p>In conclusion, we worked on all the datetime columns and transformed them into the format <code>YYYY-MM-DD HH:MM:SS</code> for convenience. We decided to not include <code>RR.csv</code> in our discussion, since the heartbeat information is also included in the <code>actigraph.csv</code>.</p>
+<p>We worked on all the datetime columns and transformed them into the format <code>YYYY-MM-DD HH:MM:SS</code> for convenience. We decided to not include <code>RR.csv</code> in our discussion, since the heartbeat information is also included in the <code>actigraph.csv</code>.</p>
 <div id="sleep" class="section level2" number="3.1">
 <h2><span class="header-section-number">3.1</span> Sleep</h2>
 <p>The sleep file includes measurements like the time the user gets into bed to total minutes spent in bed, total sleep time, number of times the user wakes up etc.</p>
@@ -159,8 +159,8 @@
 <!-- 12. time: day time when the heartbeat happened (hours:minutes:seconds) -->
 <p>We transformed the data as follows -</p>
 <ol style="list-style-type: decimal">
-<li><p>Datetime format: We transform the <code>time</code> column into datetime type in R. Also, since initial <code>time</code> column doesn’t contain date information, we add days according to the <code>day</code> column to create a relative time stamp for each record in order to facilitate future calculation.</p></li>
-<li><p>Create category <code>Position</code>: Here we gathered columns with inclinometer information, which were <code>Inclinometer.Off</code>, <code>Inclinometer.Standing</code>, <code>Inclinometer.Sitting</code>, <code>Inclinometer.Lying</code>, transformed them into categorical column <code>Position</code>. By doing so, we can explore data correlations under groups of position throughout the day.</p></li>
+<li>Datetime format: We transform the <code>time</code> column into datetime type in R. Also, since initial <code>time</code> column doesn’t contain date information, we add days according to the <code>day</code> column to create a relative time stamp for each record in order to facilitate future calculation.</li>
+<li>Create category <code>Position</code>: Here we gathered columns with inclinometer information, which were <code>Inclinometer.Off</code>, <code>Inclinometer.Standing</code>, <code>Inclinometer.Sitting</code>, <code>Inclinometer.Lying</code>, transformed them into categorical column <code>Position</code>. By doing so, we can explore data correlations under groups of position throughout the day.</li>
 </ol>
 </div>
 <div id="activity" class="section level2" number="3.3">
@@ -169,9 +169,8 @@
 <!-- 'Start' and 'end' columns refer to the time of the day (hours:minutes) when the event happened, while 'day' columns refers to the day when it happened (1 and 2 refer to the first and second day of data recording, respectively). --></p>
 <p>We transformed the data as follows -</p>
 <ol style="list-style-type: decimal">
-<li><p>Datetime format: Here we substitute “00:00” to “24:00” in column <code>End</code> to avoid calculating between wrong dates, and then transformed into the format as we did for <code>Actigraph.csv</code>.</p></li>
-<li><p>Relabel the activities: The document labeled the activity categories from 1 to 12. However, an extra category, labeled as <code>0</code>, also included in the dataset. In this project, we will assume that the <code>0</code> represented undetermined activities. Here, we also had to deal with several minor mistakes in the dataset manually.</p></li>
-</ol>
+<li>Datetime format: Here we substitute “00:00” to “24:00” in column <code>End</code> to avoid calculating between wrong dates, and then transformed into the format as we did for <code>Actigraph.csv</code>.</li>
+<li>Relabel the activities: The document labeled the activity categories from 1 to 12. However, an extra category, labeled as <code>0</code>, also included in the dataset. In this project, we will assume that the <code>0</code> represented undetermined activities. Here, we also had to deal with several minor mistakes in the dataset manually.
 <!-- + 13 Categories of activity: -->
 <!--   - undefined: all other unlabeled activity will count here. -->
 <!--   - sleeping -->
@@ -185,11 +184,10 @@
 <!--   - large scr.usg: e.g. TV and cinema. -->
 <!--   - caff. consump.: caffeinated drink consumption, e.g. coffee or coke. -->
 <!--   - smoking -->
-<!--   - alc. consump.: alcohol assumption. -->
-<ol start="3" style="list-style-type: decimal">
-<li><p>Calculate duration for each activity: To figure the total time each user spent on each activity, we calculate time intervals (<code>End</code> - <code>Start</code>) between different activities in seconds.</p></li>
-<li><p>Plotting: We explored the dataset using <code>geom_tile</code> in ggplot2 package. From the plot below, we noticed that user 21 was laying down for quite a long time.</p></li>
+<!--   - alc. consump.: alcohol assumption. --></li>
+<li>Calculate duration for each activity: To figure the total time each user spent on each activity, we calculate time intervals (<code>End</code> - <code>Start</code>) between different activities in seconds.</li>
 </ol>
+<!-- 4. Plotting: We explored the dataset using `geom_tile` in ggplot2 package. From the plot below, we noticed that user 21 was laying down for quite a long time. -->
 <!-- ## Questionnaire -->
 <!-- For this part, the dataset contains the answer of a total of 7 questionnaires for each user. The questionnaires examined users' anxiety, sleep quality, stress, emotion, etc, in order to understand the users' behavior. -->
 <!-- No data cleaning is needed for this part. -->

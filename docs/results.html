@@ -101,7 +101,7 @@
 </ul></li>
 <li class="chapter" data-level="5.2" data-path="results.html"><a href="results.html#establishing-direct-indirect-effects-on-sleep-quality"><i class="fa fa-check"></i><b>5.2</b> Establishing Direct &amp; Indirect Effects on Sleep Quality</a>
 <ul>
-<li class="chapter" data-level="5.2.1" data-path="results.html"><a href="results.html#can-going-to-bed-early-improve-sleep-quality"><i class="fa fa-check"></i><b>5.2.1</b> Can Going to Bed Early Improve Sleep Quality?</a></li>
+<li class="chapter" data-level="5.2.1" data-path="results.html"><a href="results.html#bed-time-does-not-affect-sleep-quality"><i class="fa fa-check"></i><b>5.2.1</b> Bed Time Does Not Affect Sleep Quality</a></li>
 <li class="chapter" data-level="5.2.2" data-path="results.html"><a href="results.html#does-your-build-affect-your-sleep"><i class="fa fa-check"></i><b>5.2.2</b> Does Your Build Affect Your Sleep?</a></li>
 <li class="chapter" data-level="5.2.3" data-path="results.html"><a href="results.html#how-do-different-activities-affect-sleep-quality"><i class="fa fa-check"></i><b>5.2.3</b> How Do Different Activities Affect Sleep Quality?</a></li>
 <li class="chapter" data-level="5.2.4" data-path="results.html"><a href="results.html#how-do-biomarkers-affect-sleep-quality"><i class="fa fa-check"></i><b>5.2.4</b> How do Biomarkers Affect Sleep Quality?</a></li>
@@ -160,7 +160,7 @@
 M \alpha (\frac{TST}{AverageTimeSpentAwake} + \frac{1}{SleepFragmentationIndex}).\frac{1}{Latency}
 \end{align*}\]</span></p>
 <p>The units of the right hand side are “per hh:mm” (because of addition of latency). Average Time Spent Awake is the product of Number of Awakenings and Average Awakening Length. Let the ratio of TST and Average Time Spent Awake be called sleep ratio.</p>
-<p>The next step was to quantify the distribution of the variables that are used to define M. We wanted to include variables that are informative instead of variables that remain constant across the cohort. Due to the small sample size, any analysis of such sort (constructing a metric) will have a selection bias and so the conclusions made throughout this section may not hold for a bigger cohort.</p>
+<p>Next, we quantified the distribution of variables involved in defining M. We wanted to include informative variables instead of the ones that remain constant across the cohort. Due to the small sample size, any analysis of such sort (constructing a metric) will have a selection bias and so the conclusions made throughout this section may not hold for a bigger cohort.</p>
 <p>The box plot below shows the distribution of the Sleep Ratio and Sleep Fragmentation Index. The values for both ratios seems well distributed with no outliers.
 <img src="finalproj_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <p>Since Latency is not a ratio, we visualized it separately. There are a lot users with latency time of 0 mins which is a problem since M is inversely proportional to latency. So, we added a dummy term to latency and replaced proportionality with equality.</p>
@@ -177,21 +177,21 @@ M = (\frac{TST}{AverageTimeSpentAwake} + \frac{1}{SleepFragmentationIndex}).(\fr
 <p><img src="finalproj_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <pre><code>##         min lower-hinge      median upper-hinge         max 
 ##   0.5902389   1.2815906   3.0779926   6.6873567  16.3742315</code></pre>
-<p>Having defined M, we wanted to do a sanity check that it indeed is capturing the quality of sleep. We used <code>Efficiency</code> to evaluate its accuracy. Given the definition of Efficiency, it should be positively correlated to M.</p>
-<p>To test the relationship, we generated a log-log scale plot. We used a log10 scale to normalize the values and to see how the magnitudes of the two variables are related. The regression model is statistically significant with a p-value of 3.681e-05. Positive slope suggests that as M increases, the efficiency also increases. However, the adjusted R square value is 0.6 which means that the model captures less than 70% of the variance.</p>
+<p>Having defined M, we wanted to see if it is capturing the quality of sleep. We used <code>Efficiency</code> to evaluate its accuracy. Given the definition of Efficiency, it should be positively correlated to M.</p>
+<p>To test the relationship, we generated a log-log scale plot. We used a log10 scale to normalize the values and to see how the magnitudes of the two variables are related. The regression model is statistically significant with a p-value of 3.681e-05. Positive slope suggests that as M increases, efficiency also increases. However, the adjusted R square value is 0.6 which means that the model captures less than 70% of the variance.</p>
 <p>In summary, the metric defined by the formula above seems to be capturing the information that directly affects the sleep quality of a user. Moreover, the statistical significance combined with the positive slope of the regression model and line prove to be a sanity check for our metric.</p>
 <p><img src="finalproj_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 </div>
 </div>
 <div id="establishing-direct-indirect-effects-on-sleep-quality" class="section level2" number="5.2">
 <h2><span class="header-section-number">5.2</span> Establishing Direct &amp; Indirect Effects on Sleep Quality</h2>
-<p>Having established a metric and quantified its distribution, we want to identify variables that have a direct or indirect relationship with sleep quality. These relationships might not necessarily be causal in nature as correlation does not imply causation.</p>
-<p>This section is divided further into subsections for each of the 7 files in the dataset. Since some of the data is redundant, we decided to analyze only 5 out of the 7 - sleep records, user information, actigraph measurements, activities performed and the saliva samples.</p>
-<div id="can-going-to-bed-early-improve-sleep-quality" class="section level3" number="5.2.1">
-<h3><span class="header-section-number">5.2.1</span> Can Going to Bed Early Improve Sleep Quality?</h3>
-<p>Time and again the society and many cultures have encouraged the practice going to bed early and rising early for a healthy life and better sleep. We wanted to test this hypothesis and see if bed time does have an effect on the quality of sleep.</p>
-<p>From the scatterplot below, we concluded that in fact, bed time does not have any impact on the sleep quality. There is no linear relationship; some participants who went to bed later than “usual” have a higher sleep quality than most participants who went to bed early. Similar conclusion can be made for the time a participant got out of bed. The data has high variance and so we cannot conclude that a relationship between bed times and sleep quality exists.</p>
-<p>This conclusion can be justified logically as well - if anything should affect the sleep quality it most likely would be the amount of tiredness the participant feels and total time they slept the day before. Given these quantities, bed time shouldn’t affect sleep at all. Since the dataset does not measure these quantities we can assume them to be latent variables. In the coming sections we will analyze the activity log of each user with respect to their sleep quality.</p>
+<p>In this section, we tried to identify variables that are correlated to sleep quality in some way. The relationships identified cannot be interpreted to be causal as correlation doesn’t imply causation.</p>
+<p>This section is divided further into subsections for each file in the dataset. Due to redundancy in data, we analyzed only 4 out of the 7 files - sleep records, user information, activities performed and saliva samples.</p>
+<div id="bed-time-does-not-affect-sleep-quality" class="section level3" number="5.2.1">
+<h3><span class="header-section-number">5.2.1</span> Bed Time Does Not Affect Sleep Quality</h3>
+<p>The practice going to bed early and rising early is encouraged for better sleep and health. We wanted to test this hypothesis using our metric.</p>
+<p>We generated a scatterplot and concluded that bed time does not have affect sleep quality. There is no linear relationship; some participants who went to bed later than “usual” have a higher sleep quality than most participants who went to bed early. Similar conclusion can be made for the time a participant got out of bed. The data has high variance and so we cannot conclude that bed times and sleep quality are related.</p>
+<p>This can be justified as sleep quality is most likely to be affected by how tired the user feels and total time they slept the day before.</p>
 <p><img src="finalproj_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 </div>
 <div id="does-your-build-affect-your-sleep" class="section level3" number="5.2.2">
