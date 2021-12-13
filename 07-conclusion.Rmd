@@ -6,7 +6,7 @@ The biggest limitation was the small sample size and low diversity in the cohort
 (1) Increasing sample size by combining datasets with similar depth of sampling and variables
 (2) Imputing sleep quality value for user 11 having established all causal relationships
 (3) Include data corresponding to subjective matters like mental health, stress and anxiety in analysis to better quantify sleep quality
-(4)
+(4) Replacing proportionality with equality along with the introduction of proportionality constants. More data is required to accurately determine the values of these constants and so for simplicity we assumed them to be equal to 1 when performing analysis 
 
 <!-- ## Discussion -->
 
