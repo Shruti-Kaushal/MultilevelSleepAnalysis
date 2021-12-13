@@ -149,7 +149,7 @@ sleep_data %>% ggplot()+geom_point(aes(x = `In.Bed.Time`, y = `M`, color = 'in_b
 ```
 
 
-### Does Build Affect Sleep?
+### Does Age and Build Affect Sleep Quality?
 
 It has been seen that as a person ages their quality of sleep deteriorates. We analyzed the relationship between age and our sleep quality metric to see if such a pattern emerges. A general trend appeared in the scatterplot, excluding certain outliers. M seems to be linearly related to age till a threshold of 30 years. We saw a sharp decline in sleep quality for users older than 30 years. Moreover, sleep quality remained more or less constant beyond the threshold and is much lower compared to young adults. It is important to keep in mind that sample ages are extremely skewed and so similar pattern might not emerge with the addition of more middle aged users. 
 
@@ -175,7 +175,7 @@ ggplot(user_info_temp, aes(`Gender`,`M`)) + geom_point() + labs(title = "Sleep Q
 ```
 
 
-### How Do Different Activities Affect Sleep Quality?
+### Which Activities are Deterimental to Sleep Quality?
 
 From the `Activity.csv`, we explored the correlation between the sleep quality metric we defined and the total time each user spent on each activity throughout the day. Referring to the graph below, we decided to discuss the common factors, such as heavy activities, screen usage. Initially, we were also curious about the alcohol and caffeine consumption. However, the data was not enough to perform such analysis.
 
