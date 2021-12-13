@@ -27,6 +27,8 @@ df_plot = df_plot %>%
 
 df_plot['user'] = temp
 readr::write_csv(df_plot,"./data/interactive_plot.csv")
+
+# https://www.d3-graph-gallery.com/graph/barplot_button_data_csv.html
 ```
 
 
@@ -34,11 +36,10 @@ readr::write_csv(df_plot,"./data/interactive_plot.csv")
           
 <!-- Load d3.js -->
 <script src="https://d3js.org/d3.v6.js"></script>
+<script src="http://colorbrewer2.org/export/colorbrewer.js"></script>
 
 <!-- Add 2 buttons -->
 <button onclick="update('M')">Sleep Quality (M)</button>
-<button onclick="update('avg.Cortisol')">avg.Cortisol</button>
-<button onclick="update('avg.Melatonin')">avg.Melatonin</button>
 <button onclick="update('Cortisol.NORM')">diff.Cortisol</button>
 <button onclick="update('Melatonin.NORM')">diff.Melatonin</button>
 
@@ -54,7 +55,7 @@ const margin = {top: 30, right: 30, bottom: 70, left: 60},
     height = 400 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
-const svg = d3.select("#my_dataviz")
+var svg = d3.select("#my_dataviz")
   .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
@@ -65,15 +66,36 @@ const svg = d3.select("#my_dataviz")
 const x = d3.scaleBand()
   .range([ 0, width ])
   .padding(0.2);
+  
 const xAxis = svg.append("g")
   .attr("transform", `translate(0,${height})`);
 
 // Initialize the Y axis
 const y = d3.scaleLinear()
-  .range([ height, 0]);
+  .range([ height, -1]);
+  
 const yAxis = svg.append("g")
   .attr("class", "myYaxis");
 
+// Initialize the color scale
+const colorScale = d3.scaleQuantize().range(colorbrewer.Blues[7]);
+
+// text label for the x axis
+svg.append("text")             
+    .attr("transform",
+          "translate(" + (width/2) + " ," + 
+                         (height + margin.top + 20) + ")")
+    .style("text-anchor", "middle")
+    .text("User ID");
+    
+// text label for the y axis
+svg.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 0 - margin.left)
+    .attr("x",0 - (height / 2))
+    .attr("dy", "1em")
+    .style("text-anchor", "middle")
+    .text("Value");  
 
 // A function that create / update the plot for a given variable:
 function update(selectedVar) {
@@ -88,23 +110,30 @@ function update(selectedVar) {
   xAxis.transition().duration(1000).call(d3.axisBottom(x));
 
   // Add Y axis
-  y.domain([0, d3.max(data, d => +d[selectedVar]) ]);
+  y.domain([d3.min(data, d => +d[selectedVar]), d3.max(data, d => +d[selectedVar]) ]);
   yAxis.transition().duration(1000).call(d3.axisLeft(y));
 
+  // Add color
+  colorScale.domain([0, d3.max(data, d => d.M)]);
+  
   // variable u: map data to existing bars
   const u = svg.selectAll("rect")
-    .data(data)
+    .data(data);
 
   // update bars
   u.join("rect")
     .transition()
     .duration(1000)
       .attr("x", d => x(d.user))
-      .attr("y", d => y(d[selectedVar]))
+      .attr("y", function(d) { return y(Math.max(0, d[selectedVar])); })
       .attr("width", x.bandwidth())
-      .attr("height", d => height - y(d[selectedVar]))
-      .attr("fill", "#69b3a2")
-  })
+      .attr("height", function(d) { return Math.abs(y(d[selectedVar]) - y(0)); })
+      .attr("fill", d => colorScale(d['M']));
+    
+
+    
+  });
+
 
 }
 

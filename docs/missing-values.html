@@ -33,7 +33,7 @@
   
 <link rel="prev" href="data-transformation.html"/>
 <link rel="next" href="results.html"/>
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -143,9 +143,9 @@
 <p>Here we revise the function we created in problem set 4 to plot the missing patterns. The number of missing values are very few (mentioned above). We generated missing value plots only for <code>questionnaire</code> and <code>activity</code> as they seemed to exhibit some pattern.
 As shown in the plots, only one row with missing values exist in <code>activity</code> and <code>questionnaire</code>, respectively.</p>
 <p>There is only one missing value in “End” variable which is defined as the time of the day when the event or activity concluded. For example, if a user smoked from 10:30 AM to 10:40 AM then <code>End</code> would be set to 10:40 AM. Except this one missing value, all others are complete cases.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <p>Similar to <code>activity</code>, this file category has only two patterns - complete cases and two missing values that correspond to the levels of a variable “PANAS”. PANAS is defined as the positive and negative affect schedule. It gives a score rating between 5 and 50 for both positive and negative emotions and higher the value, the higher is the perceived emotion. There is only one row that is not complete and is present in the records of user 13.</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 
 </div>
 </div>
@@ -209,20 +209,6 @@ gitbook.start({
 });
 </script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:")
-      if (/^https?:/.test(src))
-        src = src.replace(/^https?:/, '');
-    script.src = src;
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 </body>
 
 </html>
