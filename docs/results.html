@@ -33,7 +33,7 @@
   
 <link rel="prev" href="missing-values.html"/>
 <link rel="next" href="interactive-component.html"/>
-<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/header-attrs-2.9/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -237,16 +237,20 @@ M = (\frac{TST}{AverageTimeSpentAwake} + \frac{1}{SleepFragmentationIndex}).(\fr
 <div id="activity-vs-sleep-quality" class="section level3" number="5.2.3">
 <h3><span class="header-section-number">5.2.3</span> Activity vs Sleep Quality</h3>
 <p><img src="finalproj_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-11-1.png" width="50%" /><img src="finalproj_files/figure-html/unnamed-chunk-11-2.png" width="50%" /><img src="finalproj_files/figure-html/unnamed-chunk-11-3.png" width="50%" /><img src="finalproj_files/figure-html/unnamed-chunk-11-4.png" width="50%" /></p>
+<p>Screen Usage</p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-10-1.png" width="50%" /><img src="finalproj_files/figure-html/unnamed-chunk-10-2.png" width="50%" /><img src="finalproj_files/figure-html/unnamed-chunk-10-3.png" width="50%" /></p>
+<p>Heavy activity
+<img src="finalproj_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-13-1.png" width="50%" /><img src="finalproj_files/figure-html/unnamed-chunk-13-2.png" width="50%" /><img src="finalproj_files/figure-html/unnamed-chunk-13-3.png" width="50%" /></p>
 </div>
 <div id="how-do-biomarkers-affect-sleep-quality" class="section level3" number="5.2.4">
 <h3><span class="header-section-number">5.2.4</span> How do Biomarkers Affect Sleep Quality?</h3>
 <p>Research has shown that cortisol and melatonin are hormones produced by our body that regulate circadian rhythm and our internal body clock. We wanted to see how our metric performs against these biomarkers that are proven to be indicators of sleep quality in some way or another. This discussion of how these hormones actually control sleep would require getting into the depths of the mechanisms they are involved, which is beyond the scope of this project.</p>
 <p>Before we start with the analysis, it is important to understand how to interpret the concentration levels of these two hormones. In layman terms, melatonin eases you into sleep and helps you stay asleep. The production of melatonin is triggered by darkness and is inhibitted by light. This means that people who sleep well are expected to have a high concentration of melatonin before going to sleep and much lesser when they wake up. Cortisol is used for something completely opposite: it helps you get up and keeps you awake. It is also related the amount of stress someone has. So, in conclusion, to be able to sleep well you should have low levels of cortisol before sleeping and high levels after you wake up.</p>
 <p>We plotted a bar graph of differences in concentration (before sleep - after sleep) for each of the hormones and participants to try and discern if a similar pattern, as the one explained above, emerges. It is important to note that the actual concentrations of melatonin run in <span class="math inline">\(10^{-9}\)</span> and so the differences are really not small and range from -10 to 10, given the scale. Ideally, we would want the difference to be as negative as possible for cortisol and positive as possible for melatonin. What we see if definitely not ideal; infact only three users/participants have negative cortisol difference levels</p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-12-1.png" width="672" /><img src="finalproj_files/figure-html/unnamed-chunk-12-2.png" width="672" /></p>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-14-1.png" width="672" /><img src="finalproj_files/figure-html/unnamed-chunk-14-2.png" width="672" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-15-1.png" width="672" /><img src="finalproj_files/figure-html/unnamed-chunk-15-2.png" width="672" /></p>
 
 </div>
 </div>
