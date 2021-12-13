@@ -5,14 +5,9 @@ data-collection
 data-transformation
 sleep
 actigraph
-definition-and-explanation-of-each-column
-transformation-process
 activity
-definition-and-explanation-of-each-column-1
-transformation-process-1
 saliva
 user-info
-definition-and-explanation-of-each-column-2
 missing-values
 missing-value-plot
 results

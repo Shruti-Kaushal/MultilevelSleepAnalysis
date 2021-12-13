@@ -82,21 +82,10 @@
 <li class="chapter" data-level="3" data-path="data-transformation.html"><a href="data-transformation.html"><i class="fa fa-check"></i><b>3</b> Data transformation</a>
 <ul>
 <li class="chapter" data-level="3.1" data-path="data-transformation.html"><a href="data-transformation.html#sleep"><i class="fa fa-check"></i><b>3.1</b> Sleep</a></li>
-<li class="chapter" data-level="3.2" data-path="data-transformation.html"><a href="data-transformation.html#actigraph"><i class="fa fa-check"></i><b>3.2</b> Actigraph</a>
-<ul>
-<li class="chapter" data-level="3.2.1" data-path="data-transformation.html"><a href="data-transformation.html#definition-and-explanation-of-each-column"><i class="fa fa-check"></i><b>3.2.1</b> Definition and explanation of each column</a></li>
-<li class="chapter" data-level="3.2.2" data-path="data-transformation.html"><a href="data-transformation.html#transformation-process"><i class="fa fa-check"></i><b>3.2.2</b> Transformation process:</a></li>
-</ul></li>
-<li class="chapter" data-level="3.3" data-path="data-transformation.html"><a href="data-transformation.html#activity"><i class="fa fa-check"></i><b>3.3</b> Activity</a>
-<ul>
-<li class="chapter" data-level="3.3.1" data-path="data-transformation.html"><a href="data-transformation.html#definition-and-explanation-of-each-column-1"><i class="fa fa-check"></i><b>3.3.1</b> Definition and explanation of each column</a></li>
-<li class="chapter" data-level="3.3.2" data-path="data-transformation.html"><a href="data-transformation.html#transformation-process-1"><i class="fa fa-check"></i><b>3.3.2</b> Transformation process:</a></li>
-</ul></li>
+<li class="chapter" data-level="3.2" data-path="data-transformation.html"><a href="data-transformation.html#actigraph"><i class="fa fa-check"></i><b>3.2</b> Actigraph</a></li>
+<li class="chapter" data-level="3.3" data-path="data-transformation.html"><a href="data-transformation.html#activity"><i class="fa fa-check"></i><b>3.3</b> Activity</a></li>
 <li class="chapter" data-level="3.4" data-path="data-transformation.html"><a href="data-transformation.html#saliva"><i class="fa fa-check"></i><b>3.4</b> Saliva</a></li>
-<li class="chapter" data-level="3.5" data-path="data-transformation.html"><a href="data-transformation.html#user-info"><i class="fa fa-check"></i><b>3.5</b> User info</a>
-<ul>
-<li class="chapter" data-level="3.5.1" data-path="data-transformation.html"><a href="data-transformation.html#definition-and-explanation-of-each-column-2"><i class="fa fa-check"></i><b>3.5.1</b> Definition and explanation of each column</a></li>
-</ul></li>
+<li class="chapter" data-level="3.5" data-path="data-transformation.html"><a href="data-transformation.html#user-info"><i class="fa fa-check"></i><b>3.5</b> User info</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="missing-values.html"><a href="missing-values.html"><i class="fa fa-check"></i><b>4</b> Missing values</a>
 <ul>
@@ -114,7 +103,7 @@
 <ul>
 <li class="chapter" data-level="5.2.1" data-path="results.html"><a href="results.html#can-going-to-bed-early-improve-sleep-quality"><i class="fa fa-check"></i><b>5.2.1</b> Can Going to Bed Early Improve Sleep Quality?</a></li>
 <li class="chapter" data-level="5.2.2" data-path="results.html"><a href="results.html#does-your-build-affect-your-sleep"><i class="fa fa-check"></i><b>5.2.2</b> Does Your Build Affect Your Sleep?</a></li>
-<li class="chapter" data-level="5.2.3" data-path="results.html"><a href="results.html#how-do-different-activities-affect-sleep-quality"><i class="fa fa-check"></i><b>5.2.3</b> How do Different Activities Affect Sleep Quality?</a></li>
+<li class="chapter" data-level="5.2.3" data-path="results.html"><a href="results.html#how-do-different-activities-affect-sleep-quality"><i class="fa fa-check"></i><b>5.2.3</b> How Do Different Activities Affect Sleep Quality?</a></li>
 <li class="chapter" data-level="5.2.4" data-path="results.html"><a href="results.html#how-do-biomarkers-affect-sleep-quality"><i class="fa fa-check"></i><b>5.2.4</b> How do Biomarkers Affect Sleep Quality?</a></li>
 </ul></li>
 </ul></li>
@@ -144,10 +133,14 @@
             <section class="normal" id="section-">
 <div id="missing-values" class="section level1" number="4">
 <h1><span class="header-section-number">Chapter 4</span> Missing values</h1>
-<p>file information missing: user_11 is missing sleep.csv information</p>
-<p>No clock genes and hormones concentrations data was provided for User_21 due to problem in the salivary samples that do not permit to analyse it.</p>
-<p>missing age for user_18 in user_info</p>
-<p>user_13 is missing questionnaire</p>
+<p>Missing information includes -</p>
+<ol style="list-style-type: decimal">
+<li><p>file information missing: user_11 is missing sleep.csv information</p></li>
+<li><p>No clock genes and hormones concentrations data was provided for User_21 due to problem in the salivary samples that do not permit to analyse it.</p></li>
+<li><p>missing age for user_18 in user_info</p></li>
+<li><p>user_13 is missing questionnaire</p></li>
+</ol>
+<p>Since the aim of our project is to define a metric for sleep quality and identify variables with that affect it, user 11 was excluded from all the analysis performed.</p>
 <div id="missing-value-plot" class="section level2" number="4.1">
 <h2><span class="header-section-number">4.1</span> Missing Value Plot</h2>
 <p>Here we revise the function we created in problem set 4 to plot the missing patterns. Very less missing value is in the dataset. As shown in the plots, only one row with missing values exist in <code>activity</code> and <code>questionnaire</code>, respectively.</p>

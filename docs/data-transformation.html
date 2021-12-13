@@ -82,15 +82,8 @@
 <li class="chapter" data-level="3" data-path="data-transformation.html"><a href="data-transformation.html"><i class="fa fa-check"></i><b>3</b> Data transformation</a>
 <ul>
 <li class="chapter" data-level="3.1" data-path="data-transformation.html"><a href="data-transformation.html#sleep"><i class="fa fa-check"></i><b>3.1</b> Sleep</a></li>
-<li class="chapter" data-level="3.2" data-path="data-transformation.html"><a href="data-transformation.html#actigraph"><i class="fa fa-check"></i><b>3.2</b> Actigraph</a>
-<ul>
-<li class="chapter" data-level="3.2.1" data-path="data-transformation.html"><a href="data-transformation.html#transformation-process"><i class="fa fa-check"></i><b>3.2.1</b> Transformation process:</a></li>
-</ul></li>
-<li class="chapter" data-level="3.3" data-path="data-transformation.html"><a href="data-transformation.html#activity"><i class="fa fa-check"></i><b>3.3</b> Activity</a>
-<ul>
-<li class="chapter" data-level="3.3.1" data-path="data-transformation.html"><a href="data-transformation.html#definition-and-explanation-of-each-column"><i class="fa fa-check"></i><b>3.3.1</b> Definition and explanation of each column</a></li>
-<li class="chapter" data-level="3.3.2" data-path="data-transformation.html"><a href="data-transformation.html#transformation-process-1"><i class="fa fa-check"></i><b>3.3.2</b> Transformation process:</a></li>
-</ul></li>
+<li class="chapter" data-level="3.2" data-path="data-transformation.html"><a href="data-transformation.html#actigraph"><i class="fa fa-check"></i><b>3.2</b> Actigraph</a></li>
+<li class="chapter" data-level="3.3" data-path="data-transformation.html"><a href="data-transformation.html#activity"><i class="fa fa-check"></i><b>3.3</b> Activity</a></li>
 <li class="chapter" data-level="3.4" data-path="data-transformation.html"><a href="data-transformation.html#saliva"><i class="fa fa-check"></i><b>3.4</b> Saliva</a></li>
 <li class="chapter" data-level="3.5" data-path="data-transformation.html"><a href="data-transformation.html#user-info"><i class="fa fa-check"></i><b>3.5</b> User info</a></li>
 </ul></li>
@@ -147,7 +140,7 @@
 <p>The sleep file includes measurements ranging from the time the user gets into bed to the time that he gets out of bed. This file also includes measurements for total minutes spent in bed, total sleep time, number of times the user wakes up etc.</p>
 <p>Every user once in bed (to sleep) doesn’t get out of bed till morning except one. Sleep records of user 1 showed that he got out of bed at 3:31 AM and went back to sleep at 3:57 AM. For simplification of our analysis, we treated the time interval that the user was out of bed as an “awakening” i.e. when a user awaken from his sleep and remains awake for some time. This required updating the rest of the variables and depending on the definition of the variables, we either took the average or maximum or summed the two quantities corresponding to each of the “sleep sessions”. For example, “Total Sleep Time” was now the sum of the sleep time in both sessions, while “Sleep Fragmentation Index” was averaged across sessions.</p>
 <div class="figure">
-<img src="img/Sleep%20Measurements_User1.png" alt="" />
+<img src="img/Sleep%20Measurements_User1.png" style="width:30.0%" alt="" />
 <p class="caption">Sleep Measurements of User 1</p>
 </div>
 <p>We will define variables wherever needed but the reader is encouraged to go through the documentation of the dataset (link in chapter 2), to understand the variables in depth.</p>
@@ -168,49 +161,40 @@
 <!-- 10. Vector Magnitude: vector movement derived from raw acceleration data expressed in Newton-meter. -->
 <!-- 11. day: 1 and 2 refer to the first and second day of data recording, respectively. -->
 <!-- 12. time: day time when the heartbeat happened (hours:minutes:seconds) -->
-<div id="transformation-process" class="section level3" number="3.2.1">
-<h3><span class="header-section-number">3.2.1</span> Transformation process:</h3>
+<p>We transformed the data as follows -</p>
 <ol style="list-style-type: decimal">
 <li><p>Datetime format: We transform the <code>time</code> column into datetime type in R. Also, since initial <code>time</code> column doesn’t contain date information, we add days according to the <code>day</code> column to create a relative time stamp for each record in order to facilitate future calculation.</p></li>
 <li><p>Create category <code>Position</code>: Here we gathered columns with inclinometer information, which were <code>Inclinometer.Off</code>, <code>Inclinometer.Standing</code>, <code>Inclinometer.Sitting</code>, <code>Inclinometer.Lying</code>, transformed them into categorical column <code>Position</code>. By doing so, we can explore data correlations under groups of position throughout the day.</p></li>
 </ol>
 </div>
-</div>
 <div id="activity" class="section level2" number="3.3">
 <h2><span class="header-section-number">3.3</span> Activity</h2>
-<div id="definition-and-explanation-of-each-column" class="section level3" number="3.3.1">
-<h3><span class="header-section-number">3.3.1</span> Definition and explanation of each column</h3>
-<p>‘Start’ and ‘end’ columns refer to the time of the day (hours:minutes) when the event happened, while ‘day’ columns refers to the day when it happened (1 and 2 refer to the first and second day of data recording, respectively).</p>
-</div>
-<div id="transformation-process-1" class="section level3" number="3.3.2">
-<h3><span class="header-section-number">3.3.2</span> Transformation process:</h3>
+<p>This file contained information on 13 different categories of activities measured throughout the day and the time (of event happening) recorded.
+<!-- 'Start' and 'end' columns refer to the time of the day (hours:minutes) when the event happened, while 'day' columns refers to the day when it happened (1 and 2 refer to the first and second day of data recording, respectively). --></p>
+<p>We transformed the data as follows -</p>
 <ol style="list-style-type: decimal">
 <li><p>Datetime format: Here we substitute “00:00” to “24:00” in column <code>End</code> to avoid calculating between wrong dates, and then transformed into the format as we did for <code>Actigraph.csv</code>.</p></li>
 <li><p>Relabel the activities: The document labeled the activity categories from 1 to 12. However, an extra category, labeled as <code>0</code>, also included in the dataset. In this project, we will assume that the <code>0</code> represented undetermined activities. Here, we also had to deal with several minor mistakes in the dataset manually.</p></li>
 </ol>
-<ul>
-<li>13 Categories of activity:
-<ul>
-<li>undefined: all other unlabeled activity will count here.</li>
-<li>sleeping</li>
-<li>laying down</li>
-<li>sitting: e.g. studying and driving</li>
-<li>light mvmnt: e.g. slow/medium walk, chores and work.</li>
-<li>medium: e.g. fast walk and bike</li>
-<li>heavy: e.g. gym, running.</li>
-<li>eating</li>
-<li>small scr.usg: e.g. smartphone and computer.</li>
-<li>large scr.usg: e.g. TV and cinema.</li>
-<li>caff. consump.: caffeinated drink consumption, e.g. coffee or coke.</li>
-<li>smoking</li>
-<li>alc. consump.: alcohol assumption.</li>
-</ul></li>
-</ul>
+<!-- + 13 Categories of activity: -->
+<!--   - undefined: all other unlabeled activity will count here. -->
+<!--   - sleeping -->
+<!--   - laying down -->
+<!--   - sitting: e.g. studying and driving -->
+<!--   - light mvmnt: e.g. slow/medium walk, chores and work. -->
+<!--   - medium: e.g. fast walk and bike -->
+<!--   - heavy: e.g. gym, running. -->
+<!--   - eating -->
+<!--   - small scr.usg: e.g. smartphone and computer. -->
+<!--   - large scr.usg: e.g. TV and cinema. -->
+<!--   - caff. consump.: caffeinated drink consumption, e.g. coffee or coke. -->
+<!--   - smoking -->
+<!--   - alc. consump.: alcohol assumption. -->
 <ol start="3" style="list-style-type: decimal">
 <li><p>Calculate duration for each activity: To figure the total time each user spent on each activity, we calculate time intervals (<code>End</code> - <code>Start</code>) between different activities in seconds.</p></li>
 <li><p>Plotting: We explored the dataset using <code>geom_tile</code> in ggplot2 package. From the plot below, we noticed that user 21 was laying down for quite a long time.</p></li>
 </ol>
-<p><img src="finalproj_files/figure-html/unnamed-chunk-6-1.png" width="960" /></p>
+<p><img src="finalproj_files/figure-html/unnamed-chunk-9-1.png" width="960" /></p>
 <!-- ## Questionnaire -->
 <!-- For this part, the dataset contains the answer of a total of 7 questionnaires for each user. The questionnaires examined users' anxiety, sleep quality, stress, emotion, etc, in order to understand the users' behavior. -->
 <!-- No data cleaning is needed for this part. -->
@@ -239,7 +223,6 @@
 <!-- ```{r} -->
 <!-- RR$time = string2time(RR$time, format = "%H:%M:%S") + lubridate::days(RR$day) -->
 <!-- ``` -->
-</div>
 </div>
 <div id="saliva" class="section level2" number="3.4">
 <h2><span class="header-section-number">3.4</span> Saliva</h2>
@@ -312,6 +295,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>
