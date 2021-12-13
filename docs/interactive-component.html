@@ -186,29 +186,31 @@ const yAxis = svg.append("g")
 function update(selectedVar) {
 
   // Parse the Data
-  d3.csv("/data/interactive_plot.csv").then( function(data) {
+  d3.csv("https://raw.githubusercontent.com/Shruti-Kaushal/MultilevelSleepAnalysis/main/data/interactive_plot.csv").then( function(data) {
+  
+  console.log(data);
+  
+  // X axis
+  x.domain(data.map(d => d.user));
+  xAxis.transition().duration(1000).call(d3.axisBottom(x));
 
-    // X axis
-    x.domain(data.map(d => d.user));
-    xAxis.transition().duration(1000).call(d3.axisBottom(x));
+  // Add Y axis
+  y.domain([0, d3.max(data, d => +d[selectedVar]) ]);
+  yAxis.transition().duration(1000).call(d3.axisLeft(y));
 
-    // Add Y axis
-    y.domain([0, d3.max(data, d => +d[selectedVar]) ]);
-    yAxis.transition().duration(1000).call(d3.axisLeft(y));
+  // variable u: map data to existing bars
+  const u = svg.selectAll("rect")
+    .data(data)
 
-    // variable u: map data to existing bars
-    const u = svg.selectAll("rect")
-      .data(data)
-
-    // update bars
-    u.join("rect")
-      .transition()
-      .duration(1000)
-        .attr("x", d => x(d.user))
-        .attr("y", d => y(d[selectedVar]))
-        .attr("width", x.bandwidth())
-        .attr("height", d => height - y(d[selectedVar]))
-        .attr("fill", "#69b3a2")
+  // update bars
+  u.join("rect")
+    .transition()
+    .duration(1000)
+      .attr("x", d => x(d.user))
+      .attr("y", d => y(d[selectedVar]))
+      .attr("width", x.bandwidth())
+      .attr("height", d => height - y(d[selectedVar]))
+      .attr("fill", "#69b3a2")
   })
 
 }
