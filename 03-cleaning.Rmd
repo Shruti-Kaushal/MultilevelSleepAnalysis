@@ -2,7 +2,7 @@
 
 As mentioned in the introduction, for each sample or "user" many variables were sampled over the course of two days. These measurements are organized into 7 different files and in this section we will focus on how we transformed the data in each of the files for analysis.
 
-In conclusion, we worked on all the datetime columns and transformed them into the format `YYYY-MM-DD HH:MM:SS` due to analysis convenience. We decided to not include `RR.csv` in our discussion, since the heartbeat information is also included in the `actigraph.csv`.  
+In conclusion, we worked on all the datetime columns and transformed them into the format `YYYY-MM-DD HH:MM:SS` for convenience. We decided to not include `RR.csv` in our discussion, since the heartbeat information is also included in the `actigraph.csv`.  
 
 ```{r}
 # define function
