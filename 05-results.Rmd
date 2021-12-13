@@ -218,11 +218,27 @@ scrn_usg_time['large.scr.before.sleep'] = lapply(scrn_usg_time['Onset.Time'] - s
 scrn_usg_time['small.scr.before.sleep'] = lapply(scrn_usg_time['Onset.Time'] - scrn_usg_time['small scr.usg'], function(x) as.double.difftime(x))
 
 scrn_usg_time['scr.before.sleep'] = lapply(scrn_usg_time['Onset.Time'] - scrn_usg_time['scr.usg'], function(x) as.double.difftime(x))
+```
 
-# ggplot(scrn_usg_time, aes(`large scr.usg`, M)) + geom_point() + labs(title = "Sleep Quality vs Screen Usage") +theme_bw()
-# ggplot(scrn_usg_time, aes(`small scr.usg`, M)) + geom_point() + labs(title = "Sleep Quality vs Screen Usage") +theme_bw()
-# ggplot(scrn_usg_time, aes(`scr.usg`, M)) + geom_point() + labs(title = "Sleep Quality vs Screen Usage") +theme_bw()
+```{r}
+# ggplot(scrn_usg_time, aes(`large scr.usg`, M)) + 
+#   geom_point() + 
+#   labs(title = "Sleep Quality vs Screen Usage") +
+#   theme_bw()
+# 
+# ggplot(scrn_usg_time, aes(`small scr.usg`, M)) + 
+#   geom_point() + 
+#   labs(title = "Sleep Quality vs Screen Usage") +
+#   theme_bw()
+# 
+# ggplot(scrn_usg_time, aes(`scr.usg`, M)) + 
+#   geom_point() + 
+#   labs(title = "Sleep Quality vs Screen Usage") +
+#   theme_bw()
+```
 
+
+```{r}
 ggplot(scrn_usg_time, aes(large.scr.before.sleep, M)) + 
   geom_point() + 
   labs(title = "Sleep Quality vs Large Screen Usage") +
@@ -236,6 +252,14 @@ ggplot(scrn_usg_time, aes(small.scr.before.sleep, M)) +
   theme_bw() +
   # scale_x_continuous(trans='log2')+
   geom_smooth(method=lm) 
+
+ggplot(scrn_usg_time, aes(scr.before.sleep, M)) + 
+  geom_point() + 
+  labs(title = "Sleep Quality vs Screen Usage") +
+  theme_bw() +
+  # scale_x_continuous(trans='log2')+
+  geom_smooth(method=lm) +
+  xlim(0,120)
 
 c = c(1, 1)
 ggplot(scrn_usg_time, aes(c[1]*small.scr.before.sleep+c[2]*large.scr.before.sleep, M)) + 
@@ -256,6 +280,8 @@ ggplot(df_act, aes(heavy,M)) +
   theme_bw()+ 
   geom_smooth(method=lm) 
 ```
+
+
 
 ```{r}
 df_pos = position %>% spread(position, total)
