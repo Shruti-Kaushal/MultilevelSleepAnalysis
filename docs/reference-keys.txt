@@ -11,10 +11,8 @@ activity
 definition-and-explanation-of-each-column-1
 transformation-process-1
 saliva
-definition-and-explanation-of-each-column-2
-transformation-process-2
 user-info
-definition-and-explanation-of-each-column-3
+definition-and-explanation-of-each-column-2
 missing-values
 missing-value-plot
 results
@@ -23,12 +21,10 @@ preliminary-observations
 distribution-of-variables
 distribution-of-sleep-quality-metric
 establishing-direct-indirect-effects-on-sleep-quality
-bed-time-does-not-affect-sleep-quality
+can-going-to-bed-early-improve-sleep-quality
 does-your-build-affect-your-sleep
-activity-vs-sleep-quality
+how-do-different-activities-affect-sleep-quality
 how-do-biomarkers-affect-sleep-quality
 interactive-component
 conclusion
 discussion
-can-going-to-bed-early-improve-sleep-quality
-how-do-different-activities-affect-sleep-quality
