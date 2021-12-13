@@ -292,7 +292,7 @@ We plotted a bar graph of differences in concentration (before sleep - after sle
 
 To better understand if our metric catches the affect these hormones might have on sleep quality, we generated a bar graph of M. When investigating further, using facted scatteplots, we saw that there wasn't any "obvious" relationship between our metric and the two hormones. However, our metric does seem to catch the anomalies like user 2 and 12 that fall on the two extremes. User 2 scored the lowest on sleep quality and has the highest differnece in cortisol levels among the cohort. The presence of more melatonin indicates that there is a possibility that the circadian rhythm of user 2 is messed up. In case of user 12, it is the only participant that has an ideal combination of differences in concentration levels and interestingly enough scored the highest on sleep metric. Note that user 11 is another participant that exhibits a similar behaviour but unfortunately we excluded him from our analysis due to missing sleep measurements.
 
-It seems that our metric is definitely capturing some of what is being regulated by both the hormones but not everything. A way forward would be sampling more individuals and see how the metric performs on a bigger, more diverse cohort.
+It seems that our metric is definitely capturing some of what is being regulated by both the hormones but not everything. One would think that user 1 should have a low sleep quality score given the difference in concentration levels but he actually as the second highest score right after user 12. A way forward would be sampling more individuals and see how the metric performs on a bigger, more diverse cohort.
 
 ```{r}
 # get the difference of chemicals per participant
