@@ -1,3 +1,112 @@
 # Interactive component
 
+```{r}
+library(plotly)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(stringr)
 
+load("./data/RData/data_MMASH_results.RData")
+
+temp = difference %>% tidyr::spread(key = Chemicals, value = difference)
+temp['user'] = lapply(temp['user'] , function(x)as.numeric(str_remove(x, "user_")))
+
+df_plot = sleep_data %>% 
+  select( M, In.Bed.Time, Out.Bed.Time) %>% 
+  mutate(user = sapply(rownames(sleep_data),simplify =TRUE, function(x)as.numeric(stringr::str_remove(x, "user_")))) %>% 
+  left_join(temp, by = 'user')
+
+avg_saliva = saliva %>% group_by(user) %>% summarise(avg.Cortisol = mean(Cortisol.NORM), avg.Melatonin = mean(Melatonin.NORM))
+avg_saliva['user'] = lapply(avg_saliva['user'] , function(x)as.numeric(str_remove(x, "user_")))
+
+temp = df_plot['user']
+
+df_plot = df_plot %>% 
+  left_join(avg_saliva, by = 'user')
+
+df_plot['user'] = temp
+readr::write_csv(df_plot,"./data/interactive_plot.csv")
+```
+
+
+<meta charset="utf-8">
+          
+<!-- Load d3.js -->
+<script src="https://d3js.org/d3.v6.js"></script>
+
+<!-- Add 2 buttons -->
+<button onclick="update('M')">Sleep Quality (M)</button>
+<button onclick="update('avg.Cortisol')">avg.Cortisol</button>
+<button onclick="update('avg.Melatonin')">avg.Melatonin</button>
+<button onclick="update('Cortisol.NORM')">diff.Cortisol</button>
+<button onclick="update('Melatonin.NORM')">diff.Melatonin</button>
+
+<!-- Create a div where the graph will take place -->
+<div id="my_dataviz"></div>
+
+
+<script>
+
+// set the dimensions and margins of the graph
+const margin = {top: 30, right: 30, bottom: 70, left: 60},
+    width = 460 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
+
+// append the svg object to the body of the page
+const svg = d3.select("#my_dataviz")
+  .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", `translate(${margin.left},${margin.top})`);
+
+// Initialize the X axis
+const x = d3.scaleBand()
+  .range([ 0, width ])
+  .padding(0.2);
+const xAxis = svg.append("g")
+  .attr("transform", `translate(0,${height})`);
+
+// Initialize the Y axis
+const y = d3.scaleLinear()
+  .range([ height, 0]);
+const yAxis = svg.append("g")
+  .attr("class", "myYaxis");
+
+
+// A function that create / update the plot for a given variable:
+function update(selectedVar) {
+
+  // Parse the Data
+  d3.csv("/data/interactive_plot.csv").then( function(data) {
+
+    // X axis
+    x.domain(data.map(d => d.user));
+    xAxis.transition().duration(1000).call(d3.axisBottom(x));
+
+    // Add Y axis
+    y.domain([0, d3.max(data, d => +d[selectedVar]) ]);
+    yAxis.transition().duration(1000).call(d3.axisLeft(y));
+
+    // variable u: map data to existing bars
+    const u = svg.selectAll("rect")
+      .data(data)
+
+    // update bars
+    u.join("rect")
+      .transition()
+      .duration(1000)
+        .attr("x", d => x(d.user))
+        .attr("y", d => y(d[selectedVar]))
+        .attr("width", x.bandwidth())
+        .attr("height", d => height - y(d[selectedVar]))
+        .attr("fill", "#69b3a2")
+  })
+
+}
+
+// Initialize plot
+update('M')
+
+</script>

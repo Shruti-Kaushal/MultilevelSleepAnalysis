@@ -395,3 +395,8 @@ mydata %>% ggplot(aes(x = user, y = M)) +
 # difference_temp %>% ggplot(aes(`difference`,`M`)) + geom_point() + facet_wrap(~Chemicals, scales = "free") + labs(x = "Difference in Concentration Before and After Sleep", y = "Sleep Quality (M)")
 
 ```
+
+```{r}
+# save workplace after data cleaning/for this stage.
+save.image(file = "./data/RData/data_MMASH_results.RData")
+```
