@@ -195,7 +195,7 @@ ggplot(user_info_temp, aes(`Gender`,`M`)) + geom_point() + labs(title = "Sleep Q
 
 ### Which Activities are Deterimental to Sleep Quality?
 
-From the `Activity.csv`, we explored the correlation between the sleep quality metric we defined and the total time each user spent on each activity throughout the day. Referring to the graph below, we decided to discuss the common factors, such as heavy activities, screen usage. Initially, we were also curious about the alcohol and caffeine consumption. However, the data was not enough to perform such analysis.
+From the `Activity.csv`, we explored the correlation between the sleep quality metric and the total time each user spent on each activity throughout the day. We generated a heatmap of the time each user spends on each activity. The blank spaces mean that the user did not engage in that activity at all. Initially, we were curious about alcohol and caffeine consumption but the amount of data was too less to analyze. We decided to discuss screen usage and heavy activities. 
 
 ```{r}
 activity_duration %>% ggplot(aes(x = factor(user, levels = paste0("user_",c(1:22)), labels = c(1:22)), y = factor(category), fill = total)) +
@@ -205,7 +205,8 @@ activity_duration %>% ggplot(aes(x = factor(user, levels = paste0("user_",c(1:22
   scale_fill_distiller(palette = "Blues", direction = 1) +
   labs(title = "Time spent on each activity", x= "User ID", y = "Activity", fill = "Seconds Spent\non Activity")
 ```
-The correlation between the total time each user spent on each activity and the sleep quality metric is shown below. Here, we only cared about how the factors affect sleep quality. From the heat map, it is clear there are no significant correlation factors.
+
+The correlation between the total time each user spent on each activity and the sleep quality metric is shown below. It can be seen that M is positively correlated to screen usage which seems counterintuitive. So, we extracted the p-values corresponding to the correlation matrix and found that none of the coefficients (including M) were statistically significant.
 
 ```{r}
 df_act = activity_duration [-2] %>% pivot_wider(names_from = category, values_from = total, values_fill = 0)
@@ -221,7 +222,7 @@ df_act.p = df_act.rcorr$P
 heatmap.2(x = df_act.coeff, symm = TRUE, key = TRUE,labRow = abbreviate(rownames(df_act.coeff), minlength = 24), labCol = abbreviate(colnames(df_act.coeff), minlength = 24), col = palette, margins=c(8,10), srtCol=45, main = "heatmap", density.info="none", trace="none")
 ```
 
-Next, we tried to group the factors and took `time` factor into consideration. Will using screen before sleeping affect users' sleep quality? We first explored `small screen usage` and `large screen usage` individually. Overall, it is less likely that using small screen device 4 hours before sleep will affect sleep quality. 
+To dig deeper, we looked at the relationship between the amount off-screen time the user has right before sleeping and the sleep metric. We expected to have a positive linear relationship. However, from the regression lines below we see that the relationship is neither linear nor positive. Plot with averaged small and large off-screen time is comparatively closer to our expectations but the standard errors are too large to ignore.
 
 ```{r, fig.show="hold", out.width="50%"}
 # get the latest time using screen before sleep outset time
