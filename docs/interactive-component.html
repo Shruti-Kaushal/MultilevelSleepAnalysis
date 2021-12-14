@@ -227,8 +227,7 @@ function update(selectedVar) {
       .attr("x", d => x(d.user))
       .attr("y", function(d) { return y(Math.max(0, d[selectedVar])); })
       .attr("width", x.bandwidth())
-      .attr("height", function(d) { return Math.abs(y(d[selectedVar]) - y(0)); })
-      .attr("fill", d => colorScale(d['M']));
+      .attr("height", function(d) { return Math.abs(y(d[selectedVar]) - y(0)); });
     
     
   });
