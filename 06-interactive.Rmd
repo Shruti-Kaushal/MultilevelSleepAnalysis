@@ -30,7 +30,7 @@ df_plot = df_plot %>% arrange(M)
 readr::write_csv(df_plot,"./data/interactive_plot.csv")
 ```
 
-Reader could explore the relation of biofactors to sleep quality by clicking the buttons. `Sleep Quality (M)` is the metric we defined. In this project, our main concern is how different factors affected sleep quality. Here, we focus on the difference of chemical levels before and after sleep. The key findings are present in the Results section. The color of the bar represent the quality of sleep, the darker blue the better sleep. And the `User ID` is arranged in ascending sleep quality order in convenience of comparing different plots. 
+Reader could explore the relation of biofactors to sleep quality by clicking the buttons. `Sleep Quality (M)` is the metric we defined. In this project, our main concern is how different factors affected sleep quality. Here, we focus on the difference of chemical levels before and after sleep. The key findings are present in the Results section. The color of the bar represent the quality of sleep, the darker blue the better sleep. And the `User ID` is arranged in ascending sleep quality order in convenience of comparing different plots. With the emphasis brought by the interactive transition, readers could easily tell the difference between patterns.
 
 
 <meta charset="utf-8">
