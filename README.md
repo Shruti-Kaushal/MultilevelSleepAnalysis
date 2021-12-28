@@ -9,14 +9,11 @@ We plan to extend our study to identify patterns of change in activity levels an
 Through this project tried to answer a bigger question - Can the sleep quality of individuals be improved by changing or fine-tuning certain variables/factors known to regulate the sleep quality? 
 
 A comprehensive report of our work can be found at - 
-
+https://shruti-kaushal.github.io/MultilevelSleepAnalysis/
 
 Links to the datasets - 
-
 Multilevel sleep analysis dataset - https://physionet.org/content/mmash/1.0.0/
-
 CAP dataset - https://physionet.org/content/capslpdb/1.0.0/
-
 Source - https://physionet.org/about/database/
 
 *This repo was initially generated from a bookdown template available here: https://github.com/jtr13/EDAVtemplate.*	
